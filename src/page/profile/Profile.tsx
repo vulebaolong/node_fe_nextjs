@@ -67,8 +67,10 @@ export function Profile() {
 
    return (
       <Stack>
-         <Paper shadow="lg" radius="lg" withBorder p="lg" bg="var(--mantine-color-body)">
-            <Avatar user={info} size={120} radius={120} mx="auto" />
+         <Paper shadow="lg" radius="lg" withBorder p="lg" pt={`xl`} bg="var(--mantine-color-body)">
+            <Center>
+               <Avatar user={info} size={120} radius={120} mx="auto" />
+            </Center>
 
             <Text ta="center" fz="lg" fw={500} mt="md">
                {info?.fullName}

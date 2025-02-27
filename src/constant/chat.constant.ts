@@ -1,0 +1,1 @@
+export const CHAT_LIST_ID = `CHAT_LIST_ID`

@@ -12,4 +12,10 @@ export type TCreateChatRes = {
    updated_at: string;
 };
 
-export type TListChatRes = TCreateChatRes
+export type TListChatRes = TCreateChatRes;
+
+export type TChatListItem = {
+   id: number;
+   name: string;
+   ava: string;
+};

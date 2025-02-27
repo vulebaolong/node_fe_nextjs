@@ -31,3 +31,10 @@ export const formatLocalTime = (time?: dayjs.ConfigType, format = "HH:mm:ss DD/M
       return dayjs().local().format(format);
    }
 };
+
+export function moveElementToTop<T>(arr: T[], condition: (item: T) => boolean): T[] {
+   const matched = arr.filter(condition); // Lấy phần tử thỏa mãn điều kiện
+   const others = arr.filter((item) => !condition(item)); // Lấy phần tử không thỏa mãn
+   return matched.concat(others); // Ghép lại, đảm bảo phần tử thỏa mãn lên đầu
+}
+
