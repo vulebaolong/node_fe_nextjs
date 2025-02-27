@@ -48,7 +48,15 @@ export default function HeaderClient() {
                   gap={10}
                   className={`${MOBILE_HIDDEN_DESKTOP_VISIBLE}`}
                >
-                  <ActionIcon w={`80px`} h={`80%`} variant="subtle" color="gray">
+                  <ActionIcon
+                     onClick={() => {
+                        router.push(ROUTER.HOME);
+                     }}
+                     w={`80px`}
+                     h={`80%`}
+                     variant="subtle"
+                     color="gray"
+                  >
                      <IconHome style={{ width: "50%", height: "50%" }} stroke={1.5} />
                   </ActionIcon>
                   <ActionIcon w={`80px`} h={`80%`} variant="subtle" color="gray">

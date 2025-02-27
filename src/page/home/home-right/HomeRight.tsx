@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar } from "@/components/avatar/Avatar";
+import { useSocket } from "@/components/provider/socket/SocketProvider";
 import TagUser from "@/components/tag-user/TagUser";
 import { useAppSelector } from "@/redux/hooks";
 import { useFindAllUser } from "@/tantask/user.tanstack";
@@ -9,10 +10,12 @@ import { IconSearch } from "@tabler/icons-react";
 import { Fragment } from "react";
 
 export default function HomeRight() {
+   const { socket, isConnected } = useSocket();
    const findAllUser = useFindAllUser();
    const userId = useAppSelector((state) => state.user.info?.id);
    return (
       <Stack>
+         <Text>{isConnected ? `Connected` : `not Connected`}</Text>
          <Group justify="space-between">
             <Text opacity={0.7} fw={`bold`} fz={`lg`}>
                Người Liên Hệ
