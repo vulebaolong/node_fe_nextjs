@@ -1,0 +1,15 @@
+{
+   "test": {
+      "hello": "xin chào"
+   },
+   "header": {
+      "explore": "Khám Phá",
+      "pricing": "Bảng Giá",
+      "search": "Tìm Kiếm",
+      "resource": "Tài Nguyên",
+      "forbusiness": "Dành Cho Doanh Nghiệp",
+      "join": "Tham Gia Miễn Phí",
+      "joinMobile": "Tham Gia",
+      "login": "Đăng nhập"
+   }
+}

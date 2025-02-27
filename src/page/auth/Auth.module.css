@@ -1,0 +1,11 @@
+@media (max-width: 62em) {
+    .wrapForm {
+        width: 360px;
+    }
+}
+
+@media (min-width: 62em) {
+    .wrapForm {
+        width: 400px;
+    }
+}

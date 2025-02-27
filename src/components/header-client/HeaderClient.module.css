@@ -1,0 +1,23 @@
+.header {
+   background-color: var(--mantine-color-body);
+   height: var(--height-header);
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   z-index: 101;
+   border-bottom: 1px solid light-dark(var(--border-gray2),var(--border-dark2));
+ }
+ 
+ @media (max-width: 62em) {
+   .header {
+     padding: 0px 20px;
+   }
+ }
+ 
+ @media (min-width: 62em) {
+   .header {
+     padding: 0px 50px;
+   }
+ }
+ 

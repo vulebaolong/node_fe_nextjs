@@ -1,0 +1,6 @@
+.box-1 {
+   border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-4));
+   border-radius: 10px;
+   padding: 10px;
+}
+

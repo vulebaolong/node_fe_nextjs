@@ -1,0 +1,15 @@
+{
+   "test": {
+      "hello": "hello"
+   },
+   "header": {
+      "explore": "Explore",
+      "pricing": "Pricing",
+      "search": "Search",
+      "resource": "Resource",
+      "forbusiness": "For Business",
+      "join": "Join For Free",
+      "joinMobile": "Join",
+      "login": "Login"
+   }
+}
