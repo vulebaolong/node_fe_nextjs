@@ -18,6 +18,7 @@ export const useGetInfo = () => {
             dispatch(SET_INFO(data));
             return true;
          } catch (error) {
+            console.log(error);
             router.push("/login");
             return false;
          }

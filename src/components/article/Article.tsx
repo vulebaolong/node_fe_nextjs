@@ -2,15 +2,15 @@ import { checkPathImage, formatLocalTime, resError } from "@/helpers/function.he
 import { useCreateReactionArticle } from "@/tantask/reaction.tanstack";
 import { TArticle } from "@/types/article.type";
 import { EReactionArticle } from "@/types/enum/reaction.enum";
-import { ActionIcon, Box, Button, Group, Stack, Text, Transition } from "@mantine/core";
-import { IconDots, IconMessageCircle, IconShare3, IconThumbUp, IconThumbUpFilled, IconX } from "@tabler/icons-react";
+import { ActionIcon, Box, Button, Group, Stack, Text } from "@mantine/core";
+import { IconDots, IconMessageCircle, IconShare3, IconX } from "@tabler/icons-react";
 import Image from "next/image";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import { Avatar } from "../avatar/Avatar";
 import TextContent from "../text-content/TextContent";
 import classes from "./Article.module.css";
-import { useState } from "react";
 import IconReaction from "./icon-reaction/IconReaction";
+import Avatar from "../avatar/Avatar";
 
 type TProps = {
    article: TArticle;
@@ -47,7 +47,7 @@ export default function Article({ article }: TProps) {
          {/* info */}
          <Group justify="space-between" wrap="nowrap" px={10} py={15}>
             <Box style={{ flexShrink: 0 }}>
-               <Avatar  user={article.Users} />
+               <Avatar user={article.Users} />
             </Box>
             <Stack gap={0} flex={1}>
                <Text fw={`bold`}>{article.Users.fullName}</Text>

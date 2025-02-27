@@ -1,7 +1,6 @@
 "use client";
 
 import Article from "@/components/article/Article";
-import { Avatar } from "@/components/avatar/Avatar";
 import ModalCreateArticle from "@/components/modal/modal-create-article/ModalCreateArticle";
 import { useAppSelector } from "@/redux/hooks";
 import { TResPagination } from "@/types/app.type";
@@ -9,6 +8,7 @@ import { TArticle } from "@/types/article.type";
 import { Box, Button, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./HomeCenter.module.css";
+import Avatar from "@/components/avatar/Avatar";
 
 type TProps = {
    articles: TResPagination<TArticle[]>[`data`];

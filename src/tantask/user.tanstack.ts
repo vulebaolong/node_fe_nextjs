@@ -1,5 +1,5 @@
 import { findAllUserAction, uploadAvatarCloudAction, uploadAvatarLocalAction } from "@/actions/user.action";
-import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useUploadAvatarLocal = () => {
    return useMutation({

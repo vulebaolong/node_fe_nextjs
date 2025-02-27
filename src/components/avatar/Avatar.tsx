@@ -1,14 +1,14 @@
-import { Avatar as AvatarMantine, AvatarProps, Box } from "@mantine/core";
-import { forwardRef } from "react";
-import { TUser } from "@/types/user.type";
 import { checkPathImage } from "@/helpers/function.helper";
+import { TUser } from "@/types/user.type";
+import { Avatar as AvatarMantine, AvatarProps, Box } from "@mantine/core";
 import Image from "next/image";
+import { forwardRef } from "react";
 
 type TProps = {
    user?: TUser | null;
 } & AvatarProps;
 
-export const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRef<"div">>(({ user, style, ...props }, ref) => {
+const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRef<"div">>(({ user, style, ...props }, ref) => {
    return (
       <Box pos={`relative`} w={`min-content`}>
          <AvatarMantine
@@ -18,7 +18,7 @@ export const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWi
             alt="avatar"
             src={checkPathImage(user?.avatar)}
             color={`initials`}
-            name={!user?.avatar ? (user?.fullName as string | undefined) : undefined}
+            name={!user?.avatar ? (user?.fullName as string | undefined) : `??`}
             variant="filled"
          />
          {user?.Roles?.id === 1 && (
@@ -47,3 +47,7 @@ export const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWi
       </Box>
    );
 });
+
+Avatar.displayName = 'Avatar';
+
+export default Avatar;

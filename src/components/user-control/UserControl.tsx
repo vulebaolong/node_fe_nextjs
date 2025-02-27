@@ -5,11 +5,11 @@ import { logout } from "@/helpers/api.helper";
 import { effectText } from "@/helpers/motion.helper";
 import { useAppSelector } from "@/redux/hooks";
 import { Box, Group, Menu, Text } from "@mantine/core";
-import { IconArrowsLeftRight, IconLogout, IconPhoto, IconSearch, IconSettings, IconUserSearch } from "@tabler/icons-react";
-import { Avatar } from "../avatar/Avatar";
-import { Badge } from "../badge/Badge";
-import classes from "./UserControl.module.css";
+import { IconLogout, IconSettings, IconUserSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
+import Avatar from "../avatar/Avatar";
+import classes from "./UserControl.module.css";
+import Badge from "../badge/Badge";
 
 export default function UserControl() {
    const router = useRouter();

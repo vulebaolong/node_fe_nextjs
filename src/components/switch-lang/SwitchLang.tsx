@@ -1,6 +1,6 @@
 "use client";
 
-import { ActionIcon, Button, Menu } from "@mantine/core";
+import { ActionIcon, Menu } from "@mantine/core";
 import { IconWorld } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
 

@@ -1,14 +1,14 @@
 import TagUser from "@/components/tag-user/TagUser";
+import { CHAT_LIST_ID } from "@/constant/chat.constant";
 import { TChatListItem } from "@/types/chat.type";
 import { TUser } from "@/types/user.type";
-import { ActionIcon, Box, Divider, Group, Loader, Stack, TextInput } from "@mantine/core";
-import classes from "./ChatUserItem.module.css";
-import { useState } from "react";
+import { ActionIcon, Divider, Group, Loader, Stack, TextInput } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { IconSend2, IconX } from "@tabler/icons-react";
-import { CHAT_LIST_ID } from "@/constant/chat.constant";
-import _ from "lodash";
 import { useQueryClient } from "@tanstack/react-query";
+import _ from "lodash";
+import { useState } from "react";
+import classes from "./ChatUserItem.module.css";
 
 type TProps = {
    item: TChatListItem;
@@ -31,18 +31,18 @@ export default function ChatUserItem({ item, i }: TProps) {
       setValue(``);
    };
 
-     const handleDeleteListChat = (e: any) => {
-         e.stopPropagation();
-   
-         const stringLocal = localStorage.getItem(CHAT_LIST_ID);
-         const listChatLocal = stringLocal ? JSON.parse(stringLocal) : [];
-   
-         if (_.isArray(listChatLocal)) {
-            _.remove(listChatLocal, (itemChat) => itemChat.id === item.id);
-            localStorage.setItem(CHAT_LIST_ID, JSON.stringify(listChatLocal));
-            queryClient.invalidateQueries({ queryKey: [`chat-list-id`] });
-         }
-      };
+   const handleDeleteListChat = (e: any) => {
+      e.stopPropagation();
+
+      const stringLocal = localStorage.getItem(CHAT_LIST_ID);
+      const listChatLocal = stringLocal ? JSON.parse(stringLocal) : [];
+
+      if (_.isArray(listChatLocal)) {
+         _.remove(listChatLocal, (itemChat) => itemChat.id === item.id);
+         localStorage.setItem(CHAT_LIST_ID, JSON.stringify(listChatLocal));
+         queryClient.invalidateQueries({ queryKey: [`chat-list-id`] });
+      }
+   };
 
    return (
       <Stack

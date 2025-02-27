@@ -4,8 +4,6 @@ import { ENDPOINT } from "@/constant/endpoint.constant";
 import api from "@/helpers/api.helper";
 import { TRes, TResPagination } from "@/types/app.type";
 import { TUploadAvatarLocalRes, TUser } from "@/types/user.type";
-// import FormData from "form-data";
-// import fs from "fs";
 
 export async function uploadAvatarLocalAction(payload: FormData) {
    try {

@@ -13,10 +13,10 @@ import { IconSearch } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import _ from "lodash";
 import { Fragment } from "react";
-import classes from './HomeRight.module.css'
+import classes from "./HomeRight.module.css";
 
 export default function HomeRight() {
-   const { socket, isConnected } = useSocket();
+   const { isConnected } = useSocket();
    const findAllUser = useFindAllUser();
    const userId = useAppSelector((state) => state.user.info?.id);
    const queryClient = useQueryClient();

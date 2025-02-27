@@ -1,6 +1,6 @@
 import { Group, Text } from "@mantine/core";
-import { Avatar } from "../avatar/Avatar";
 import { TUser } from "@/types/user.type";
+import Avatar from "../avatar/Avatar";
 
 type TProps = {
    user?: TUser | null | undefined

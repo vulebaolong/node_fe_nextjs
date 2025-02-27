@@ -52,8 +52,7 @@ export default function DrawerNavbar({ opened, close }: TProps) {
             <Center>
                <Group gap={2} wrap="nowrap">
                   {false ? (
-                     <Link className="cursor-pointer" href={ROUTER.ME}>
-                        {" "}
+                     <Link className="cursor-pointer" href={ROUTER.HOME}>
                         <Avatar radius="xl" />
                      </Link>
                   ) : (

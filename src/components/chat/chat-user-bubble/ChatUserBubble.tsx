@@ -1,4 +1,4 @@
-import { Avatar } from "@/components/avatar/Avatar";
+import Avatar from "@/components/avatar/Avatar";
 import { CHAT_LIST_ID } from "@/constant/chat.constant";
 import { moveElementToTop } from "@/helpers/function.helper";
 import { TChatListItem } from "@/types/chat.type";
