@@ -22,7 +22,6 @@ export async function createArticleAction(payload: FormData) {
    try {
       const { data } = await api.post<TRes<any>>(ENDPOINT.ARTICLE.CREATE, payload);
       revalidateTag(`article-list`)
-      console.log({ data });
       return data;
    } catch (error) {
       console.error("Create Article Failed", error);

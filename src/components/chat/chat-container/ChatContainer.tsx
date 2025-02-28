@@ -1,29 +1,25 @@
-import { useGetChatListId } from "@/tantask/chat.tanstacl";
+"use client";
+
+import { useGetChatListUserBubble, useGetChatListUserItem } from "@/tantask/chat.tanstacl";
 import { TChatListItem } from "@/types/chat.type";
-import { TUser } from "@/types/user.type";
 import _ from "lodash";
 import ChatUserBubble from "../chat-user-bubble/ChatUserBubble";
 import ChatUserItem from "../chat-user-item/ChatUserItem";
 
 export default function ChatContainer() {
-   const chatListId = useGetChatListId();
+   const chatListUserItem = useGetChatListUserItem();
+   const chatListUserBubble = useGetChatListUserBubble();
 
    return (
       <>
-         {_.isArray(chatListId.data) &&
-            chatListId.data
-               .slice(0, 2)
-               .reverse()
-               .map((item, i) => {
-                  return <ChatUserItem key={i} item={item} i={i} />;
-               })}
-         {_.isArray(chatListId.data) &&
-            chatListId.data
-               .slice(1, -1)
-               .reverse()
-               .map((item: TChatListItem, i) => {
-                  return <ChatUserBubble key={i} i={i} item={item} user={{ avatar: item.ava, fullName: item.name } as TUser} />;
-               })}
+         {_.isArray(chatListUserItem.data) &&
+            chatListUserItem.data.map((item: TChatListItem, i) => {
+               return <ChatUserItem key={item.id} item={item} i={i} />;
+            })}
+         {_.isArray(chatListUserBubble.data) &&
+            chatListUserBubble.data.map((item: TChatListItem, i) => {
+               return <ChatUserBubble key={item.id} item={item} i={i} />;
+            })}
       </>
    );
 }

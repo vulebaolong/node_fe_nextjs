@@ -44,7 +44,7 @@ export default function UserControl() {
             <Menu.Divider />
 
             <Menu.Label>Application</Menu.Label>
-            <Menu.Item leftSection={<IconSettings size={14} />}>Settings</Menu.Item>
+
             <Menu.Item
                onClick={() => {
                   router.push(ROUTER.PROFILE);
@@ -52,6 +52,15 @@ export default function UserControl() {
                leftSection={<IconUserSearch size={14} />}
             >
                Profile
+            </Menu.Item>
+
+            <Menu.Item
+               onClick={() => {
+                  router.push(ROUTER.SETTING);
+               }}
+               leftSection={<IconSettings size={14} />}
+            >
+               Settings
             </Menu.Item>
 
             <Menu.Divider />

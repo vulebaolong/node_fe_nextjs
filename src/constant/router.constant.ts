@@ -1,10 +1,11 @@
 const ROUTER = {
-    LOGIN: `/login`,
-    REGISTER: `/register`,
-    HOME:  `/`,
-    COURSE:  `/course`,
-    EXPLORE:  `/explore`,
-    PROFILE:  `/profile`,
-}
+   HOME: `/`,
+   LOGIN: `/login`,
+   REGISTER: `/register`,
+   COURSE: `/course`,
+   EXPLORE: `/explore`,
+   PROFILE: `/profile`,
+   SETTING: `/setting`,
+};
 
-export default ROUTER
+export default ROUTER;

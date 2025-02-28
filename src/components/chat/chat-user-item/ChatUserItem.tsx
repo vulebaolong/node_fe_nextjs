@@ -1,92 +1,48 @@
-import TagUser from "@/components/tag-user/TagUser";
-import { CHAT_LIST_ID } from "@/constant/chat.constant";
+import { useSocket } from "@/components/provider/socket/SocketProvider";
+import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
+import { emitToEvent, removeEventListener } from "@/helpers/chat.helper";
+import { useAppSelector } from "@/redux/hooks";
 import { TChatListItem } from "@/types/chat.type";
-import { TUser } from "@/types/user.type";
-import { ActionIcon, Divider, Group, Loader, Stack, TextInput } from "@mantine/core";
-import { getHotkeyHandler } from "@mantine/hooks";
-import { IconSend2, IconX } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
-import _ from "lodash";
-import { useState } from "react";
+import { Divider, Stack } from "@mantine/core";
+import { useEffect, useState } from "react";
 import classes from "./ChatUserItem.module.css";
+import MessageHeader from "./message-header/MessageHeader";
+import MessageInput from "./message-input/MessageInput";
+import MessageListAll from "./message-list/MessageList";
 
 type TProps = {
    item: TChatListItem;
    i: number;
 };
 
-export default function ChatUserItem({ item, i }: TProps) {
-   const [value, setValue] = useState("");
-   const queryClient = useQueryClient();
+export default function ChatUserItem({ i, item }: TProps) {
+   const [onlyOne, setOnlyOne] = useState(1);
+   const userId = useAppSelector((state) => state.user.info?.id);
+   const { socket } = useSocket();
 
-   const handleSubmit = () => {
-      // if (!userSelected || !info) return;
-
-      // socketRef.current.emit("send-message", {
-      //    message: value,
-      //    user_id_sender: info.user_id,
-      //    user_id_recipient: userSelected.user_id,
-      // });
-      console.log(`handleSubmit`);
-      setValue(``);
-   };
-
-   const handleDeleteListChat = (e: any) => {
-      e.stopPropagation();
-
-      const stringLocal = localStorage.getItem(CHAT_LIST_ID);
-      const listChatLocal = stringLocal ? JSON.parse(stringLocal) : [];
-
-      if (_.isArray(listChatLocal)) {
-         _.remove(listChatLocal, (itemChat) => itemChat.id === item.id);
-         localStorage.setItem(CHAT_LIST_ID, JSON.stringify(listChatLocal));
-         queryClient.invalidateQueries({ queryKey: [`chat-list-id`] });
+   useEffect(() => {
+      if (socket && onlyOne === 1 && userId) {
+         setOnlyOne((prev) => prev++);
+         emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, { userIdSender: userId, userIdRecipient: item.id });
       }
-   };
+   }, [socket, userId, item.id]);
+
+   useEffect(() => {
+      return () => {
+         if (socket) {
+            removeEventListener(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE);
+            socket.emit(SOCKET_CHAT_MES.LEAVE_ROOM, { userIdSender: userId, userIdRecipient: item.id });
+         }
+      };
+   }, []);
 
    return (
-      <Stack
-         gap={0}
-         style={{
-            width: `340px`,
-            height: `455px`,
-            position: `fixed`,
-            bottom: 0,
-            right: `${340 * (i + 1) - 250 + 10 * i}px`,
-            boxShadow: `rgba(100, 100, 111, 0.2) 0px 7px 29px 0px`,
-            border: `1px solid var(--divider-size) var(--divider-border-style, solid) var(--divider-color)`,
-            borderRadius: `10px`,
-         }}
-         className={`${classes[`box-1`]}`}
-      >
-         <Group p={10} justify="space-between">
-            <TagUser user={{ avatar: item.ava, fullName: item.name } as TUser} />
-            <ActionIcon onClick={handleDeleteListChat} variant="subtle" color="indigo" radius="xl" aria-label="Settings">
-               <IconX style={{ width: "70%", height: "70%" }} stroke={1.5} />
-            </ActionIcon>
-         </Group>
+      <Stack gap={0} right={`${340 * (i + 1) - 250 + 10 * i}px`} className={`${classes[`container`]}`}>
+         <MessageHeader item={item} />
          <Divider />
-         <Stack style={{ flex: `1`, overflowY: `auto` }} px={`10px`}></Stack>
+         <MessageListAll item={item} />
          <Divider />
-         {/* input chat */}
-         <Group p={`10px`}>
-            <TextInput
-               onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
-               placeholder="Aa"
-               size="sm"
-               style={{ flex: `1` }}
-               radius="xl"
-               value={value}
-               onChange={(event) => setValue(event.target.value)}
-            />
-            {false ? (
-               <Loader size={`sm`} />
-            ) : (
-               <ActionIcon onClick={handleSubmit} variant="subtle" size={`lg`} style={{ borderRadius: `100%` }}>
-                  <IconSend2 />
-               </ActionIcon>
-            )}
-         </Group>
+         <MessageInput item={item} />
       </Stack>
    );
 }

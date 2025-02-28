@@ -2,25 +2,32 @@ import { TCreateChatRes } from "./chat.type";
 import { TRole } from "./role.type";
 
 export type TUser = {
-   id: number
-   email: string
-   fullName: string
-   avatar: any
-   facebookId: any
-   googleId: any
-   roleId: number
-   deletedBy: number
-   isDeleted: boolean
-   deletedAt: string
-   createdAt: string
-   updatedAt: string
-   Roles: TRole
- }
+   id: number;
+   email: string;
+   fullName: string;
+   avatar: any;
+   facebookId: any;
+   googleId: any;
+   roleId: number;
+   deletedBy: number;
+   isDeleted: boolean;
+   deletedAt: string;
+   createdAt: string;
+   updatedAt: string;
+   Roles: TRole;
+   GoogleAuthenticator: null | TGoogleAuthenTicator;
+};
 
 export type TSessionLogin = {
    session_login_id: number;
    device_name: string;
    is_active: boolean;
+   created_at: string;
+   updated_at: string;
+};
+
+export type TGoogleAuthenTicator = {
+   isEnabled: boolean;
    created_at: string;
    updated_at: string;
 };
@@ -48,7 +55,7 @@ export type TSendEmailReq = {
 };
 
 export type TUploadAvatarLocalRes = {
-   folder: string
-   filename: string
-   imgUrl: string
- }
+   folder: string;
+   filename: string;
+   imgUrl: string;
+};

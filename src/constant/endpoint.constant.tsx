@@ -1,6 +1,7 @@
 export const ENDPOINT = {
    AUTH: {
       LOGIN: `auth/login`,
+      LOGIN_GOOGLE_AUTHENTICATOR: `auth/login-google-authenticator`,
       REGISTER: `auth/register`,
       REFRESH_TOKEN: `auth/refresh-token`,
       REFRESH_TOKEN_COOKIE: `auth/refresh-token-cookie`,
@@ -10,10 +11,9 @@ export const ENDPOINT = {
       RESET_PASSWORD: `auth/reset-password`,
       SEND_EMAIL: `auth/send-email`,
    },
-   TWO_FA: {
-      CHECK_2FA_BEFORE_LOGIN: `two-fa/check-2fa-before-login`,
-      ON_OFF_2FA: `two-fa/on-off-2fa`,
-      GET_QR_2FA: `two-fa/get-qr`,
+   GOOGLE_AUTHENTICATOR: {
+      ON_OFF_GOOGLE_AUTHENTICATOR: `google-authenticator/on-off`,
+      GET_QR_GOOGLE_AUTHENTICATOR: `google-authenticator/get-qr`,
    },
    VIDEO: {
       VIDEO_LIST_TEST: `video-list`,
@@ -32,10 +32,6 @@ export const ENDPOINT = {
       LIST: `session-login/`,
       LOGOUT_DEVICE: `session-login/logout-device`,
    },
-   CHAT: {
-      BASE: (id = "") => `/chat/${id}`,
-      LIST_USER_CHAT: `chat/list-user-chat`,
-   },
    USER: `user`,
    UPLOAD_AVATAR_LOCAL: `user/avatar-local`,
    UPLOAD_AVATAR_CLOUD: `user/avatar-cloud`,
@@ -46,12 +42,18 @@ export const ENDPOINT = {
    CAR: "car/cars-list",
    ARTICLE: {
       LIST: "article",
-      CREATE: "article"
+      CREATE: "article",
    },
    REACTION_ARTICLE: {
       CREATE: "reaction-article",
       GET_LIST: "reaction-article",
       DELETE: "reaction-article",
       UPDATE: "reaction-article",
-   }
+   },
+   CHAT: {
+      CREATE: "chat",
+      FIND_ALL: "chat",
+      DELETE: "chat",
+      UPDATE: "chat",
+   },
 };

@@ -12,7 +12,9 @@ export default function TextContent({ text }: TProps) {
 
    return (
       <Box>
-         <Text lineClamp={lineClamp}>{text}</Text>
+         <Text style={{ overflowWrap: `break-word` }} lineClamp={lineClamp}>
+            {text}
+         </Text>
          {(text?.length || 0) > 80 && (
             <>
                {lineClamp === 0 ? (

@@ -1,6 +1,7 @@
 import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
 import ROUTER from "@/constant/router.constant";
 import { useLoginForm } from "@/tantask/auth.tanstack";
+import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
 import { Anchor, Box, Button, Group, TextInput } from "@mantine/core";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
@@ -9,10 +10,11 @@ import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 type TProps = {
-   setStep: Dispatch<SetStateAction<"login" | "2 fa">>;
+   setStep: Dispatch<SetStateAction<TStepLogin>>;
+   setPayloadLogin: Dispatch<SetStateAction<TPayloadLoginGoogleAuthenticator | null>>;
 };
 
-export default function LoginForm({}: TProps) {
+export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
    const router = useRouter();
    const useloginForm = useLoginForm();
    const loginForm = useFormik({
@@ -51,10 +53,19 @@ export default function LoginForm({}: TProps) {
             email: valuesRaw.email.trim(),
             password: valuesRaw.password.trim(),
          };
+         setPayloadLogin({
+            ...payload,
+            token: null,
+         });
          useloginForm.mutate(payload, {
-            onSuccess: () => {
-               router.push(ROUTER.HOME);
-               toast.success(`Login successfully`);
+            onSuccess: (data) => {
+               console.log({ data });
+               if (data.isGoogleAuthenticator) {
+                  setStep(`login-google-authentication`);
+               } else {
+                  router.push(ROUTER.HOME);
+                  toast.success(`Login successfully`);
+               }
             },
          });
       },

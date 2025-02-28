@@ -38,3 +38,38 @@ export function moveElementToTop<T>(arr: T[], condition: (item: T) => boolean): 
    return matched.concat(others); // Ghép lại, đảm bảo phần tử thỏa mãn lên đầu
 }
 
+export class LogWithColor {
+   private tagText: string = "";
+   private tagColor: string = "gray";
+   private messageText: string = "";
+   private messageColor: string = "black";
+
+   // 🏷️ Thiết lập tag
+   tag(tag: string, color: string = "gray") {
+      this.tagText = tag;
+      this.tagColor = color;
+      return this; // 👈 Cho phép chain method tiếp theo
+   }
+
+   // ✉️ Thiết lập message
+   mes(message: string, color: string = "white") {
+      this.messageText = message;
+      this.messageColor = color;
+      this.printLog();
+   }
+
+   // 📌 Thực hiện console.log với màu
+   private printLog() {
+      console.log(
+         `%c[${this.tagText}] %c${this.messageText}`,
+         `color: ${this.tagColor}; font-weight: bold;`,
+         `color: ${this.messageColor}; font-weight: bold;`
+      );
+   }
+}
+
+// ✅ Khởi tạo instance
+export const logWithColor = new LogWithColor();
+
+
+

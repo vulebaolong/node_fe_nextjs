@@ -1,4 +1,4 @@
-import { getInfoAction, loginFormAction, registerAction } from "@/actions/auth.action";
+import { getInfoAction, loginFormAction, loginGoogleAuthenticatorAction, registerAction } from "@/actions/auth.action";
 import { resError } from "@/helpers/function.helper";
 import { useAppDispatch } from "@/redux/hooks";
 import { SET_INFO } from "@/redux/slices/user.slice";
@@ -14,7 +14,7 @@ export const useGetInfo = () => {
       mutationFn: async () => {
          try {
             const data = await getInfoAction();
-            console.log({ data });
+            console.log({ useGetInfo: data });
             dispatch(SET_INFO(data));
             return true;
          } catch (error) {
@@ -47,7 +47,20 @@ export const useLoginForm = () => {
       },
       onError: (error) => {
          console.log(error);
-         toast.error(resError(error, `Register failed`));
+         toast.error(resError(error, `Login failed`));
+      },
+   });
+};
+
+export const useLoginGoogleAuthenticator = () => {
+   return useMutation({
+      mutationFn: async (payload: TLoginFormReq) => {
+         const data = await loginGoogleAuthenticatorAction(payload);
+         return data;
+      },
+      onError: (error) => {
+         console.log(error);
+         toast.error(resError(error, `Login failed`));
       },
    });
 };

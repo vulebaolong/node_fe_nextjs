@@ -27,7 +27,7 @@ export async function uploadAvatarCloudAction(payload: FormData) {
 
 export async function findAllUserAction() {
    try {
-      const { data } = await api.get<TResPagination<TUser[]>>(`${ENDPOINT.USER}?pageSize=20`);
+      const { data } = await api.get<TResPagination<TUser[]>>(`${ENDPOINT.USER}?pageSize=100`);
       return data;
    } catch (error) {
       console.error("Get List User Failed", error);

@@ -11,7 +11,6 @@ type TProps = {
 };
 
 export default function Home({ articles }: TProps) {
-   console.log({ articles });
    return (
       <Box className={`${classes[`box-container`]}`} p={20}>
          <Box className={`${classes[`box-item`]}`}>

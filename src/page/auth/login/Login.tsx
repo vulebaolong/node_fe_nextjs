@@ -4,16 +4,18 @@
 import { FacebookButton } from "@/components/buttons/FacebookButton";
 import { GoogleButton } from "@/components/buttons/GoogleButton";
 import { Logo } from "@/components/logo/Logo";
+import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
 import { Anchor, Box, Center, Divider, Group, Loader, Paper, Text, Title, Transition } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 import classes from "./../Auth.module.css";
-import Login2Fa from "./login-2fa/Login2Fa";
 import LoginForm from "./login-form/LoginForm";
+import LoginGoogleAuthenticator from "./login-google-authenticator/LoginGoogleAuthenticator";
 
 export default function Login() {
    const router = useRouter();
-   const [step, setStep] = useState<"login" | "2 fa">("login");
+   const [step, setStep] = useState<TStepLogin>("login-form");
+   const [payloadLogin, setPayloadLogin] = useState<TPayloadLoginGoogleAuthenticator | null>(null);
 
    return (
       <Suspense fallback={<Loader />}>
@@ -45,18 +47,24 @@ export default function Login() {
                }}
             >
                <Box h={256}>
-                  <Transition enterDelay={400} mounted={step === `login`} transition="slide-right" duration={400} timingFunction="ease">
+                  <Transition enterDelay={400} mounted={step === `login-form`} transition="slide-right" duration={400} timingFunction="ease">
                      {(styles) => (
                         <div style={{ ...styles, height: `100%` }}>
-                           <LoginForm setStep={setStep} />
+                           <LoginForm setStep={setStep} setPayloadLogin={setPayloadLogin} />
                         </div>
                      )}
                   </Transition>
 
-                  <Transition enterDelay={400} mounted={step === `2 fa`} transition="slide-left" duration={400} timingFunction="ease">
+                  <Transition
+                     enterDelay={400}
+                     mounted={step === `login-google-authentication`}
+                     transition="slide-left"
+                     duration={400}
+                     timingFunction="ease"
+                  >
                      {(styles) => (
                         <div style={{ ...styles, height: `100%` }}>
-                           <Login2Fa setStep={setStep} />
+                           <LoginGoogleAuthenticator setStep={setStep} payloadLogin={payloadLogin}/>
                         </div>
                      )}
                   </Transition>

@@ -20,9 +20,28 @@ export async function registerAction(payload: TRegisterReq) {
 export async function loginFormAction(payload: TLoginFormReq) {
    try {
       const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN, payload);
-      console.log(data);
-      await setAccessToken(data.accessToken);
-      await setRefreshToken(data.refreshToken);
+      
+      if (!data?.isGoogleAuthenticator && data?.accessToken && data?.refreshToken) {
+         await setAccessToken(data?.accessToken);
+         await setRefreshToken(data?.refreshToken);
+      }
+
+      return data;
+   } catch (error) {
+      console.error("Login failed:", error);
+      throw error;
+   }
+}
+
+export async function loginGoogleAuthenticatorAction(payload: TLoginFormReq) {
+   try {
+      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN_GOOGLE_AUTHENTICATOR, payload);
+      
+      if (data?.accessToken && data?.refreshToken) {
+         await setAccessToken(data?.accessToken);
+         await setRefreshToken(data?.refreshToken);
+      }
+
       return data;
    } catch (error) {
       console.error("Login failed:", error);

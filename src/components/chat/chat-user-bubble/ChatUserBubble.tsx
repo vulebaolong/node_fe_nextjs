@@ -1,35 +1,34 @@
 import Avatar from "@/components/avatar/Avatar";
-import { CHAT_LIST_ID } from "@/constant/chat.constant";
-import { moveElementToTop } from "@/helpers/function.helper";
+import { CHAT_LIST_BUBBLE } from "@/constant/chat.constant";
+import { openUserFromBuble, removeUserFromChatList } from "@/helpers/chat.helper";
 import { TChatListItem } from "@/types/chat.type";
 import { TUser } from "@/types/user.type";
 import { ActionIcon, Box, Transition } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import _ from "lodash";
 
 type TProps = {
-   i: number;
-   user: TUser;
    item: TChatListItem;
+   i: number;
 };
 
-export default function ChatUserBubble({ i, user, item }: TProps) {
+export default function ChatUserBubble({ item, i }: TProps) {
    const queryClient = useQueryClient();
    const { hovered, ref } = useHover();
 
    const handleDeleteListChat = (e: any) => {
       e.stopPropagation();
+      removeUserFromChatList(item, CHAT_LIST_BUBBLE, () => {
+         queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+      });
+   };
 
-      const stringLocal = localStorage.getItem(CHAT_LIST_ID);
-      const listChatLocal = stringLocal ? JSON.parse(stringLocal) : [];
-
-      if (_.isArray(listChatLocal)) {
-         _.remove(listChatLocal, (itemChat) => itemChat.id === item.id);
-         localStorage.setItem(CHAT_LIST_ID, JSON.stringify(listChatLocal));
-         queryClient.invalidateQueries({ queryKey: [`chat-list-id`] });
-      }
+   const handleOpenUserChat = () => {
+      openUserFromBuble(item, () => {
+         queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+         queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
+      });
    };
 
    return (
@@ -42,20 +41,12 @@ export default function ChatUserBubble({ i, user, item }: TProps) {
             boxHhadow: `rgba(100, 100, 111, 0.2) 0px 7px 29px 0px`,
             borderRadius: `10px`,
             cursor: `pointer`,
+            zIndex: 1,
          }}
          ref={ref}
-         onClick={() => {
-            const stringLocal = localStorage.getItem(CHAT_LIST_ID);
-            const listChatLocal = stringLocal ? JSON.parse(stringLocal) : [];
-
-            if (_.isArray(listChatLocal)) {
-               const newListChat = moveElementToTop(listChatLocal, (chatItem) => chatItem.id === item.id);
-               localStorage.setItem(CHAT_LIST_ID, JSON.stringify(newListChat));
-               queryClient.invalidateQueries({ queryKey: [`chat-list-id`] });
-            }
-         }}
+         onClick={handleOpenUserChat}
       >
-         <Avatar style={{ width: `60px`, height: `60px` }} user={user} />
+         <Avatar style={{ width: `60px`, height: `60px` }} user={{ avatar: item.ava, fullName: item.name } as TUser} />
          <Box
             style={{
                position: `absolute`,

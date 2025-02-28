@@ -4,12 +4,15 @@ export type TCreateChatReq = {
 };
 
 export type TCreateChatRes = {
-   chat_id: number;
-   message: string;
-   user_id_sender: number;
-   user_id_recipient: number;
-   created_at: string;
-   updated_at: string;
+   id: number
+   message: string
+   userIdSender: number
+   userIdRecipient: number
+   deletedBy: number
+   isDeleted: boolean
+   deletedAt: string
+   createdAt: string
+   updatedAt: string
 };
 
 export type TListChatRes = TCreateChatRes;
@@ -18,4 +21,26 @@ export type TChatListItem = {
    id: number;
    name: string;
    ava: string;
+   roleId: number;
+};
+
+export type TPayloadReceiveMessage = {
+   roomId: string;
+   payload: TPayloadData;
+};
+
+export type TPayloadData = {
+   message: string;
+   userIdSender: number;
+   userIdRecipient: number;
+   createdAt: string
+};
+
+export type TMessageItem = {
+   message: string;
+   avatar: string | null;
+   email: string;
+   userId: number;
+   roleId: number;
+   time: string;
 };

@@ -74,7 +74,7 @@ export default function HeaderClient() {
                </Group>
 
                {/* right */}
-               <Group gap={2} wrap="nowrap" className={`${MOBILE_HIDDEN_DESKTOP_VISIBLE}`}>
+               <Group gap={5} wrap="nowrap" className={`${MOBILE_HIDDEN_DESKTOP_VISIBLE}`}>
                   {info ? (
                      <UserControl />
                   ) : (

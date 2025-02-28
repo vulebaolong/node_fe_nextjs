@@ -21,7 +21,7 @@ const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRe
             name={!user?.avatar ? (user?.fullName as string | undefined) : `??`}
             variant="filled"
          />
-         {user?.Roles?.id === 1 && (
+         {user?.roleId === 1 && (
             <Box
                style={{
                   top: 0,
