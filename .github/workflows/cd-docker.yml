@@ -13,6 +13,13 @@ jobs:
       if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
       steps:
+         - name: Delete old .env file
+           run: sudo rm -f .env || true
+
+         - name: Create new .env file and add environment variables
+           run: |
+              echo "BASE_DOMAIN_API=${{secrets.BASE_DOMAIN_API}}" >> .env
+
          - name: Stop running containers
            run: sudo docker stop cons_node_fe || true
 
