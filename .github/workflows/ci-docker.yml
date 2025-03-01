@@ -23,7 +23,7 @@ jobs:
               echo "BASE_DOMAIN_API=${{secrets.BASE_DOMAIN_API}}" >> .env
 
          - name: Build the Docker image
-           run: docker build -t vulebaolong/img_node_fe:latest .
+           run: docker build -t vulebaolong/img-node_fe_nextjs:latest .
 
          - name: Push to DockerHub
-           run: docker push vulebaolong/img_node_fe:latest
+           run: docker push vulebaolong/img-node_fe_nextjs:latest

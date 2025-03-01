@@ -20,11 +20,11 @@ jobs:
            run: sudo docker rm cons_node_fe || true
 
          - name: Delete old docker image
-           run: sudo docker rmi vulebaolong/img_node_fe:latest || true
+           run: sudo docker rmi vulebaolong/img-node_fe_nextjs:latest || true
 
          - name: Pull Docker image
-           run: sudo docker pull vulebaolong/img_node_fe:latest || true
+           run: sudo docker pull vulebaolong/img-node_fe_nextjs:latest || true
 
          - name: Run Docker Compose
            run: |
-              sudo docker run -d -p 5173:80 --name cons_node_fe vulebaolong/img_node_fe:latest
+              sudo docker run -d -p 5173:80 --name cons_node_fe vulebaolong/img-node_fe_nextjs:latest
