@@ -1,6 +1,5 @@
 "use client";
 
-import { useSocket } from "@/components/provider/socket/SocketProvider";
 import TagUser from "@/components/tag-user/TagUser";
 import { addUserToChatList } from "@/helpers/chat.helper";
 import { useAppSelector } from "@/redux/hooks";
@@ -13,7 +12,6 @@ import { Fragment } from "react";
 import classes from "./HomeRight.module.css";
 
 export default function HomeRight() {
-   const { socket, isConnected } = useSocket();
    const findAllUser = useFindAllUser();
    const userId = useAppSelector((state) => state.user.info?.id);
    const queryClient = useQueryClient();
@@ -28,7 +26,6 @@ export default function HomeRight() {
    return (
       <>
          <Stack style={{ height: `100%` }}>
-            {/* <Text>{isConnected ? `Con: ${socket?.id}` : `not Connected`}</Text> */}
             <Group justify="space-between">
                <Text opacity={0.7} fw={`bold`} fz={`md`}>
                   Người Liên Hệ
