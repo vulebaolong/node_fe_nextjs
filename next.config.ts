@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
             protocol: "http",
             hostname: "**", // Cho phép tất cả các hostname
          },
+         {
+            protocol: "https",
+            hostname: "be-node.vulebaolong.com", // ✅ Chỉ định domain backend
+         },
       ],
       dangerouslyAllowSVG: true, // Nếu bạn muốn cho phép SVG
       contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
