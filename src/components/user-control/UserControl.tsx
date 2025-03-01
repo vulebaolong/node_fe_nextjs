@@ -5,7 +5,7 @@ import { logout } from "@/helpers/api.helper";
 import { effectText } from "@/helpers/motion.helper";
 import { useAppSelector } from "@/redux/hooks";
 import { Box, Group, Menu, Text } from "@mantine/core";
-import { IconLogout, IconSettings, IconUserSearch } from "@tabler/icons-react";
+import { IconLogout, IconSettings, IconUserCheck, IconUserSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import Avatar from "../avatar/Avatar";
 import classes from "./UserControl.module.css";
@@ -44,6 +44,15 @@ export default function UserControl() {
             <Menu.Divider />
 
             <Menu.Label>Application</Menu.Label>
+
+            <Menu.Item
+               onClick={() => {
+                  router.push(ROUTER.ROLE);
+               }}
+               leftSection={<IconUserCheck size={14} />}
+            >
+               Role
+            </Menu.Item>
 
             <Menu.Item
                onClick={() => {

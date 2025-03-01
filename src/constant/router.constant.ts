@@ -6,6 +6,7 @@ const ROUTER = {
    EXPLORE: `/explore`,
    PROFILE: `/profile`,
    SETTING: `/setting`,
+   ROLE: `/role`,
 };
 
 export default ROUTER;

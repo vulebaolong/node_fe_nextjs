@@ -1,3 +1,5 @@
+'use server'
+
 import { ENDPOINT } from "@/constant/endpoint.constant";
 import api from "@/helpers/api.helper";
 import { TResPagination } from "@/types/app.type";

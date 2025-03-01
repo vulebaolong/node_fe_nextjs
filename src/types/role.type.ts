@@ -17,6 +17,6 @@ export type Permissions = {
 };
 
 export type TTogglePermissionReq = {
-   role_id: number;
-   permission_id: number;
+   roleId: number;
+   permissionId: number;
 };
