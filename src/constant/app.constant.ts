@@ -13,4 +13,5 @@ export const TITLE = `Cyber Community`
 
 console.log({
    BASE_DOMAIN_API,
+   BASE_DOMAIN_API_pro: process.env.NEXT_PUBLIC_BASE_DOMAIN_API,
 });
