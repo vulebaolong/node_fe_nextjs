@@ -13,12 +13,6 @@ jobs:
       if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
       steps:
-         - name: Login Dockerhub
-           env:
-              DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-              DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-           run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-           
          - name: Stop running containers
            run: sudo docker stop cons_node_fe || true
 
