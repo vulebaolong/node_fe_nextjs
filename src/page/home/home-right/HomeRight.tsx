@@ -28,7 +28,7 @@ export default function HomeRight() {
    return (
       <>
          <Stack style={{ height: `100%` }}>
-            <Text>{isConnected ? `Con: ${socket?.id}` : `not Connected`}</Text>
+            {/* <Text>{isConnected ? `Con: ${socket?.id}` : `not Connected`}</Text> */}
             <Group justify="space-between">
                <Text opacity={0.7} fw={`bold`} fz={`md`}>
                   Người Liên Hệ
