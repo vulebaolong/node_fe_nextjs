@@ -18,7 +18,7 @@ jobs:
 
          - name: Create new .env file and add environment variables
            run: |
-              echo "BASE_DOMAIN_API=${{secrets.BASE_DOMAIN_API}}" >> .env
+              echo "NEXT_PUBLIC_BASE_DOMAIN_API=${{secrets.BASE_DOMAIN_API}}" >> .env
 
          - name: Stop running containers
            run: sudo docker stop cons_node_fe || true
