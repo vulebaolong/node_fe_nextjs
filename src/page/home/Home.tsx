@@ -4,10 +4,6 @@ import HomeCenter from "./home-center/HomeCenter";
 import HomeLeft from "./home-left/HomeLeft";
 import HomeRight from "./home-right/HomeRight";
 
-// type TProps = {
-//    articles: TResPagination<TArticle[]>[`data`];
-// };
-
 export default function Home() {
    return (
       <Box className={`${classes[`box-container`]}`} p={20}>
