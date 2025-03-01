@@ -9,7 +9,6 @@ import { useUploadAvatarCloud, useUploadAvatarLocal } from "@/tantask/user.tanst
 import { Avatar as AvatarMantine, Button, Center, Container, Group, Paper, rem, Stack, Text } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
-import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -19,7 +18,6 @@ export function Profile() {
    const [preview, setPreview] = useState<string | null>(null);
    const uploadAvatarLocal = useUploadAvatarLocal();
    const uploadAvatarCloud = useUploadAvatarCloud();
-   const queryClient = useQueryClient();
    const getInfo = useGetInfo();
 
    const handleUploadLocal = async () => {
@@ -34,7 +32,6 @@ export function Profile() {
       uploadAvatarLocal.mutate(fromData, {
          onSuccess: () => {
             toast.success(`Upload avatar to local successfully`);
-            // queryClient.invalidateQueries({ queryKey: [`get-info`] });
             getInfo.mutate();
             setPreview(null);
          },
@@ -57,7 +54,7 @@ export function Profile() {
       uploadAvatarCloud.mutate(fromData, {
          onSuccess: () => {
             toast.success(`Upload avatar to cloud successfully`);
-            queryClient.invalidateQueries({ queryKey: [`get-info`] });
+            getInfo.mutate();
             setPreview(null);
          },
          onError: (error) => {
@@ -130,11 +127,9 @@ export function Profile() {
             <Center>
                <Group>
                   <Button loading={uploadAvatarLocal.isPending} disabled={!!!file} onClick={handleUploadLocal}>
-                     {/* <Button loading={false} disabled={!!!file} onClick={handleUploadLocal}> */}
                      Upload Local
                   </Button>
-                  {/* <Button loading={uploadAvatarCloud.isPending} disabled={!!!file} onClick={handleUploadCloud}> */}
-                  <Button loading={false} disabled={!!!file} onClick={handleUploadCloud}>
+                  <Button loading={uploadAvatarCloud.isPending} disabled={!!!file} onClick={handleUploadCloud}>
                      Upload Cloud
                   </Button>
                </Group>
