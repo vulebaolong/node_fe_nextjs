@@ -6,16 +6,39 @@ import ModalCreateArticle from "@/components/modal/modal-create-article/ModalCre
 import { useAppSelector } from "@/redux/hooks";
 import { useGetListArticle } from "@/tantask/article.tanstack";
 import { TArticle } from "@/types/article.type";
-import { Box, Button, Group, Stack, Text } from "@mantine/core";
+import { Box, Button, Center, Group, Loader, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./HomeCenter.module.css";
-
+import Nodata from "@/components/no-data/Nodata";
 
 export default function HomeCenter() {
    const info = useAppSelector((state) => state.user.info);
    const [opened, { open, close }] = useDisclosure(false);
-   const getListArticle = useGetListArticle()
+   const getListArticle = useGetListArticle();
 
+   const renderContent = () => {
+      if (getListArticle.isLoading)
+         return (
+            <Center>
+               <Loader />
+            </Center>
+         );
+
+      if (!getListArticle.data || getListArticle.data.items.length === 0 || getListArticle.isError)
+         return (
+            <Center>
+               <Nodata />
+            </Center>
+         );
+
+      return (
+         <>
+            {getListArticle.data?.items.map((article: TArticle, i) => {
+               return <Article key={i} article={article} />;
+            })}
+         </>
+      );
+   };
 
    return (
       <>
@@ -30,11 +53,7 @@ export default function HomeCenter() {
                   </Button>
                </Group>
             </Box>
-            <Stack>
-               {getListArticle.data?.items.map((article: TArticle, i) => {
-                  return <Article key={i} article={article} />;
-               })}
-            </Stack>
+            <Stack>{renderContent()}</Stack>
          </Stack>
          <ModalCreateArticle opened={opened} close={close} />
       </>
