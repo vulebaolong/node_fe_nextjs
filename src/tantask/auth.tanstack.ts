@@ -1,8 +1,9 @@
-import { getInfoAction, loginFormAction, loginGoogleAuthenticatorAction, registerAction } from "@/actions/auth.action";
+import { getInfoAction, loginFacebookction, loginFormAction, loginGoogleAuthenticatorAction, loginGooleAction, registerAction } from "@/actions/auth.action";
 import { resError } from "@/helpers/function.helper";
 import { useAppDispatch } from "@/redux/hooks";
 import { SET_INFO } from "@/redux/slices/user.slice";
 import { TLoginFormReq, TRegisterReq } from "@/types/auth.type";
+import { TLoginFacebookReq } from "@/types/facebook.type";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -56,6 +57,32 @@ export const useLoginGoogleAuthenticator = () => {
    return useMutation({
       mutationFn: async (payload: TLoginFormReq) => {
          const data = await loginGoogleAuthenticatorAction(payload);
+         return data;
+      },
+      onError: (error) => {
+         console.log(error);
+         toast.error(resError(error, `Login failed`));
+      },
+   });
+};
+
+export const useLoginFacebook = () => {
+   return useMutation({
+      mutationFn: async (payload: TLoginFacebookReq) => {
+         const data = await loginFacebookction(payload);
+         return data;
+      },
+      onError: (error) => {
+         console.log(error);
+         toast.error(resError(error, `Login failed`));
+      },
+   });
+};
+
+export const useLoginGoolge = () => {
+   return useMutation({
+      mutationFn: async (payload: { code: string }) => {
+         const data = await loginGooleAction(payload);
          return data;
       },
       onError: (error) => {

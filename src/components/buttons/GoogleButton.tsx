@@ -1,5 +1,8 @@
+import ROUTER from "@/constant/router.constant";
+import { useLoginGoolge } from "@/tantask/auth.tanstack";
 import { Button, ButtonProps } from "@mantine/core";
-// import { useGoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useRouter } from "next/navigation";
 // import { useLoginGoolge } from "../../api/tanstack/auth.tanstack";
 // import { setAccessToken, setRefreshToken } from "../../../helpers/auth.helper";
 // import { useAppDispatch } from "../../../store/store";
@@ -9,6 +12,7 @@ import { Button, ButtonProps } from "@mantine/core";
 // import { toast } from "react-toastify";
 // import { resError } from "../../../helpers/function.helper";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
    return (
@@ -40,46 +44,39 @@ function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 }
 
 export function GoogleButton(props: ButtonProps & React.ComponentPropsWithoutRef<"button">) {
-   // const dispatch = useAppDispatch();
-   // const loginGoogle = useLoginGoolge();
+   const router = useRouter();
+   const loginGoogle = useLoginGoolge();
    const [loading, setLoading] = useState(false);
 
-   // const login = useGoogleLogin({
-   //    flow: "auth-code",
-   //    onSuccess: async (codeResponse) => {
-   //       console.log(codeResponse);
-   //       loginGoogle.mutate(
-   //          { code: codeResponse.code },
-   //          {
-   //             onSuccess: (result) => {
-   //                setAccessToken(result.metaData.accessToken);
-   //                setRefreshToken(result.metaData.refreshToken);
-   //                dispatch(UPDATE_IS_LOGIN());
-   //                // toast.success(`Login successfully`);
-   //                rootRouter.navigate(ROUTER.HOME);
-   //             },
-   //             onError: (error) => {
-   //                console.log(error);
-   //                toast.error(resError(error, `Login failed`));
-   //             },
-   //             onSettled: () => {
-   //                setLoading(false);
-   //             },
-   //          }
-   //       );
-   //    },
-   //    onError: (errorResponse) => {
-   //       setLoading(false);
-   //       console.log(errorResponse);
-   //    },
-   // });
+   const login = useGoogleLogin({
+      flow: "auth-code",
+      onSuccess: async (codeResponse) => {
+         console.log(codeResponse);
+         loginGoogle.mutate(
+            { code: codeResponse.code },
+            {
+               onSuccess: () => {
+                  router.push(ROUTER.HOME);
+                  toast.success(`Login successfully`);
+               },
+               onSettled: () => {
+                  setLoading(false);
+               },
+            }
+         );
+      },
+      onError: (errorResponse) => {
+         setLoading(false);
+         console.log(errorResponse);
+      },
+   });
 
    return (
       <Button
          loading={loading}
          onClick={() => {
             setLoading(true);
-            // login();
+            login();
          }}
          leftSection={<GoogleIcon />}
          variant="default"

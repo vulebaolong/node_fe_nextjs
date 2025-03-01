@@ -4,6 +4,7 @@ import "@mantine/core/styles.css";
 import "../../styles/animation.css";
 import "../../styles/global.css";
 
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import duration from "dayjs/plugin/duration";
@@ -11,11 +12,11 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { ReactNode } from "react";
+import GoogleProvider from "./google/GoogleProvider";
 import { resolver, themeOverride } from "./mantine/theme";
 import ProviderRedux from "./redux/ProviderRedux";
-import ToastProvider from "./toast/ToastProvider";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SocketProvider from "./socket/SocketProvider";
+import ToastProvider from "./toast/ToastProvider";
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
@@ -40,7 +41,9 @@ export default function Provider({ children }: { children: ReactNode }) {
          <ProviderRedux>
             <MantineProvider theme={themeOverride} defaultColorScheme="dark" cssVariablesResolver={resolver}>
                <ToastProvider />
-               <SocketProvider>{children}</SocketProvider>
+               <SocketProvider>
+                  <GoogleProvider>{children}</GoogleProvider>
+               </SocketProvider>
             </MantineProvider>
          </ProviderRedux>
       </QueryClientProvider>

@@ -5,6 +5,7 @@ import api from "@/helpers/api.helper";
 import { clearTokens, setAccessToken, setRefreshToken } from "@/helpers/cookies.helper";
 import { TRes } from "@/types/app.type";
 import { TLoginFormReq, TLoginRes, TRegisterReq, TRegisterRes } from "@/types/auth.type";
+import { TLoginFacebookReq } from "@/types/facebook.type";
 import { TUser } from "@/types/user.type";
 
 export async function registerAction(payload: TRegisterReq) {
@@ -13,6 +14,38 @@ export async function registerAction(payload: TRegisterReq) {
       return data;
    } catch (error) {
       console.error("Register failed:", error);
+      throw error;
+   }
+}
+
+export async function loginFacebookction(payload: TLoginFacebookReq) {
+   try {
+      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.FACEBOOK_LOGIN, payload);
+      
+      if (data?.accessToken && data?.refreshToken) {
+         await setAccessToken(data?.accessToken);
+         await setRefreshToken(data?.refreshToken);
+      }
+
+      return data;
+   } catch (error) {
+      console.error("Login failed:", error);
+      throw error;
+   }
+}
+
+export async function loginGooleAction(payload: { code: string }) {
+   try {
+      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
+      
+      if (data?.accessToken && data?.refreshToken) {
+         await setAccessToken(data?.accessToken);
+         await setRefreshToken(data?.refreshToken);
+      }
+
+      return data;
+   } catch (error) {
+      console.error("Login failed:", error);
       throw error;
    }
 }
