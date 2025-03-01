@@ -1,17 +1,14 @@
-import { TResPagination } from "@/types/app.type";
-import { TArticle } from "@/types/article.type";
 import { Box } from "@mantine/core";
 import classes from "./Home.module.css";
 import HomeCenter from "./home-center/HomeCenter";
 import HomeLeft from "./home-left/HomeLeft";
 import HomeRight from "./home-right/HomeRight";
 
-type TProps = {
-   articles: TResPagination<TArticle[]>[`data`];
-};
+// type TProps = {
+//    articles: TResPagination<TArticle[]>[`data`];
+// };
 
-export default function Home({ articles }: TProps) {
-   
+export default function Home() {
    return (
       <Box className={`${classes[`box-container`]}`} p={20}>
          <Box className={`${classes[`box-item`]}`}>
@@ -19,7 +16,7 @@ export default function Home({ articles }: TProps) {
          </Box>
 
          <Box className={`${classes[`box-center`]}`}>
-            <HomeCenter articles={articles} />
+            <HomeCenter />
          </Box>
 
          <Box className={`${classes[`box-item`]}`}>

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import classes from "./ModalCreateArticle.module.css";
+import { useQueryClient } from "@tanstack/react-query";
 
 type TProps = {
    opened: boolean;
@@ -16,6 +17,7 @@ type TProps = {
 };
 
 export default function ModalCreateArticle({ opened, close }: TProps) {
+   const queryClient = useQueryClient();
    const info = useAppSelector((state) => state.user.info);
    const [value, setValue] = useState("");
    const [file, setFile] = useState<File | null>(null);
@@ -32,6 +34,7 @@ export default function ModalCreateArticle({ opened, close }: TProps) {
       console.log(fromData.getAll(`imageArticle`));
       createArticle.mutate(fromData, {
          onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [`get-list-article`] });
             toast.success(`Create Article successfully`);
             setPreview(null);
             setFile(null);

@@ -4,19 +4,18 @@ import Article from "@/components/article/Article";
 import Avatar from "@/components/avatar/Avatar";
 import ModalCreateArticle from "@/components/modal/modal-create-article/ModalCreateArticle";
 import { useAppSelector } from "@/redux/hooks";
-import { TResPagination } from "@/types/app.type";
+import { useGetListArticle } from "@/tantask/article.tanstack";
 import { TArticle } from "@/types/article.type";
 import { Box, Button, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "./HomeCenter.module.css";
 
-type TProps = {
-   articles: TResPagination<TArticle[]>[`data`];
-};
 
-export default function HomeCenter({ articles }: TProps) {
+export default function HomeCenter() {
    const info = useAppSelector((state) => state.user.info);
    const [opened, { open, close }] = useDisclosure(false);
+   const getListArticle = useGetListArticle()
+
 
    return (
       <>
@@ -32,7 +31,7 @@ export default function HomeCenter({ articles }: TProps) {
                </Group>
             </Box>
             <Stack>
-               {articles.items.map((article: TArticle, i) => {
+               {getListArticle.data?.items.map((article: TArticle, i) => {
                   return <Article key={i} article={article} />;
                })}
             </Stack>
