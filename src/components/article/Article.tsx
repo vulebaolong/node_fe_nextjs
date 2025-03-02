@@ -11,7 +11,7 @@ import TextContent from "../text-content/TextContent";
 import classes from "./Article.module.css";
 import IconReaction from "./icon-reaction/IconReaction";
 import Avatar from "../avatar/Avatar";
-// import { Image } from "@mantine/core";
+import { Image as ImageMantine} from "@mantine/core";
 
 type TProps = {
    article: TArticle;
@@ -82,7 +82,7 @@ export default function Article({ article }: TProps) {
                   sizes="100vw"
                   style={{ width: "100%", height: "100%", objectFit: "cover", maxHeight: `700px` }}
                />
-               {/* <Image src={path} /> */}
+               <ImageMantine src={path} />
             </Box>
          )}
 
