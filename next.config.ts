@@ -6,18 +6,25 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig: NextConfig = {
    reactStrictMode: false,
    images: {
+      domains: ["be-node.vulebaolong.com"],
       remotePatterns: [
          {
-            protocol: "https",
-            hostname: "**", // Cho phép tất cả các hostname
-         },
-         {
             protocol: "http",
-            hostname: "**", // Cho phép tất cả các hostname
+            hostname: "**",
+            port: "",
+            search: "",
          },
          {
             protocol: "https",
-            hostname: "be-node.vulebaolong.com", // ✅ Chỉ định domain backend
+            hostname: "**",
+            port: "",
+            search: "",
+         },
+         {
+            protocol: "https",
+            hostname: "be-node.vulebaolong.com",
+            port: "",
+            search: "",
          },
       ],
       dangerouslyAllowSVG: true, // Nếu bạn muốn cho phép SVG
