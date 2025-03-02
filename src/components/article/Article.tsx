@@ -4,7 +4,7 @@ import { TArticle } from "@/types/article.type";
 import { EReactionArticle } from "@/types/enum/reaction.enum";
 import { ActionIcon, Box, Button, Group, Stack, Text } from "@mantine/core";
 import { IconDots, IconMessageCircle, IconShare3, IconX } from "@tabler/icons-react";
-import Image from "next/image";
+// import Image from "next/image";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import TextContent from "../text-content/TextContent";
@@ -74,14 +74,14 @@ export default function Article({ article }: TProps) {
          {/* image */}
          {article.imageUrl && path && (
             <Box>
-               <Image
+               {/* <Image
                   alt=""
                   src={`https://be-node.vulebaolong.com/images/local-imageArticle-1740872693438-967081367.webp`}
                   width={0}
                   height={0}
                   sizes="100vw"
                   style={{ width: "100%", height: "100%", objectFit: "cover", maxHeight: `700px` }}
-               />
+               /> */}
                <ImageMantine src={path} />
             </Box>
          )}
