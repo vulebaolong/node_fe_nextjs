@@ -23,12 +23,9 @@ const nextConfig: NextConfig = {
          {
             protocol: "https",
             hostname: "be-node.vulebaolong.com",
-            port: "",
-            search: "",
+            pathname: "**",
          },
       ],
-      dangerouslyAllowSVG: true, // Nếu bạn muốn cho phép SVG
-      contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
    },
 };
 
