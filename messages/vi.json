@@ -11,5 +11,10 @@
       "join": "Tham Gia Miễn Phí",
       "joinMobile": "Tham Gia",
       "login": "Đăng nhập"
+   },
+   "localeSwitcher": {
+      "vi": "Việt",
+      "en": "Anh",
+      "label": "Ngôn ngữ"
    }
 }

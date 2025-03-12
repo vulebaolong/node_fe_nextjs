@@ -1,5 +1,5 @@
 import RootPage from "@/components/root-page/RootPage";
-import Setting from "@/page/setting/Setting";
+import Setting from "@/page123/setting/Setting";
 
 export default function page() {
    return (

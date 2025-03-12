@@ -1,10 +1,10 @@
 import RootPage from "@/components/root-page/RootPage";
-import { Profile } from "@/page/profile/Profile";
+import Role from "@/page123/role/Role";
 
 export default function page() {
    return (
       <RootPage protect>
-         <Profile />
+         <Role />
       </RootPage>
    );
 }

@@ -1,23 +1,26 @@
 "use client";
 
+import { Locale } from "@/i18n/config";
+import { setUserLocale } from "@/services/locale";
 import { ActionIcon, Menu } from "@mantine/core";
-import { IconWorld } from "@tabler/icons-react";
-import { usePathname, useRouter } from "next/navigation";
+import { IconLanguage } from "@tabler/icons-react";
+import { useLocale, useTranslations } from "next-intl";
 
 export default function SwitchLang() {
-   const pathName = usePathname();
-   const router = useRouter();
+   const t = useTranslations("localeSwitcher");
+   const locale = useLocale();
 
-   const handleLanguageChange = (locale: string): void => {
-      const path = pathName.split("/").slice(2).join("/");
-      router.push(`/${locale}/${path}`);
+   const handleLanguageChange = (localeSelect: Locale): void => {
+      if (locale === localeSelect) return;
+      setUserLocale(localeSelect);
    };
 
    return (
-      <Menu shadow="md" width={200}>
+      <Menu shadow="md" width={110}>
          <Menu.Target>
             <ActionIcon variant="default" size="lg">
-               <IconWorld stroke={1.5} size={20} />
+               {/* <IconWorld stroke={2} size={20} /> */}
+               <IconLanguage stroke={2} />
             </ActionIcon>
          </Menu.Target>
          <Menu.Dropdown>
@@ -26,14 +29,14 @@ export default function SwitchLang() {
                   handleLanguageChange("vi");
                }}
             >
-               VN
+               {t(`vi`)}
             </Menu.Item>
             <Menu.Item
                onClick={() => {
                   handleLanguageChange("en");
                }}
             >
-               EN
+               {t(`en`)}
             </Menu.Item>
          </Menu.Dropdown>
       </Menu>

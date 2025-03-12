@@ -11,5 +11,10 @@
       "join": "Join For Free",
       "joinMobile": "Join",
       "login": "Login"
+   },
+   "localeSwitcher": {
+      "vi": "Vietnamese",
+      "en": "English",
+      "label": "Language"
    }
 }

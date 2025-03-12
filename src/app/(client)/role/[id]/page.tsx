@@ -1,10 +1,10 @@
-import Register from "@/page/auth/register/Register";
 import RootPage from "@/components/root-page/RootPage";
+import RoleDetail from "@/page123/role/role-detail/RoleDetail";
 
 export default function page() {
    return (
-      <RootPage>
-         <Register />
+      <RootPage protect>
+         <RoleDetail />
       </RootPage>
    );
 }

@@ -18,7 +18,7 @@ import classes from "./HeaderClient.module.css";
 const styleButtonNav = { border: `none`, background: `transparent` };
 
 export default function HeaderClient() {
-   const t = useTranslations();
+   const t = useTranslations(`header`);
    const [opened, handleDrawerNavbar] = useDisclosure(false);
    const info = useAppSelector((state) => state.user.info);
    const router = useRouter();
@@ -87,7 +87,7 @@ export default function HeaderClient() {
                         variant="default"
                         color="indigo"
                      >
-                        {t("header.login")}
+                        {t("login")}
                      </Button>
                   )}
                   <Group wrap="nowrap" gap={5}>
@@ -99,7 +99,7 @@ export default function HeaderClient() {
                            rightSection={<IconArrowRight size={15} />}
                            color="indigo"
                         >
-                           {t("header.join")}
+                           {t("join")}
                         </Button>
                      )}
                      <ButtonToggleTheme />

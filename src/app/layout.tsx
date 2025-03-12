@@ -1,12 +1,10 @@
 import Provider from "@/components/provider/Provider";
 import { TITLE } from "@/constant/app.constant";
-import { routing } from "@/i18n/routing";
 import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getLocale, getMessages } from "next-intl/server";
 import { Geist, Geist_Mono } from "next/font/google";
-import { notFound } from "next/navigation";
 
 const geistSans = Geist({
    variable: "--font-geist-sans",
@@ -25,18 +23,14 @@ export const metadata: Metadata = {
 
 type TProps = {
    children: React.ReactNode;
-   params: Promise<{ locale: string }>;
 };
 
-export default async function RootLayout({ children, params }: TProps) {
-   const { locale } = await params;
-
-   if (!routing.locales.includes(locale as "en" | "vi")) notFound();
-
+export default async function RootLayout({ children }: TProps) {
+   const locale = await getLocale();
    const messages = await getMessages();
 
    return (
-      <html lang="en" {...mantineHtmlProps} suppressHydrationWarning>
+      <html lang={locale} {...mantineHtmlProps} suppressHydrationWarning>
          <head>
             <ColorSchemeScript />
          </head>
