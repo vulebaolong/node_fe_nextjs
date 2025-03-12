@@ -1,4 +1,4 @@
-import Test from "@/components/test/Test";
+import Test from "@/page/test/Test";
 
 export default function page() {
    return <Test />;

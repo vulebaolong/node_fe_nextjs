@@ -1,31 +1,18 @@
-# ✅ 1. Multi-stage build
-FROM node:22-alpine AS builder
-
-WORKDIR /app
-
-# ✅ 2. Copy package.json và package-lock.json
+FROM node:22-alpine AS deps
+WORKDIR /node_fe_nextjs
 COPY package*.json ./
+RUN npm ci
 
-# ✅ 3. Cài đặt dependencies
-RUN npm install
-
-# ✅ 4. Copy toàn bộ mã nguồn
+FROM node:22-alpine AS builder
+WORKDIR /node_fe_nextjs
 COPY . .
-
-# ✅ 5. Build Next.js (Không dùng standalone)
+COPY --from=deps /node_fe_nextjs/node_modules ./node_modules
 RUN npm run build
-RUN npm prune --production
 
-# ✅ 6. Tạo lightweight image cho runtime
 FROM node:22-alpine AS runner
+WORKDIR /node_fe_nextjs
+COPY --from=builder /node_fe_nextjs/.next/standalone ./
+COPY --from=builder /node_fe_nextjs/public ./public
+COPY --from=builder /node_fe_nextjs/.next/static ./.next/static
 
-WORKDIR /app
-
-# ✅ 7. Copy toàn bộ thư mục `.next` (Vì không có standalone)
-COPY --from=builder /app/.next ./.next
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-# ✅ 8. Chạy Next.js với `npm run start` (Thay vì `server.js`)
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]

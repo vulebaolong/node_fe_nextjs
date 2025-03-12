@@ -17,6 +17,7 @@ import { resolver, themeOverride } from "./mantine/theme";
 import ProviderRedux from "./redux/ProviderRedux";
 import SocketProvider from "./socket/SocketProvider";
 import ToastProvider from "./toast/ToastProvider";
+import { RootStoreProvider } from "./stores/RootStoreProvider";
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
@@ -38,14 +39,16 @@ const queryClient = new QueryClient({
 export default function Provider({ children }: { children: ReactNode }) {
    return (
       <QueryClientProvider client={queryClient}>
-         <ProviderRedux>
-            <MantineProvider theme={themeOverride} defaultColorScheme="dark" cssVariablesResolver={resolver}>
-               <ToastProvider />
-               <SocketProvider>
-                  <GoogleProvider>{children}</GoogleProvider>
-               </SocketProvider>
-            </MantineProvider>
-         </ProviderRedux>
+         <RootStoreProvider>
+            <ProviderRedux>
+               <MantineProvider theme={themeOverride} defaultColorScheme="dark" cssVariablesResolver={resolver}>
+                  <ToastProvider />
+                  <SocketProvider>
+                     <GoogleProvider>{children}</GoogleProvider>
+                  </SocketProvider>
+               </MantineProvider>
+            </ProviderRedux>
+         </RootStoreProvider>
       </QueryClientProvider>
    );
 }
