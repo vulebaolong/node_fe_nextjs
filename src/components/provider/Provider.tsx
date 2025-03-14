@@ -18,6 +18,7 @@ import ProviderRedux from "./redux/ProviderRedux";
 import SocketProvider from "./socket/SocketProvider";
 import ToastProvider from "./toast/ToastProvider";
 import { RootStoreProvider } from "./stores/RootStoreProvider";
+import { useHotkeys } from "@mantine/hooks";
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
@@ -37,6 +38,8 @@ const queryClient = new QueryClient({
 });
 
 export default function Provider({ children }: { children: ReactNode }) {
+   useHotkeys([["mod+.", () => process.env.NEXT_PUBLIC_IS_PRODUCTION === `false` && window.open("/test", "_blank")]]);
+
    return (
       <QueryClientProvider client={queryClient}>
          <RootStoreProvider>

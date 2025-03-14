@@ -1,4 +1,4 @@
-import Login from "@/page123/auth/login/Login";
+import Login from "@/page/auth/login/Login";
 import RootPage from "@/components/root-page/RootPage";
 
 export default async function page() {

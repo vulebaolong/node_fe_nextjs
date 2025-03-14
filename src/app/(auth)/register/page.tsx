@@ -1,4 +1,4 @@
-import Register from "@/page123/auth/register/Register";
+import Register from "@/page/auth/register/Register";
 import RootPage from "@/components/root-page/RootPage";
 
 export default function page() {

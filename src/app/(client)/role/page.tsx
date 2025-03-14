@@ -1,5 +1,5 @@
 import RootPage from "@/components/root-page/RootPage";
-import Role from "@/page123/role/Role";
+import Role from "@/page/role/Role";
 
 export default function page() {
    return (

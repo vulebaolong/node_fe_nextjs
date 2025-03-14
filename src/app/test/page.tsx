@@ -1,4 +1,4 @@
-import Test from "@/page123/test/Test";
+import Test from "@/page/test/Test";
 
 export default function page() {
    return <Test />;
