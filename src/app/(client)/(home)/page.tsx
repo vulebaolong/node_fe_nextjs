@@ -3,7 +3,7 @@ import Home from "@/page/home/Home";
 
 export default async function page() {
    return (
-      <RootPage protect>
+      <RootPage>
          <Home />
       </RootPage>
    );

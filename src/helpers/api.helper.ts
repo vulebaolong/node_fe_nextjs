@@ -46,9 +46,9 @@ class APIClient {
    }
 
    private async request<T>(url: string, options: FetchOptions = {}): Promise<T> {
-      const { body, headers , ...restOptions } = options;
+      const { body, headers, ...restOptions } = options;
 
-      const isFormData = body instanceof FormData
+      const isFormData = body instanceof FormData;
 
       const contentType = isFormData ? {} : { "Content-Type": "application/json" };
 
