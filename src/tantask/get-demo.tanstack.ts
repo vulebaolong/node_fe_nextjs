@@ -23,11 +23,11 @@ const fetchGet = async (endpoint: string) => {
    }
 };
 
-export const useGetDemo = (endôpint: string) => {
+export const useGetDemo = (endpoint: string) => {
    return useQuery({
       queryKey: ["get-data-demo"],
       queryFn: async () => {
-         return (await fetchGet(endôpint)) || [];
+         return (await fetchGet(endpoint)) || [];
       },
    });
 };
