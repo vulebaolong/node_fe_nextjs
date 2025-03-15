@@ -10,8 +10,10 @@ import { IconSearch } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Fragment } from "react";
 import classes from "./HomeRight.module.css";
+import { useTranslations } from "next-intl";
 
 export default function HomeRight() {
+   const t = useTranslations(`home-right`);
    const findAllUser = useFindAllUser();
    const userId = useAppSelector((state) => state.user.info?.id);
    const queryClient = useQueryClient();
@@ -28,7 +30,7 @@ export default function HomeRight() {
          <Stack style={{ height: `100%` }}>
             <Group justify="space-between">
                <Text opacity={0.7} fw={`bold`} fz={`md`}>
-                  Người Liên Hệ
+                  {t(`Contact person`)}
                </Text>
                <ActionIcon variant="subtle" radius="xl">
                   <IconSearch style={{ width: "70%", height: "70%" }} stroke={1.5} />

@@ -1,4 +1,3 @@
-import { useSocket } from "@/components/provider/socket/SocketProvider";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { emitToEvent, removeEventListener } from "@/helpers/chat.helper";
 import { useAppSelector } from "@/redux/hooks";
@@ -9,6 +8,7 @@ import classes from "./ChatUserItem.module.css";
 import MessageHeader from "./message-header/MessageHeader";
 import MessageInput from "./message-input/MessageInput";
 import MessageListAll from "./message-list/MessageList";
+import { useSocket } from "@/hooks/socket.hook";
 
 type TProps = {
    item: TChatListItem;

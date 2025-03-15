@@ -16,5 +16,8 @@
       "vi": "Việt",
       "en": "Anh",
       "label": "Ngôn ngữ"
+   },
+   "home-right": {
+      "Contact person": "Người liên hệ"
    }
 }

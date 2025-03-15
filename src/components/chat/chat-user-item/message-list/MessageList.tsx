@@ -1,5 +1,4 @@
 import Nodata from "@/components/no-data/Nodata";
-import { useSocket } from "@/components/provider/socket/SocketProvider";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { createRoomIdChat, listenToEvent } from "@/helpers/chat.helper";
 import { useAppSelector } from "@/redux/hooks";
@@ -12,6 +11,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import Recipient from "../../message/recipient/Recipient";
 import Sender from "../../message/sender/Sender";
 import classes from "./MessageList.module.css";
+import { useSocket } from "@/hooks/socket.hook";
 
 // let isNewMess = false;
 // let isLoadmore = false;

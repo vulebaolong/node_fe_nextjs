@@ -1,11 +1,9 @@
 "use client";
 
-import { useAppSelector } from "@/redux/hooks";
-import { useEffect, useRef, useState } from "react";
-import { io } from "socket.io-client";
-import { createContext, useContext } from "react";
-import { Socket } from "socket.io-client";
 import { BASE_DOMAIN_API } from "@/constant/app.constant";
+import { useAppSelector } from "@/redux/hooks";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 const SOCKET_URL = BASE_DOMAIN_API;
 
@@ -14,12 +12,12 @@ interface SocketContextType {
    isConnected: boolean;
 }
 
-const SocketContext = createContext<SocketContextType | undefined>(undefined);
+export const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export default function SocketProvider({ children }: { children: React.ReactNode }) {
    const socketRef = useRef<Socket | null>(null);
    const [isConnected, setIsConnected] = useState(false);
-   const info = useAppSelector((state) => state.user.info); // Lấy user ID từ Redux
+   const info = useAppSelector((state) => state.user.info);
 
    useEffect(() => {
       if (!socketRef.current && info?.id) {
@@ -48,15 +46,9 @@ export default function SocketProvider({ children }: { children: React.ReactNode
             socketRef.current = null;
          }
       };
-   }, [info?.id]); // ✅ Chỉ kết nối khi user ID thay đổi
+   }, [info?.id]);
 
    return <SocketContext.Provider value={{ socket: socketRef.current, isConnected }}>{children}</SocketContext.Provider>;
 }
 
-export function useSocket() {
-   const context = useContext(SocketContext);
-   if (!context) {
-      throw new Error("useSocket must be used within a SocketProvider");
-   }
-   return context;
-}
+

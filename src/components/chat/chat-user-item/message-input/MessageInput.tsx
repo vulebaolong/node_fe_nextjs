@@ -4,12 +4,12 @@ import { IconMoodSmile, IconSend2 } from "@tabler/icons-react";
 import Picker, { Theme } from "emoji-picker-react";
 import * as emoji from "node-emoji";
 import { useState } from "react";
-import { useSocket } from "@/components/provider/socket/SocketProvider";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { useAppSelector } from "@/redux/hooks";
 import { TChatListItem } from "@/types/chat.type";
 import { toast } from "react-toastify";
 import classes from "./MessageInput.module.css";
+import { useSocket } from "@/hooks/socket.hook";
 
 type TProps = {
    item: TChatListItem;
@@ -29,9 +29,9 @@ export default function MessageInput({ item }: TProps) {
    };
 
    const handleSubmit = () => {
-      if (!isConnected) return;
-      if (!userId) return;
-      if (!email) return;
+      if (!isConnected) return toast.warning(`isConnected: ${isConnected}`);
+      if (!userId) return toast.warning(`userId: ${userId}`);
+      if (!email) return toast.warning(`email: ${email}`);
       if (value.trim() === ``) return;
       if (!isConnected) return toast.warning(`Disconnected. Refresh to reconnect.`);
 

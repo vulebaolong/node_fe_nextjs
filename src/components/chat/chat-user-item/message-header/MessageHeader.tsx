@@ -1,4 +1,4 @@
-import { useSocket } from "@/components/provider/socket/SocketProvider";
+import { useSocket } from "@/hooks/socket.hook";
 import TagUser from "@/components/tag-user/TagUser";
 import { CHAT_LIST_ITEM, SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { emitToEvent, removeUserFromChatList } from "@/helpers/chat.helper";

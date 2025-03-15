@@ -16,5 +16,8 @@
       "vi": "Vietnamese",
       "en": "English",
       "label": "Language"
+   },
+   "home-right": {
+      "Contact person": "Contact person"
    }
 }
