@@ -5,20 +5,20 @@ import { EReactionArticle } from "@/types/enum/reaction.enum";
 import { ActionIcon, Box, Button, Group, Stack, Text } from "@mantine/core";
 import { IconDots, IconMessageCircle, IconShare3, IconX } from "@tabler/icons-react";
 // import Image from "next/image";
+import { Image as ImageMantine } from "@mantine/core";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import Avatar from "../avatar/Avatar";
 import TextContent from "../text-content/TextContent";
 import classes from "./Article.module.css";
 import IconReaction from "./icon-reaction/IconReaction";
-import Avatar from "../avatar/Avatar";
-import { Image as ImageMantine} from "@mantine/core";
 
 type TProps = {
    article: TArticle;
 };
 
 export default function Article({ article }: TProps) {
-   const initReactionType = article.Reactions_Articles[0]?.reactionType ? article.Reactions_Articles[0]?.reactionType : EReactionArticle[`None`];
+   const initReactionType = article.Reactions_Articles?.[0]?.reactionType ? article.Reactions_Articles[0]?.reactionType : EReactionArticle[`None`];
    const [reactionType, setReactionType] = useState(initReactionType);
    const path = checkPathImage(article.imageUrl);
    const createReactionArticle = useCreateReactionArticle();
@@ -51,7 +51,7 @@ export default function Article({ article }: TProps) {
                <Avatar user={article.Users} />
             </Box>
             <Stack gap={0} flex={1}>
-               <Text fw={`bold`}>{article.Users.fullName}</Text>
+               <Text fw={`bold`}>{article.Users?.fullName}</Text>
                <Text c={`dimmed`}>{formatLocalTime(article.createdAt, `ago`)}</Text>
             </Stack>
 

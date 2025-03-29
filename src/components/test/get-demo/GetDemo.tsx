@@ -6,7 +6,7 @@ import { useGetDemo } from "@/tantask/get-demo.tanstack";
 import { Avatar, Box, Center, Container, Group, Loader, Paper, Stack, Text } from "@mantine/core";
 
 export default function GetDemo() {
-   const getDemo = useGetDemo(`mysql2`);
+   const getDemo = useGetDemo(`demo/mysql2`);
    console.log({ getDemo: getDemo.data });
 
    const renderContent = () => {
@@ -17,7 +17,7 @@ export default function GetDemo() {
             </Center>
          );
 
-      if (!getDemo.data || getDemo.data.length === 0 || getDemo.isError)
+      if (!getDemo.data || getDemo.data.data.length === 0 || getDemo.isError)
          return (
             <Center>
                <Nodata />
@@ -26,7 +26,7 @@ export default function GetDemo() {
 
       return (
          <>
-            {getDemo.data?.map((item: any, i: number) => {
+            {getDemo.data?.data?.map((item: any, i: number) => {
                return (
                   <Group key={i}>
                      <Text>{i + 1}</Text>
@@ -45,7 +45,7 @@ export default function GetDemo() {
       <Container>
          <Box my={100}>
             <Paper shadow="md" radius="lg" withBorder p="xl">
-               <Text fz={24}>List of emails</Text>
+               <Text fz={24}>List Users</Text>
                <Stack>{renderContent()}</Stack>
             </Paper>
          </Box>

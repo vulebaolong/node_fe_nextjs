@@ -2,7 +2,7 @@
 
 import { BASE_DOMAIN_API } from "@/constant/app.constant";
 import { useAppSelector } from "@/redux/hooks";
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
 const SOCKET_URL = BASE_DOMAIN_API;

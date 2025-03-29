@@ -31,9 +31,13 @@ async function refreshToken() {
    }
 }
 
-export async function logout() {
+export async function logout(urlRedirect: string = `/login`) {
    await clearTokensAction();
-   window.location.href = "/login";
+
+   if (typeof window !== "undefined") {
+      // Client
+      if (urlRedirect) window.location.href = urlRedirect;
+   }
 }
 
 type FetchOptions = RequestInit & { body?: any; isFormData?: boolean };
@@ -73,7 +77,7 @@ class APIClient {
       let response = await fetch(`${this.baseURL}${url}`, optionFetch);
 
       // ✅ Xử lý lỗi 401: Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token
-      if (response.status === 401) {
+      if (response.status === 403) {
          console.log(`(${response.status}) Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token`);
          const newAccessToken = await refreshToken();
          // console.log({ newAccessToken });
@@ -95,7 +99,7 @@ class APIClient {
       if (response.status === 401) {
          console.log(`(${response.status}) không có quyền truy cập tài nguyên ngay cả khi đã đăng nhập -> Logout`);
          await logout();
-         throw new Error("Unauthorized, logging out...");
+         // throw new Error("Unauthorized, logging out...");
       }
 
       if (!response.ok) {

@@ -13,10 +13,13 @@ export const checkPathImage = (path: string | null | undefined) => {
 };
 
 export const resError = (error: any, defaultMes: string) => {
-   let mes = error.response?.data?.message;
-   if (!mes) mes = defaultMes;
-   if (Array.isArray(mes)) mes = mes[0];
-   return mes;
+   const mes = error.response?.data?.message;
+
+   if (Array.isArray(mes)) return mes[0];
+
+   if (error.message) return error.message;
+
+   return defaultMes;
 };
 
 export const formatLocalTime = (time?: dayjs.ConfigType, format = "HH:mm:ss DD/MM/YYYY") => {
@@ -70,6 +73,3 @@ export class LogWithColor {
 
 // ✅ Khởi tạo instance
 export const logWithColor = new LogWithColor();
-
-
-
