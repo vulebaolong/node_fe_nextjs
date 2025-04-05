@@ -4,7 +4,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { SET_INFO } from "@/redux/slices/user.slice";
 import { TLoginFormReq, TRegisterReq } from "@/types/auth.type";
 import { TLoginFacebookReq } from "@/types/facebook.type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -13,6 +13,7 @@ export const useGetInfo = () => {
    const router = useRouter();
    return useMutation({
       mutationFn: async () => {
+         console.log(123);
          try {
             const data = await getInfoAction();
             console.log({ useGetInfo: data });
@@ -22,6 +23,26 @@ export const useGetInfo = () => {
             console.log(error);
             router.push("/login");
             return false;
+         }
+      },
+   });
+};
+
+export const useQueryInfo = () => {
+   const dispatch = useAppDispatch();
+
+   return useQuery({
+      queryKey: ["query-info"],
+      queryFn: async () => {
+         try {
+            const data = await getInfoAction();
+            if (!data) return null;
+            console.log({ useGetInfo: data });
+            dispatch(SET_INFO(data));
+            return data;
+         } catch (error) {
+            console.log(error);
+            return null;
          }
       },
    });

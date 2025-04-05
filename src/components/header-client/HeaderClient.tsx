@@ -6,6 +6,7 @@ import ButtonToggleTheme from "@/components/toggle-theme/button/ButtonToggleThem
 import { MOBILE_HIDDEN_DESKTOP_VISIBLE, MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
 import ROUTER from "@/constant/router.constant";
 import { useAppSelector } from "@/redux/hooks";
+import { useQueryInfo } from "@/tantask/auth.tanstack";
 import { ActionIcon, Box, Burger, Button, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowRight, IconBrandRumble, IconBuildingStore, IconDeviceGamepad, IconHome, IconUsersGroup } from "@tabler/icons-react";
@@ -22,6 +23,7 @@ export default function HeaderClient() {
    const [opened, handleDrawerNavbar] = useDisclosure(false);
    const info = useAppSelector((state) => state.user.info);
    const router = useRouter();
+   useQueryInfo();
 
    return (
       <>

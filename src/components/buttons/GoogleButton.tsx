@@ -51,7 +51,7 @@ export function GoogleButton(props: ButtonProps & React.ComponentPropsWithoutRef
    const login = useGoogleLogin({
       flow: "auth-code",
       onSuccess: async (codeResponse) => {
-         console.log(codeResponse);
+         console.log(`Dữ liệu google trả về:`, codeResponse);
          loginGoogle.mutate(
             { code: codeResponse.code },
             {

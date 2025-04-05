@@ -10,7 +10,7 @@ type TProps = {
 const Badge = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRef<"div">>(({ user, ...props }, ref) => {
    return (
       <BadgeMantine {...props} ref={ref} variant="outline" color={user?.roleId === 1 ? `red` : `blue`}>
-         {effectText(user?.Roles.name || ``)}
+         {effectText(user?.Roles?.name || ``)}
       </BadgeMantine>
    );
 });
