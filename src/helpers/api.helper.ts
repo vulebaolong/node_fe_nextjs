@@ -76,7 +76,7 @@ class APIClient {
 
       let response = await fetch(`${this.baseURL}${url}`, optionFetch);
 
-      // ✅ Xử lý lỗi 401: Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token
+      // ✅ Xử lý lỗi 403: Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token
       if (response.status === 403) {
          console.log(`(${response.status}) Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token`);
          const newAccessToken = await refreshToken();
