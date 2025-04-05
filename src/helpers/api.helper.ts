@@ -2,34 +2,57 @@ import { clearTokensAction } from "@/actions/auth.action";
 import { BASE_DOMAIN_API } from "@/constant/app.constant";
 import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from "./cookies.helper";
 
-async function refreshToken() {
+let isRefreshing = false;
+let failedQueue: { resolve: (token: string) => void; reject: (err: any) => void }[] = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+   failedQueue.forEach((prom) => {
+      if (error) {
+         prom.reject(error);
+      } else {
+         prom.resolve(token!);
+      }
+   });
+   failedQueue = [];
+};
+
+export const refreshToken = async () => {
+   if (isRefreshing) {
+      return new Promise<string>((resolve, reject) => {
+         failedQueue.push({ resolve, reject });
+      });
+   }
+
+   isRefreshing = true;
+
    try {
+      const accessToken = await getAccessToken();
+      const refreshToken = await getRefreshToken();
+
       const res = await fetch(`${BASE_DOMAIN_API}auth/refresh-token`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
          },
-         body: JSON.stringify({
-            accessToken: await getAccessToken(), // ✅ Gửi Access Token cũ
-            refreshToken: await getRefreshToken(), // ✅ Gửi Refresh Token
-         }),
+         body: JSON.stringify({ accessToken, refreshToken }),
       });
 
-      if (!res.ok) {
-         const data = await res.json();
-         console.log({ data });
-         throw new Error("Failed to refresh token");
-      }
-
       const data = await res.json();
-      await setAccessToken(data.data.accessToken); // ✅ Lưu Access Token mới
-      await setRefreshToken(data.data.refreshToken); // ✅ Lưu Refresh Token mới
+
+      if (!res.ok) throw new Error(data.message || "Refresh Token Failed");
+
+      await setAccessToken(data.data.accessToken);
+      await setRefreshToken(data.data.refreshToken);
+
+      processQueue(null, data.data.accessToken);
       return data.data.accessToken;
-   } catch (error) {
-      console.error("Refresh token failed:", error);
-      return null;
+   } catch (err) {
+      processQueue(err, null);
+      throw err;
+   } finally {
+      isRefreshing = false;
    }
-}
+};
 
 export async function logout(urlRedirect: string = `/login`) {
    await clearTokensAction();
@@ -62,7 +85,7 @@ class APIClient {
          return JSON.stringify(body);
       };
 
-      const accessToken = await getAccessToken();
+      let accessToken = await getAccessToken();
 
       const optionFetch: any = {
          ...restOptions,
@@ -79,19 +102,18 @@ class APIClient {
       // ✅ Xử lý lỗi 403: Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token
       if (response.status === 403) {
          console.log(`(${response.status}) Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token`);
-         const newAccessToken = await refreshToken();
-         // console.log({ newAccessToken });
-         if (newAccessToken) {
-            response = await fetch(`${this.baseURL}${url}`, {
-               ...restOptions,
+         try {
+            accessToken = await refreshToken();
+            response = await fetch(`${BASE_DOMAIN_API}${url}`, {
+               ...options,
                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${newAccessToken}`, // ✅ Dùng token mới
-                  ...headers,
+                  ...(options.headers || {}),
+                  Authorization: `Bearer ${accessToken}`,
                },
-               body: body ? JSON.stringify(body) : undefined,
             });
-            return response.json();
+         } catch (err) {
+            console.error("❌ Refresh Token Error", err);
+            throw err;
          }
       }
 
