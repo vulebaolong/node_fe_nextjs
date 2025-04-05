@@ -70,6 +70,7 @@ export default function RoleDetail() {
                            <Accordion.Panel>
                               <Box className={`${classes.moduleWrap}`}>
                                  {permissions.map((permission, i2) => {
+                                    console.log({ permission });
                                     return (
                                        <Paper className={`${classes[`box-1`]}`} shadow="xs" withBorder radius="md" key={i2}>
                                           <Group wrap="nowrap" justify="space-between" gap={0}>
@@ -113,7 +114,7 @@ export default function RoleDetail() {
                                                 }}
                                                 onLabel={`ON`}
                                                 offLabel={`OFF`}
-                                                checked={!_.isEmpty(permission.Role_Permissions)}
+                                                checked={!_.isEmpty(permission.RolePermision)}
                                              />
                                           </Group>
                                        </Paper>

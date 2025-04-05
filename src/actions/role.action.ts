@@ -9,7 +9,7 @@ import { TListRoleRes } from "@/types/role.type copy";
 export async function getListRoleAction(query: string) {
    try {
       const { data } = await api.get<TResPagination<TListRoleRes[]>>(`${ENDPOINT.ROLE}?${query}`);
-      console.log({data});
+      console.log({ data });
       return data;
    } catch (error) {
       console.error("Get List Role failed:", error);
@@ -29,7 +29,7 @@ export async function getDetailRoleAction(roleId: string) {
 
 export async function getTogglePermissionAction(payload: TTogglePermissionReq) {
    try {
-         const { data } = await api.post<TRes<any>>(`${ENDPOINT.TOGGLE_PERMISSION}`, payload);
+      const { data } = await api.post<TRes<any>>(`${ENDPOINT.TOGGLE_PERMISSION}`, payload);
       return data;
    } catch (error) {
       console.error("Get Detail Role failed:", error);
