@@ -6,6 +6,7 @@ import { useGetDemo } from "@/tantask/get-demo.tanstack";
 import { Avatar, Box, Center, Container, Group, Loader, Paper, Stack, Text } from "@mantine/core";
 
 export default function GetDemo() {
+
    const getDemo = useGetDemo(`demo/mysql2`);
    console.log({ getDemo: getDemo.data });
 

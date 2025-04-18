@@ -12,7 +12,7 @@ export type TPermission = {
 };
 
 export type TPermissionGroupByMoudleRes = {
-   [key: string]: (TPermission & { RolePermision: TRolePermission })[];
+   [key: string]: (TPermission & { RolePermission: TRolePermission })[];
 };
 
 export type TRolePermission = {

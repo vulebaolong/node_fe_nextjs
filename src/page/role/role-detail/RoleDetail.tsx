@@ -22,6 +22,8 @@ export default function RoleDetail() {
    const permissionGroupByModule = usePermissionGroupByModule(id || `0`);
    const togglePermission = useTogglePermission();
 
+   console.log(`abc`, permissionGroupByModule.data);
+
    const handleClickSwitch = (permissionId: number) => {
       if (!id) return;
       togglePermission.mutate(
@@ -114,7 +116,7 @@ export default function RoleDetail() {
                                                 }}
                                                 onLabel={`ON`}
                                                 offLabel={`OFF`}
-                                                checked={!_.isEmpty(permission.RolePermision)}
+                                                checked={!_.isEmpty(permission.RolePermission)}
                                              />
                                           </Group>
                                        </Paper>
