@@ -154,7 +154,7 @@ export default function MessageList({ item }: TProps) {
          );
       }
 
-      if (!messageList || messageList.length === 0 || messageListChat.isError) {
+      if (!messageList || messageList.length === 0) {
          return (
             <Center h={`100%`}>
                <Nodata />
@@ -164,6 +164,7 @@ export default function MessageList({ item }: TProps) {
 
       return messageList.map((messageItem: TPayloadData, i: number) => {
          const isLast = i === messageList.length - 1;
+         console.log({ messageItem });
          return (
             <Fragment key={i}>
                {messageItem.userIdSender === userId ? (
