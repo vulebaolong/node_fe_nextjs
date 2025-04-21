@@ -1,8 +1,9 @@
 "use client";
 
 import { useGetInfo } from "@/tantask/auth.tanstack";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { Center, Loader } from "@mantine/core";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type TProps = {
    children: React.ReactNode;
@@ -10,15 +11,30 @@ type TProps = {
 };
 
 export default function RootPage({ children, protect = false }: TProps) {
-   console.log(`RootPage`);
    const pathname = usePathname();
+   const router = useRouter();
    const getInfo = useGetInfo();
+   const [allowRender, setAllowRender] = useState(!protect);
 
    useEffect(() => {
-      if (protect) {
-         getInfo.mutate();
-      }
+      if (!protect) return;
+
+      getInfo.mutate(undefined, {
+         onSuccess: () => {
+            setAllowRender(true);
+         },
+         onError: () => {
+            router.push("/login");
+         },
+      });
    }, [pathname]);
 
-   return <div>{children}</div>;
+   if (!allowRender)
+      return (
+         <Center h={`100vh`} w={`100%`}>
+            <Loader />
+         </Center>
+      );
+
+   return <>{children}</>;
 }

@@ -1,6 +1,7 @@
 import Nodata from "@/components/no-data/Nodata";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
-import { createRoomIdChat, listenToEvent } from "@/helpers/chat.helper";
+import { listenToEvent, removeEventListener } from "@/helpers/chat.helper";
+import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useMessageListChat } from "@/tantask/chat.tanstacl";
 import { TChatListItem, TPayloadData, TPayloadReceiveMessage } from "@/types/chat.type";
@@ -11,7 +12,6 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import Recipient from "../../message/recipient/Recipient";
 import Sender from "../../message/sender/Sender";
 import classes from "./MessageList.module.css";
-import { useSocket } from "@/hooks/socket.hook";
 
 // let isNewMess = false;
 // let isLoadmore = false;
@@ -97,7 +97,7 @@ export default function MessageList({ item }: TProps) {
 
          const mesLast = messageList[messageList.length - 1];
          if (isNewMess) {
-            if (mesLast.userIdSender === userId) {
+            if (mesLast.userId === userId) {
                console.log(`Cuộn xuống cuối khi có tin nhắn mới - 1`);
                targetRefContainer.current.scrollTop = targetRefContainer.current.scrollHeight;
                // isNewMess = false;
@@ -130,12 +130,7 @@ export default function MessageList({ item }: TProps) {
          setOnlyOne((prev) => prev++);
          listenToEvent(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE, (data: TPayloadReceiveMessage) => {
             const { payload, roomId } = data;
-            const roomIdd = createRoomIdChat(userId, item.id);
-            if (roomId !== roomIdd) return;
-
-            console.log({ data });
-
-            // isNewMess = true;
+            if (roomId !== payload.roomId) return;
             setIsNewMess(true);
             setMessageList((prev) => {
                if (prev === null) return [payload];
@@ -143,6 +138,12 @@ export default function MessageList({ item }: TProps) {
             });
          });
       }
+
+      return () => {
+         if (socket) {
+            removeEventListener(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE);
+         }
+      };
    }, [socket, userId]);
 
    const renderContent = () => {
@@ -164,10 +165,9 @@ export default function MessageList({ item }: TProps) {
 
       return messageList.map((messageItem: TPayloadData, i: number) => {
          const isLast = i === messageList.length - 1;
-         console.log({ messageItem });
          return (
             <Fragment key={i}>
-               {messageItem.userIdSender === userId ? (
+               {messageItem.userId === userId ? (
                   <Sender
                      refToShowButtonScroll={refToShowButtonScroll}
                      isLast={isLast}
@@ -176,7 +176,7 @@ export default function MessageList({ item }: TProps) {
                         email: user?.fullName || `??`,
                         message: messageItem.message,
                         time: ``,
-                        userId: messageItem.userIdSender,
+                        userId: messageItem.userId,
                         roleId: user?.roleId || 0,
                      }}
                   />
@@ -189,7 +189,7 @@ export default function MessageList({ item }: TProps) {
                         email: item.name || `??`,
                         message: messageItem.message,
                         time: ``,
-                        userId: messageItem.userIdRecipient,
+                        userId: item.id,
                         roleId: item.roleId,
                      }}
                   />

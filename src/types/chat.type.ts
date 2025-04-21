@@ -3,11 +3,7 @@ export type TCreateChatReq = {
    message: string;
 };
 
-export type TCreateChatRes = {
-   id: number
-   message: string
-   userIdSender: number
-   userIdRecipient: number
+export type TCreateChatRes = TPayloadData &  {
    deletedBy: number
    isDeleted: boolean
    deletedAt: string
@@ -31,8 +27,8 @@ export type TPayloadReceiveMessage = {
 
 export type TPayloadData = {
    message: string;
-   userIdSender: number;
-   userIdRecipient: number;
+   userId: number;
+   roomId: string;
    createdAt: string
 };
 

@@ -30,7 +30,7 @@ export default function ChatUserItem({ i, item }: TProps) {
    useEffect(() => {
       return () => {
          if (socket) {
-            removeEventListener(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE);
+            removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM);
             socket.emit(SOCKET_CHAT_MES.LEAVE_ROOM, { userIdSender: userId, userIdRecipient: item.id });
          }
       };

@@ -34,7 +34,6 @@ export default function HomeCenter() {
       return (
          <>
             {getListArticle.data?.items.map((article: TArticle, i) => {
-               console.log({article});
                return <Article key={i} article={article} />;
             })}
          </>

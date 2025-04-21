@@ -1,4 +1,11 @@
-import { getInfoAction, loginFacebookction, loginFormAction, loginGoogleAuthenticatorAction, loginGooleAction, registerAction } from "@/actions/auth.action";
+import {
+   getInfoAction,
+   loginFacebookction,
+   loginFormAction,
+   loginGoogleAuthenticatorAction,
+   loginGooleAction,
+   registerAction,
+} from "@/actions/auth.action";
 import { resError } from "@/helpers/function.helper";
 import { useAppDispatch } from "@/redux/hooks";
 import { SET_INFO } from "@/redux/slices/user.slice";
@@ -10,20 +17,12 @@ import { toast } from "react-toastify";
 
 export const useGetInfo = () => {
    const dispatch = useAppDispatch();
-   const router = useRouter();
    return useMutation({
       mutationFn: async () => {
-         console.log(123);
-         try {
-            const data = await getInfoAction();
-            console.log({ useGetInfo: data });
-            dispatch(SET_INFO(data));
-            return true;
-         } catch (error) {
-            console.log(error);
-            router.push("/login");
-            return false;
-         }
+         const data = await getInfoAction();
+         console.log({ useGetInfo: data });
+         dispatch(SET_INFO(data));
+         return data;
       },
    });
 };

@@ -12,6 +12,7 @@ import { Fragment, useEffect, useState } from "react";
 import classes from "./HomeRight.module.css";
 import { useTranslations } from "next-intl";
 import { useSocket } from "@/hooks/socket.hook";
+import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 
 export default function HomeRight() {
    const t = useTranslations(`home-right`);
@@ -31,7 +32,7 @@ export default function HomeRight() {
 
    useEffect(() => {
       if (socket) {
-         listenToEvent(socket, "MESSAGE_NOTI", (data) => {
+         listenToEvent(socket, SOCKET_CHAT_MES.NOTI_MESSAGE, (data) => {
             console.log({ data });
             setListIdUserNoti((prev) => {
                return [...prev, data.payload.userIdSender];
@@ -53,7 +54,7 @@ export default function HomeRight() {
                </ActionIcon>
             </Group>
             <Stack className={`${classes[`box-1`]}`}>
-               {findAllUser.data?.items.map((user, i) => {
+               {findAllUser.data?.items?.map((user, i) => {
                   if (user.id === userId) return <Fragment key={i}></Fragment>;
                   return (
                      <Box

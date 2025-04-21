@@ -34,6 +34,7 @@ export function Profile() {
             toast.success(`Upload avatar to local successfully`);
             getInfo.mutate();
             setPreview(null);
+            setFile(null);
          },
          onError: (error) => {
             console.log(error);
@@ -56,6 +57,7 @@ export function Profile() {
             toast.success(`Upload avatar to cloud successfully`);
             getInfo.mutate();
             setPreview(null);
+            setFile(null);
          },
          onError: (error) => {
             console.log(error);
@@ -126,10 +128,10 @@ export function Profile() {
 
             <Center>
                <Group>
-                  <Button loading={uploadAvatarLocal.isPending} disabled={!!!file} onClick={handleUploadLocal}>
+                  <Button loading={uploadAvatarLocal.isPending} disabled={!!!file || uploadAvatarCloud.isPending} onClick={handleUploadLocal}>
                      Upload Local
                   </Button>
-                  <Button loading={uploadAvatarCloud.isPending} disabled={!!!file} onClick={handleUploadCloud}>
+                  <Button loading={uploadAvatarCloud.isPending} disabled={!!!file || uploadAvatarLocal.isPending} onClick={handleUploadCloud}>
                      Upload Cloud
                   </Button>
                </Group>

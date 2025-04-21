@@ -74,7 +74,3 @@ export function emitToEvent(socket: Socket, eventName: string, payload: any) {
    socket?.emit(eventName, payload);
    logWithColor.tag(`🔵 EMIT - `, `blue`).mes(eventName);
 }
-
-export const createRoomIdChat = (userIdSender: number, userIdRecipient: number) => {
-   return `chat_${[userIdSender, userIdRecipient].sort((a, b) => a - b).join("_")}`;
-};
