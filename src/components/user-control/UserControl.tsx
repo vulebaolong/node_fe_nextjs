@@ -4,12 +4,14 @@ import ROUTER from "@/constant/router.constant";
 import { logout } from "@/helpers/api.helper";
 import { effectText } from "@/helpers/motion.helper";
 import { useAppSelector } from "@/redux/hooks";
-import { Box, Group, Menu, Text } from "@mantine/core";
-import { IconLogout, IconSettings, IconUserCheck, IconUserSearch } from "@tabler/icons-react";
+import { Box, Center, Group, Menu, Text } from "@mantine/core";
+import { IconChevronDown, IconLogout, IconSettings, IconUserCheck, IconUserSearch } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import Avatar from "../avatar/Avatar";
-import classes from "./UserControl.module.css";
 import Badge from "../badge/Badge";
+import SwitchLang from "../switch-lang/SwitchLang";
+import ButtonToggleTheme from "../toggle-theme/button/ButtonToggleTheme";
+import classes from "./UserControl.module.css";
 
 export default function UserControl() {
    const router = useRouter();
@@ -17,7 +19,14 @@ export default function UserControl() {
 
    return (
       <Menu shadow="md" width={200}>
-         <Menu.Target>{<Avatar style={{ cursor: `pointer` }} user={info} />}</Menu.Target>
+         <Menu.Target>
+            <Box pos={`relative`}>
+               <Avatar style={{ cursor: `pointer` }} user={info} />
+               <Box className={`${classes[`box-1`]}`}>
+                  <IconChevronDown style={{ width: `100%`, height: `100%` }} />
+               </Box>
+            </Box>
+         </Menu.Target>
 
          <Menu.Dropdown>
             <Box className={classes.textAvatar}>
@@ -71,6 +80,17 @@ export default function UserControl() {
             >
                Settings
             </Menu.Item>
+
+            <Menu.Divider />
+
+            <Menu.Label>Change</Menu.Label>
+
+            <Center>
+               <Group wrap="nowrap" gap={5}>
+                  <ButtonToggleTheme />
+                  <SwitchLang />
+               </Group>
+            </Center>
 
             <Menu.Divider />
 

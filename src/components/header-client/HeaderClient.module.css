@@ -7,17 +7,17 @@
    right: 0;
    z-index: 101;
    border-bottom: 1px solid var(--mantine-color-gray-light);
- }
- 
- @media (max-width: 62em) {
+   padding: 0px 20px;
+}
+
+/* @media (max-width: 62em) {
    .header {
-     padding: 0px 20px;
+      padding: 0px 20px;
    }
- }
- 
- @media (min-width: 62em) {
+}
+
+@media (min-width: 62em) {
    .header {
-     padding: 0px 50px;
+      padding: 0px 50px;
    }
- }
- 
+} */

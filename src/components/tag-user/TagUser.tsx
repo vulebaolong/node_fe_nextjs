@@ -10,7 +10,7 @@ type TProps = {
 export default function TagUser({ user, fw = `normal` }: TProps) {
    return (
       <Group wrap="nowrap">
-         <Avatar user={user} />
+         <Avatar style={{ width: `36px`, height: `36px`, minWidth: `36px` }} user={user} />
          <Text fw={fw} truncate>
             {user?.fullName}
          </Text>

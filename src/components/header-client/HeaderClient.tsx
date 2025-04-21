@@ -9,9 +9,10 @@ import { useAppSelector } from "@/redux/hooks";
 import { useQueryInfo } from "@/tantask/auth.tanstack";
 import { ActionIcon, Box, Burger, Button, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconArrowRight, IconBrandRumble, IconBuildingStore, IconDeviceGamepad, IconHome, IconUsersGroup } from "@tabler/icons-react";
+import { IconBrandMessengerFilled, IconBrandRumble, IconBuildingStore, IconDeviceGamepad, IconHome, IconUsersGroup } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import DrawerListChat from "../drawer/drawer-list-chat/DrawerListChat";
 import { Logo } from "../logo/Logo";
 import UserControl from "../user-control/UserControl";
 import classes from "./HeaderClient.module.css";
@@ -21,6 +22,7 @@ const styleButtonNav = { border: `none`, background: `transparent` };
 export default function HeaderClient() {
    const t = useTranslations(`header`);
    const [opened, handleDrawerNavbar] = useDisclosure(false);
+   const [openedListChat, handleDrawerListChat] = useDisclosure(false);
    const info = useAppSelector((state) => state.user.info);
    const router = useRouter();
    useQueryInfo();
@@ -80,37 +82,38 @@ export default function HeaderClient() {
                   {info ? (
                      <UserControl />
                   ) : (
-                     <Button
-                        className="cursor-pointer"
-                        onClick={() => {
-                           router.push(ROUTER.LOGIN);
-                        }}
-                        style={styleButtonNav}
-                        variant="default"
-                        color="indigo"
-                     >
-                        {t("login")}
-                     </Button>
-                  )}
-                  <Group wrap="nowrap" gap={5}>
-                     {!info && (
+                     <Group>
                         <Button
                            onClick={() => {
                               router.push(ROUTER.REGISTER);
                            }}
-                           rightSection={<IconArrowRight size={15} />}
                            color="indigo"
                         >
-                           {t("join")}
+                           {t("register")}
                         </Button>
-                     )}
-                     <ButtonToggleTheme />
-                     <SwitchLang />
-                  </Group>
+                        <Button
+                           className="cursor-pointer"
+                           onClick={() => {
+                              router.push(ROUTER.LOGIN);
+                           }}
+                           style={styleButtonNav}
+                           variant="default"
+                           color="indigo"
+                        >
+                           {t("login")}
+                        </Button>
+                        <ButtonToggleTheme />
+                        <SwitchLang />
+                     </Group>
+                  )}
                </Group>
+               <ActionIcon onClick={handleDrawerListChat.open} radius={"xl"} className={`${MOBILE_VISIBLE_DESKTOP_HIDDEN}`} variant="default">
+                  <IconBrandMessengerFilled style={{ width: "70%", height: "70%" }} stroke={1.5} />
+               </ActionIcon>
             </Group>
          </header>
          <DrawerNavbar opened={opened} close={handleDrawerNavbar.close} />
+         <DrawerListChat opened={openedListChat} close={handleDrawerListChat.close} />
       </>
    );
 }
