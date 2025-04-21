@@ -12,6 +12,7 @@ export const NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY =
 export const FOLDER_IMAGE_BE = `images/`;
 
 export const TITLE = `Cyber Community`;
+export const LOGO = `/images/logo/logo-512x512.png`;
 
 console.log({
    NEXT_PUBLIC_BASE_DOMAIN_API,
