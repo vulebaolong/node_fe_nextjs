@@ -20,7 +20,9 @@ jobs:
 
          - name: Create new .env file and add environment variables
            run: |
-              echo "BASE_DOMAIN_API=${{secrets.BASE_DOMAIN_API}}" >> .env
+              echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID}}" >> .env
+              echo "NEXT_PUBLIC_BASE_DOMAIN_API=${{secrets.NEXT_PUBLIC_BASE_DOMAIN_API}}" >> .env
+              echo "NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY=${{secrets.NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY}}" >> .env
 
          - name: Build the Docker image
            run: docker build -t vulebaolong/img-node_fe_nextjs:latest .
