@@ -6,7 +6,6 @@ import { useDetailRole, useTogglePermission } from "@/tantask/role.tanstack";
 import { Accordion, ActionIcon, Badge, Box, Container, Group, Paper, Stack, Switch, Text, Title } from "@mantine/core";
 import { IconArrowBack } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import _ from "lodash";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { resError } from "../../../helpers/function.helper";
@@ -32,13 +31,14 @@ export default function RoleDetail() {
             roleId: Number(id),
          },
          {
-            onSuccess: () => {
+            onSuccess: (data) => {
+               console.log({ data });
                queryClient.invalidateQueries({ queryKey: [`permission-by-module`] });
-               toast.success(`Add/remove permission successfully`);
+               toast.success(`${data?.isActive ? `On` : `Off`} Permission Successfully`);
             },
             onError: (error: any) => {
                console.log(error);
-               toast.error(resError(error, `Add/remove permission failed`));
+               toast.error(resError(error, `Toggle permission failed`));
             },
          }
       );
@@ -61,7 +61,16 @@ export default function RoleDetail() {
                <Stack>
                   <Group align="center">
                      <Title>{detailRole.data?.name}</Title>
-                     <Switch checked={detailRole.data?.isActive} onLabel={`ON`} offLabel={`OFF`} />
+                     <Switch
+                        checked={detailRole.data?.isActive}
+                        onLabel={`ON`}
+                        offLabel={`OFF`}
+                        styles={{
+                           track: {
+                              cursor: `pointer`,
+                           },
+                        }}
+                     />
                   </Group>
                   <Text c="dimmed">{detailRole.data?.description}</Text>
 
@@ -72,7 +81,7 @@ export default function RoleDetail() {
                            <Accordion.Panel>
                               <Box className={`${classes.moduleWrap}`}>
                                  {permissions.map((permission, i2) => {
-                                    console.log({ permission });
+                                    // console.log({ permission });
                                     return (
                                        <Paper className={`${classes[`box-1`]}`} shadow="xs" withBorder radius="md" key={i2}>
                                           <Group wrap="nowrap" justify="space-between" gap={0}>
@@ -98,25 +107,24 @@ export default function RoleDetail() {
                                                    </Badge>
                                                 </Group>
 
-                                                <Text
-                                                   fz={12}
-                                                   truncate
-                                                   className={`${classes[`max-width-2`]}`}
-                                                   c="dimmed"
-                                                   fs="italic"
-                                                   w={`fit-content`}
-                                                >
+                                                <Text fz={12} truncate className={`${classes[`max-width-2`]}`} c="dimmed" fs="italic" w={`auto`}>
                                                    {permission.endpoint}
                                                 </Text>
                                              </Stack>
 
                                              <Switch
+                                                disabled={togglePermission.isPending}
                                                 onClick={() => {
                                                    handleClickSwitch(permission.id);
                                                 }}
                                                 onLabel={`ON`}
                                                 offLabel={`OFF`}
-                                                checked={!_.isEmpty(permission.RolePermission)}
+                                                checked={!!permission.isActive}
+                                                styles={{
+                                                   track: {
+                                                      cursor: `pointer`,
+                                                   },
+                                                }}
                                              />
                                           </Group>
                                        </Paper>

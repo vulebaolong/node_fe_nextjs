@@ -9,10 +9,11 @@ export type TPermission = {
    deletedAt: string;
    createdAt: string;
    updatedAt: string;
+   isActive?: number;
 };
 
 export type TPermissionGroupByMoudleRes = {
-   [key: string]: (TPermission & { RolePermission: TRolePermission })[];
+   [key: string]: (TPermission & { Role_Permissions: TRolePermission })[];
 };
 
 export type TRolePermission = {
