@@ -1,4 +1,4 @@
-import { BASE_DOMAIN_API, BASE_DOMAIN_CLOUDINARY, FOLDER_IMAGE_BE } from "@/constant/app.constant";
+import { NEXT_PUBLIC_BASE_DOMAIN_API, NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY, FOLDER_IMAGE_BE } from "@/constant/app.constant";
 import dayjs from "dayjs";
 
 export const checkPathImage = (path: string | null | undefined) => {
@@ -6,9 +6,9 @@ export const checkPathImage = (path: string | null | undefined) => {
    if (path.includes(`http`)) return path;
 
    if (path.includes(`local`)) {
-      return `${BASE_DOMAIN_API}${FOLDER_IMAGE_BE}${path}`;
+      return `${NEXT_PUBLIC_BASE_DOMAIN_API}${FOLDER_IMAGE_BE}${path}`;
    } else {
-      return `${BASE_DOMAIN_CLOUDINARY}${path}`;
+      return `${NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY}${path}`;
    }
 };
 

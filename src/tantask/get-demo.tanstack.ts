@@ -1,9 +1,9 @@
-import { BASE_DOMAIN_API } from "@/constant/app.constant";
+import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
 import { useQuery } from "@tanstack/react-query";
 
 const fetchGet = async (endpoint: string) => {
    try {
-      const response = await fetch(`${BASE_DOMAIN_API}${endpoint}`, {
+      const response = await fetch(`${NEXT_PUBLIC_BASE_DOMAIN_API}${endpoint}`, {
          method: "GET",
          headers: {
             "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 import { clearTokensAction } from "@/actions/auth.action";
-import { BASE_DOMAIN_API } from "@/constant/app.constant";
+import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
 import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from "./cookies.helper";
 
 let isRefreshing = false;
@@ -29,7 +29,7 @@ export const refreshToken = async () => {
       const accessToken = await getAccessToken();
       const refreshToken = await getRefreshToken();
 
-      const res = await fetch(`${BASE_DOMAIN_API}auth/refresh-token`, {
+      const res = await fetch(`${NEXT_PUBLIC_BASE_DOMAIN_API}auth/refresh-token`, {
          method: "POST",
          headers: {
             "Content-Type": "application/json",
@@ -104,7 +104,7 @@ class APIClient {
          console.log(`(${response.status}) Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token`);
          try {
             accessToken = await refreshToken();
-            response = await fetch(`${BASE_DOMAIN_API}${url}`, {
+            response = await fetch(`${NEXT_PUBLIC_BASE_DOMAIN_API}${url}`, {
                ...options,
                headers: {
                   ...(options.headers || {}),
@@ -151,6 +151,6 @@ class APIClient {
 }
 
 // ✅ Khởi tạo API client với BASE_URL từ môi trường
-const api = new APIClient(BASE_DOMAIN_API);
+const api = new APIClient(NEXT_PUBLIC_BASE_DOMAIN_API);
 
 export default api;

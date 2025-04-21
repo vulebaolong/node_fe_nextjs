@@ -1,11 +1,11 @@
 "use client";
 
-import { BASE_DOMAIN_API } from "@/constant/app.constant";
+import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
 import { useAppSelector } from "@/redux/hooks";
 import { createContext, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
-const SOCKET_URL = BASE_DOMAIN_API;
+const SOCKET_URL = NEXT_PUBLIC_BASE_DOMAIN_API;
 
 interface SocketContextType {
    socket: Socket | null;
