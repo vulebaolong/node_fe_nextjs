@@ -1,5 +1,5 @@
-import { Group, StyleProp, Text } from "@mantine/core";
 import { TUser } from "@/types/user.type";
+import { Group, Text } from "@mantine/core";
 import Avatar from "../avatar/Avatar";
 
 type TProps = {

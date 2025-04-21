@@ -12,7 +12,6 @@ import { SET_INFO } from "@/redux/slices/user.slice";
 import { TLoginFormReq, TRegisterReq } from "@/types/auth.type";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 export const useGetInfo = () => {
