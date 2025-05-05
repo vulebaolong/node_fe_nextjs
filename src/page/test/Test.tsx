@@ -5,11 +5,13 @@ import { Stack, Text } from "@mantine/core";
 import classes from "./Test.module.css";
 import TextToSpeak from "@/components/test/text-to-speak/TextToSpeak";
 import GetDemo from "@/components/test/get-demo/GetDemo";
+import Opencv from "./opencv/Opencv";
 
 export default function Test() {
    return (
       <Stack py={100}>
-         <GetDemo />
+         {/* <GetDemo /> */}
+         <Opencv />
          <TextToSpeak />
          <SwitchLanguage />
          <Zustand />

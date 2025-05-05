@@ -20,10 +20,10 @@ export default function SocketProvider({ children }: { children: React.ReactNode
    const info = useAppSelector((state) => state.user.info);
 
    useEffect(() => {
-      if (!socketRef.current && info?.id) {
-         console.log("Initializing socket...");
+      if (!socketRef.current) {
+         console.log("Initializing socket...", SOCKET_URL);
          socketRef.current = io(SOCKET_URL, {
-            query: { userId: info.id },
+            // query: { userId: info.id },
             transports: ["websocket", "polling"],
             secure: false,
          });
