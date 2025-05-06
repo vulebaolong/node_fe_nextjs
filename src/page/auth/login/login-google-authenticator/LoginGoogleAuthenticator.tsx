@@ -1,4 +1,4 @@
-import ROUTER from "@/constant/router.constant";
+import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { useLoginGoogleAuthenticator } from "@/tantask/auth.tanstack";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
 import { Box, Stack, Group, Anchor, Center, Title, PinInput, Button, Text } from "@mantine/core";
@@ -42,7 +42,7 @@ export default function LoginGoogleAuthenticator({ setStep, payloadLogin }: TPro
 
          loginGoogleAuthenticator.mutate(payload, {
             onSuccess: () => {
-               router.push(ROUTER.HOME);
+               router.push(ROUTER_CLIENT.HOME);
                toast.success(`Login successfully`);
             },
          });

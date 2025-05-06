@@ -1,6 +1,6 @@
 "use client";
 
-import ROUTER from "@/constant/router.constant";
+import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { usePermissionGroupByModule } from "@/tantask/permission.tanstack";
 import { useDetailRole, useTogglePermission } from "@/tantask/role.tanstack";
 import { Accordion, ActionIcon, Badge, Box, Container, Group, Paper, Stack, Switch, Text, Title } from "@mantine/core";
@@ -49,7 +49,7 @@ export default function RoleDetail() {
          <Stack gap={50}>
             <ActionIcon
                onClick={() => {
-                  router.push(ROUTER.ROLE);
+                  router.push(ROUTER_CLIENT.ROLE);
                }}
                variant="light"
                radius={`xl`}

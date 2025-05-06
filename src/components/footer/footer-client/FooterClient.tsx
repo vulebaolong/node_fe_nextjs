@@ -3,7 +3,7 @@
 import { ActionIcon, Container, Group, rem, Text } from "@mantine/core";
 import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import { Logo } from "../logo/Logo";
+import { Logo } from "../../logo/Logo";
 import classes from "./FooterClient.module.css";
 
 const data = [

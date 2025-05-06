@@ -38,7 +38,7 @@ const queryClient = new QueryClient({
 });
 
 export default function Provider({ children }: { children: ReactNode }) {
-   useHotkeys([["mod+.", () => process.env.NEXT_PUBLIC_IS_PRODUCTION === `false` && window.open("/test", "_blank")]]);
+   useHotkeys([["mod+.", () => process.env.NEXT_PUBLIC_IS_PRODUCTION !== `true` && window.open("/test", "_blank")]]);
 
    return (
       <QueryClientProvider client={queryClient}>

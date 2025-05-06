@@ -1,4 +1,4 @@
-const ROUTER = {
+export const ROUTER_CLIENT = {
    HOME: `/`,
    LOGIN: `/login`,
    REGISTER: `/register`,
@@ -9,4 +9,6 @@ const ROUTER = {
    ROLE: `/role`,
 };
 
-export default ROUTER;
+export const ROUTER_ADMIN = {
+   DASHBOARD: `/admin`,
+};

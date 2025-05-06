@@ -1,5 +1,5 @@
 import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
-import ROUTER from "@/constant/router.constant";
+import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { useLoginForm } from "@/tantask/auth.tanstack";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
 import { Anchor, Box, Button, Group, TextInput } from "@mantine/core";
@@ -65,7 +65,7 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
                if (data.isGoogleAuthenticator) {
                   setStep(`login-google-authentication`);
                } else {
-                  router.push(ROUTER.HOME);
+                  router.push(ROUTER_CLIENT.HOME);
                   toast.success(`Login successfully`);
                }
             },
