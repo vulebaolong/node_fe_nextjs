@@ -1,4 +1,4 @@
-import ROUTER from "@/constant/router.constant";
+import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { useLoginFacebook } from "@/tantask/auth.tanstack";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import FacebookLogin, { FacebookLoginClient } from "@greatsumini/react-facebook-login";
@@ -35,7 +35,7 @@ export function FacebookButton(props: ButtonProps & React.ComponentPropsWithoutR
             console.log(profile);
             loginFacebook.mutate(profile as TLoginFacebookReq, {
                onSuccess: () => {
-                  router.push(ROUTER.HOME);
+                  router.push(ROUTER_CLIENT.HOME);
                   toast.success(`Login successfully`);
                },
                onSettled: () => {

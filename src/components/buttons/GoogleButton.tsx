@@ -1,4 +1,4 @@
-import ROUTER from "@/constant/router.constant";
+import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { useLoginGoolge } from "@/tantask/auth.tanstack";
 import { Button, ButtonProps } from "@mantine/core";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 // import { useAppDispatch } from "../../../store/store";
 // import { UPDATE_IS_LOGIN } from "../../../store/slices/user/user.slice";
 // import rootRouter from "../../../routes/rootRouter";
-// import { ROUTER } from "../../../constant/router.constant";
+// import { ROUTER_CLIENT } from "../../../constant/router.constant";
 // import { toast } from "react-toastify";
 // import { resError } from "../../../helpers/function.helper";
 import { useState } from "react";
@@ -56,7 +56,7 @@ export function GoogleButton(props: ButtonProps & React.ComponentPropsWithoutRef
             { code: codeResponse.code },
             {
                onSuccess: () => {
-                  router.push(ROUTER.HOME);
+                  router.push(ROUTER_CLIENT.HOME);
                   toast.success(`Login successfully`);
                },
                onSettled: () => {

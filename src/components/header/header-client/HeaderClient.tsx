@@ -1,29 +1,22 @@
 "use client";
 
+import DrawerListChat from "@/components/drawer/drawer-list-chat/DrawerListChat";
 import DrawerNavbar from "@/components/drawer/drawer-navbar/DrawerNavbar";
-import SwitchLang from "@/components/switch-lang/SwitchLang";
-import ButtonToggleTheme from "@/components/toggle-theme/button/ButtonToggleTheme";
+import { Logo } from "@/components/logo/Logo";
+import UserControl from "@/components/user-control/UserControl";
 import { MOBILE_HIDDEN_DESKTOP_VISIBLE, MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
-import ROUTER from "@/constant/router.constant";
-import { useAppSelector } from "@/redux/hooks";
+import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { useQueryInfo } from "@/tantask/auth.tanstack";
-import { ActionIcon, Box, Burger, Button, Group } from "@mantine/core";
+import { ActionIcon, Box, Burger, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBrandMessengerFilled, IconBrandRumble, IconBuildingStore, IconDeviceGamepad, IconHome, IconUsersGroup } from "@tabler/icons-react";
-import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import DrawerListChat from "../drawer/drawer-list-chat/DrawerListChat";
-import { Logo } from "../logo/Logo";
-import UserControl from "../user-control/UserControl";
 import classes from "./HeaderClient.module.css";
 
-const styleButtonNav = { border: `none`, background: `transparent` };
-
 export default function HeaderClient() {
-   const t = useTranslations(`header`);
+   // const t = useTranslations(`header`);
    const [opened, handleDrawerNavbar] = useDisclosure(false);
    const [openedListChat, handleDrawerListChat] = useDisclosure(false);
-   const info = useAppSelector((state) => state.user.info);
    const router = useRouter();
    useQueryInfo();
 
@@ -54,7 +47,7 @@ export default function HeaderClient() {
                >
                   <ActionIcon
                      onClick={() => {
-                        router.push(ROUTER.HOME);
+                        router.push(ROUTER_CLIENT.HOME);
                      }}
                      w={`80px`}
                      h={`80%`}
@@ -78,35 +71,9 @@ export default function HeaderClient() {
                </Group>
 
                {/* right */}
-               <Group gap={5} wrap="nowrap" className={`${MOBILE_HIDDEN_DESKTOP_VISIBLE}`}>
-                  {info ? (
-                     <UserControl />
-                  ) : (
-                     <Group>
-                        <Button
-                           onClick={() => {
-                              router.push(ROUTER.REGISTER);
-                           }}
-                           color="indigo"
-                        >
-                           {t("register")}
-                        </Button>
-                        <Button
-                           className="cursor-pointer"
-                           onClick={() => {
-                              router.push(ROUTER.LOGIN);
-                           }}
-                           style={styleButtonNav}
-                           variant="default"
-                           color="indigo"
-                        >
-                           {t("login")}
-                        </Button>
-                        <ButtonToggleTheme />
-                        <SwitchLang />
-                     </Group>
-                  )}
-               </Group>
+               <Box className={`${MOBILE_HIDDEN_DESKTOP_VISIBLE}`}>
+                  <UserControl />
+               </Box>
                <ActionIcon onClick={handleDrawerListChat.open} radius={"xl"} className={`${MOBILE_VISIBLE_DESKTOP_HIDDEN}`} variant="default">
                   <IconBrandMessengerFilled style={{ width: "70%", height: "70%" }} stroke={1.5} />
                </ActionIcon>
