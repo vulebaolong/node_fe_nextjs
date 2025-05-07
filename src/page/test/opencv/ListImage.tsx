@@ -1,3 +1,4 @@
+import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
 import { listenToEvent } from "@/helpers/chat.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { Image, Stack } from "@mantine/core";
@@ -11,18 +12,17 @@ export default function ListImage() {
   useEffect(() => {
       if (socket) {
          listenToEvent(socket, `plate_saved`, (data) => {
-            console.log({ data });
+            console.log(`plate_saved`,{ data });
             setListImagePath((prev) => [...prev, data.image_path]);
          });
       }
    }, [socket]);
 
-   console.log({ listImagePath });
    return (
       <div>
          <Stack>
             {listImagePath.map((item, i) => {
-               return <Image key={i} src={`http://localhost:8000/${item}`} alt="Live Stream" style={{ width: "100%", maxHeight: "500px" }} />;
+               return <Image key={i} src={`${NEXT_PUBLIC_BASE_DOMAIN_API}${item}`} alt="Live Stream" style={{ width: "100%", maxHeight: "500px" }} />;
             })}
          </Stack>
       </div>
