@@ -1,28 +1,18 @@
-import { Box, Text } from "@mantine/core";
-import IconEmpty from "../icons/IconEmty";
+import { Stack, Text } from "@mantine/core";
+import IconEmpty from "./IconEmty";
 
-export default function Nodata() {
+type TNodata= {
+   colorMode?: "dark" | "light";
+};
+
+export default function Nodata({ colorMode = "dark" }: TNodata) {
+   const isDark = colorMode === "dark";
+   const textColor = isDark ? "var(--mantine-color-dark-2)" : "var(--mantine-color-gray-2)";
+ 
    return (
-      <Box
-         style={{
-            width: `100%`,
-            height: `100%`,
-            display: `flex`,
-            alignItems: `center`,
-            justifyContent: `center`,
-         }}
-      >
-         <Box
-            style={{
-               display: `flex`,
-               flexDirection: `column`,
-               alignItems: `center`,
-               justifyContent: `center`,
-            }}
-         >
-            <IconEmpty />
-            <Text>No data</Text>
-         </Box>
-      </Box>
+     <Stack align="center">
+       <IconEmpty colorMode={colorMode} />
+       <Text style={{ textAlign: "center", color: textColor }}>No data</Text>
+     </Stack>
    );
-}
+ }

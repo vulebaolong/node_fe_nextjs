@@ -1,6 +1,9 @@
-import { getDetailRoleAction, getListRoleAction, getTogglePermissionAction } from "@/actions/role.action";
+import { getDetailRoleAction, getListRoleAction, getRolesAction, getTogglePermissionAction, updateRolesAction } from "@/actions/role.action";
+import { TPayloadTable } from "@/components/custom/table/TableCustom";
+import { resError } from "@/helpers/function.helper";
 import { TTogglePermissionReq } from "@/types/role.type";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 type TUseVideoList = {
    page: number;
@@ -15,6 +18,36 @@ export const useListRole = ({ page, pageSize, search }: TUseVideoList) => {
          const query = `page=${page}&pageSize=${pageSize}&name=${search}`;
          const data = await getListRoleAction(query);
          return data;
+      },
+   });
+};
+
+export const useRoles = (payload: TPayloadTable) => {
+   return useQuery({
+      queryKey: ["roles", payload],
+      queryFn: async () => {
+         const result = await getRolesAction(`page=${payload.pagination.pageIndex}&pageSize=${payload.pagination.pageSize}&filters=${JSON.stringify(payload.filters)}&sortBy=${payload.sort?.sortBy}&isDesc=${payload.sort?.isDesc}`);
+         console.log({ result });
+         return result;
+      },
+   });
+};
+
+export const useUpdateRoles = () => {
+   const queryClient = useQueryClient();
+
+   return useMutation({
+      mutationFn: async (payload: any) => {
+         console.log({ payload });
+         const data = await updateRolesAction(payload);
+         return data;
+      },
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [`roles`] });
+         toast.success(`Update role successfully`);
+      },
+      onError: (error) => {
+         toast.error(resError(error, `Update role failed`));
       },
    });
 };

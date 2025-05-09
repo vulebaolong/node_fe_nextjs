@@ -10,5 +10,6 @@ export const ROUTER_CLIENT = {
 };
 
 export const ROUTER_ADMIN = {
-   DASHBOARD: `/admin`,
+   DASHBOARD: `/admin/dashboard`,
+   ROLE: `/admin/role`,
 };

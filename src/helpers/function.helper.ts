@@ -1,5 +1,7 @@
+import * as Yup from "yup";
 import { NEXT_PUBLIC_BASE_DOMAIN_API, NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY, FOLDER_IMAGE_BE } from "@/constant/app.constant";
 import dayjs from "dayjs";
+import { TFieldCreate } from "@/components/content-admin/ContentAdmin";
 
 export const checkPathImage = (path: string | null | undefined) => {
    if (!path) return path;
@@ -73,3 +75,56 @@ export class LogWithColor {
 
 // ✅ Khởi tạo instance
 export const logWithColor = new LogWithColor();
+
+export function buildInitialValues(fields: TFieldCreate[]) {
+   return fields.reduce((acc, field) => {
+      if (field.type === "number") {
+         acc[field.name] = 0;
+      } else if (field.type === "tags") {
+         acc[field.name] = [];
+      } else if (field.type === "select" && field.dataTags?.some((item: any) => item.value === "true" || item.value === "false")) {
+         acc[field.name] = false;
+      } else {
+         acc[field.name] = "";
+      }
+      return acc;
+   }, {} as Record<string, any>);
+}
+
+export function buildValidationSchema(fields: TFieldCreate[]) {
+   const shape: Record<string, any> = {};
+
+   fields.forEach((field) => {
+      let validator: any = null;
+
+      switch (field.type) {
+         case "text":
+            validator = Yup.string();
+            break;
+         case "number":
+            validator = Yup.number();
+            break;
+         case "select":
+            validator = Yup.string();
+            break;
+         case "date":
+            validator = Yup.date();
+            break;
+         default:
+            validator = Yup.mixed();
+      }
+
+      if (field.withAsterisk) {
+         validator = validator.required(`${field.label} is required`);
+      }
+
+      if (field.validate) {
+         // Nếu có custom validate → apply
+         validator = field.validate(Yup, validator);
+      }
+
+      shape[field.name] = validator;
+   });
+
+   return Yup.object().shape(shape);
+}

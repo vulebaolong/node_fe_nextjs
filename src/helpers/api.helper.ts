@@ -145,6 +145,10 @@ class APIClient {
       return this.request<T>(url, { ...options, method: "PUT", body });
    }
 
+   patch<T>(url: string, body?: any, options?: FetchOptions) {
+      return this.request<T>(url, { ...options, method: "PATCH", body });
+   }
+
    delete<T>(url: string, options?: FetchOptions) {
       return this.request<T>(url, { ...options, method: "DELETE" });
    }
