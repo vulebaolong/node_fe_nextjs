@@ -7,6 +7,7 @@ import {
    registerAction,
 } from "@/actions/auth.action";
 import { resError } from "@/helpers/function.helper";
+import useRouter from "@/hooks/use-router-custom";
 import { useAppDispatch } from "@/redux/hooks";
 import { SET_INFO } from "@/redux/slices/user.slice";
 import { TLoginFormReq, TRegisterReq } from "@/types/auth.type";
@@ -22,6 +23,30 @@ export const useGetInfo = () => {
          console.log({ useGetInfo: data });
          dispatch(SET_INFO(data));
          return data;
+      },
+   });
+};
+
+export const useQueryInfo2 = (protect: boolean) => {
+   const dispatch = useAppDispatch();
+   const router = useRouter();
+
+   return useQuery({
+      queryKey: ["query-info-protect"],
+      queryFn: async () => {
+         if (!protect) return true;
+         try {
+            const data = await getInfoAction();
+            if (!data) return false;
+
+            console.log({ useGetInfo: data });
+            dispatch(SET_INFO(data));
+            return true;
+         } catch (error) {
+            console.log(error);
+            router.push("/login");
+            return false;
+         }
       },
    });
 };

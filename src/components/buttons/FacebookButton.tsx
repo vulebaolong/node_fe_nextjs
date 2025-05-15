@@ -3,7 +3,7 @@ import { useLoginFacebook } from "@/tantask/auth.tanstack";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import FacebookLogin, { FacebookLoginClient } from "@greatsumini/react-facebook-login";
 import { Button, ButtonProps } from "@mantine/core";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 

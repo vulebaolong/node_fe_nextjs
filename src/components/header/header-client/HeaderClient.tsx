@@ -10,7 +10,7 @@ import { useQueryInfo } from "@/tantask/auth.tanstack";
 import { ActionIcon, Box, Burger, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBrandMessengerFilled, IconBrandRumble, IconBuildingStore, IconDeviceGamepad, IconHome, IconUsersGroup } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 import classes from "./HeaderClient.module.css";
 
 export default function HeaderClient() {

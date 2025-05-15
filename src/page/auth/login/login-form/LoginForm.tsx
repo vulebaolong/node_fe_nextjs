@@ -4,7 +4,7 @@ import { useLoginForm } from "@/tantask/auth.tanstack";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
 import { Anchor, Box, Button, Group, TextInput } from "@mantine/core";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";

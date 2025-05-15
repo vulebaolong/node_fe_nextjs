@@ -6,7 +6,7 @@ import { useAppSelector } from "@/redux/hooks";
 import { Button, Center, Drawer, Group, ScrollArea, Stack } from "@mantine/core";
 import { IconArrowRight } from "@tabler/icons-react";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 
 const styleButtonNav = { border: `none`, background: `transparent` };
 

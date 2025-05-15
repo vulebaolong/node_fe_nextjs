@@ -8,7 +8,7 @@ import { TListRoleRes } from "@/types/role.type copy";
 
 export async function getListRoleAction(query: string) {
    try {
-      const { data } = await api.get<TRes<TResPagination<TListRoleRes[]>>>(`${ENDPOINT.ROLE}?${query}`);
+      const { data } = await api.get<TRes<TResPagination<TListRoleRes>>>(`${ENDPOINT.ROLE}?${query}`);
       console.log({ data });
       return data;
    } catch (error) {

@@ -3,7 +3,7 @@ import { effectText } from "@/helpers/motion.helper";
 import { useAppSelector } from "@/redux/hooks";
 import { Button, Center, Group, Stack, Text } from "@mantine/core";
 import { IconSettings, IconUserCheck, IconUserSearch } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 import Badge from "../badge/Badge";
 
 const menuUser = [

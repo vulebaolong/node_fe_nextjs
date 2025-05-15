@@ -1,7 +1,7 @@
 import { LOGO } from "@/constant/app.constant";
 import { Box } from "@mantine/core";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 
 type TProps = {
    width?: number | string;

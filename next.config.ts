@@ -33,6 +33,9 @@ const nextConfig: NextConfig = {
          bodySizeLimit: "2mb",
       },
    },
+   devIndicators: {
+      appIsrStatus: false,
+   },
 };
 
 export default withNextIntl(nextConfig);

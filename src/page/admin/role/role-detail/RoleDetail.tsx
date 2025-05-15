@@ -1,16 +1,16 @@
 "use client";
 
 import Paper from "@/components/custom/paper/PaperCustom";
-import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { usePermissionGroupByModule } from "@/tantask/permission.tanstack";
 import { useDetailRole, useTogglePermission } from "@/tantask/role.tanstack";
 import { Accordion, ActionIcon, Badge, Box, Group, Stack, Switch, Text, Title } from "@mantine/core";
 import { IconArrowBack } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { resError } from "../../../../helpers/function.helper";
 import classes from "./RoleDetail.module.css";
+import useRouter from "@/hooks/use-router-custom";
 
 export default function RoleDetail() {
    const { id } = useParams<{ id: string }>();

@@ -7,7 +7,7 @@ import { useListRole } from "@/tantask/role.tanstack";
 import { ActionIcon, Container, Loader, rem, Stack, Text, TextInput } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { IconArrowRight, IconCircleCheckFilled, IconCircleX, IconEditCircle, IconSearch } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 import { useState } from "react";
 import classes from "./Role.module.css";
 

@@ -4,7 +4,7 @@ import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type"
 import { Box, Stack, Group, Anchor, Center, Title, PinInput, Button, Text } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";

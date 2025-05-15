@@ -10,7 +10,7 @@ import { TRole } from "@/types/role.type";
 import { ActionIcon, Badge, CopyButton, Group, Text } from "@mantine/core";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
+import useRouter from "@/hooks/use-router-custom";
 import { useMemo } from "react";
 
 export default function Role() {

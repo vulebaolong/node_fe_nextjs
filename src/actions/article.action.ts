@@ -7,7 +7,7 @@ import { TArticle } from "@/types/article.type";
 
 export async function getListArticleAction() {
    try {
-      const { data } = await api.get<TResPagination<TArticle[]>>(`${ENDPOINT.ARTICLE.LIST}`);
+      const { data } = await api.get<TRes<TResPagination<TArticle>>>(`${ENDPOINT.ARTICLE.LIST}`);
       return data;
    } catch (error) {
       console.error("Get info failed:", error);

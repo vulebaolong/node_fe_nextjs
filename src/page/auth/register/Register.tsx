@@ -1,15 +1,14 @@
 "use client";
 import { Logo } from "@/components/logo/Logo";
-import classes from "./../Auth.module.css";
 import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
 import CustomRePasswordInput from "@/components/password-input/CustomRePasswordInput";
+import { useRegister } from "@/tantask/auth.tanstack";
 import { Anchor, Box, Button, Center, Paper, Stack, Text, TextInput, Title } from "@mantine/core";
 import { useFormik } from "formik";
-import { useRouter } from "next/navigation";
-import { Suspense } from "react";
-import * as Yup from "yup";
-import { useRegister } from "@/tantask/auth.tanstack";
 import { toast } from "react-toastify";
+import * as Yup from "yup";
+import classes from "./../Auth.module.css";
+import useRouter from "@/hooks/use-router-custom";
 
 export default function Register() {
    const router = useRouter();
@@ -80,106 +79,104 @@ export default function Register() {
    });
 
    return (
-      <Suspense fallback={<p>Loading feed...</p>}>
-         <Stack className={`${classes.wrapForm}`} style={{ animation: "fadeInUp 0.5s" }} px={`md`}>
-            <Center>
-               <Logo />
-            </Center>
+      <Stack className={`${classes.wrapForm}`} style={{ animation: "fadeInUp 0.5s" }} px={`md`}>
+         <Center>
+            <Logo />
+         </Center>
 
-            <Title ta="center" style={{ fontFamily: `Greycliff CF,   var(--mantine-font-family)`, fontWeight: `900` }}>
-               Register!
-            </Title>
+         <Title ta="center" style={{ fontFamily: `Greycliff CF,   var(--mantine-font-family)`, fontWeight: `900` }}>
+            Register!
+         </Title>
 
-            <Paper
-               withBorder
-               shadow="md"
-               p={30}
-               radius="md"
-               style={{
-                  display: `flex`,
-                  flexDirection: `column`,
-                  justifyContent: `space-between`,
-               }}
-               component="form"
-               onSubmit={(e) => {
-                  e.preventDefault();
-                  registerForm.handleSubmit();
+         <Paper
+            withBorder
+            shadow="md"
+            p={30}
+            radius="md"
+            style={{
+               display: `flex`,
+               flexDirection: `column`,
+               justifyContent: `space-between`,
+            }}
+            component="form"
+            onSubmit={(e) => {
+               e.preventDefault();
+               registerForm.handleSubmit();
+            }}
+         >
+            <Box>
+               <TextInput
+                  withAsterisk
+                  label="Full name"
+                  placeholder="Full name"
+                  name="fullName"
+                  value={registerForm.values.fullName}
+                  onChange={registerForm.handleChange}
+                  error={registerForm.touched.fullName && registerForm.errors.fullName}
+                  inputWrapperOrder={["label", "input", "error"]}
+                  style={{ height: `85px` }}
+               />
+
+               <TextInput
+                  withAsterisk
+                  label="Email"
+                  placeholder="email"
+                  name="email"
+                  value={registerForm.values.email}
+                  onChange={registerForm.handleChange}
+                  error={registerForm.touched.email && registerForm.errors.email}
+                  inputWrapperOrder={["label", "input", "error"]}
+                  style={{ height: `85px` }}
+               />
+
+               <Box style={{ height: `85px` }}>
+                  <CustomPasswordInput
+                     label="Password"
+                     placeholder="Your password"
+                     withAsterisk
+                     name="password"
+                     value={registerForm.values.password}
+                     onChange={registerForm.handleChange}
+                     error={registerForm.touched.password && registerForm.errors.password}
+                     inputWrapperOrder={["label", "input", "error"]}
+                  />
+               </Box>
+
+               {/* re-password */}
+               <Box style={{ height: `85px` }}>
+                  <CustomRePasswordInput
+                     rePassword={registerForm.values.rePassword}
+                     password={registerForm.values.password}
+                     label={`Re-enter password`}
+                     placeholder={`Your Password`}
+                     withAsterisk
+                     name="rePassword"
+                     value={registerForm.values.rePassword}
+                     onChange={registerForm.handleChange}
+                     inputWrapperOrder={["label", "input", "error"]}
+                     error={registerForm.touched.rePassword && registerForm.errors.rePassword}
+                     className={classes.input}
+                  />
+               </Box>
+            </Box>
+            <Button loading={register.isPending} type="submit" fullWidth style={{ flexShrink: `0` }}>
+               Register
+            </Button>
+         </Paper>
+
+         <Text ta="center">
+            Don&apos;t have an account?{" "}
+            <Anchor<"a">
+               href="#"
+               fw={700}
+               onClick={(event) => {
+                  event.preventDefault();
+                  router.push("/login");
                }}
             >
-               <Box>
-                  <TextInput
-                     withAsterisk
-                     label="Full name"
-                     placeholder="Full name"
-                     name="fullName"
-                     value={registerForm.values.fullName}
-                     onChange={registerForm.handleChange}
-                     error={registerForm.touched.fullName && registerForm.errors.fullName}
-                     inputWrapperOrder={["label", "input", "error"]}
-                     style={{ height: `85px` }}
-                  />
-
-                  <TextInput
-                     withAsterisk
-                     label="Email"
-                     placeholder="email"
-                     name="email"
-                     value={registerForm.values.email}
-                     onChange={registerForm.handleChange}
-                     error={registerForm.touched.email && registerForm.errors.email}
-                     inputWrapperOrder={["label", "input", "error"]}
-                     style={{ height: `85px` }}
-                  />
-
-                  <Box style={{ height: `85px` }}>
-                     <CustomPasswordInput
-                        label="Password"
-                        placeholder="Your password"
-                        withAsterisk
-                        name="password"
-                        value={registerForm.values.password}
-                        onChange={registerForm.handleChange}
-                        error={registerForm.touched.password && registerForm.errors.password}
-                        inputWrapperOrder={["label", "input", "error"]}
-                     />
-                  </Box>
-
-                  {/* re-password */}
-                  <Box style={{ height: `85px` }}>
-                     <CustomRePasswordInput
-                        rePassword={registerForm.values.rePassword}
-                        password={registerForm.values.password}
-                        label={`Re-enter password`}
-                        placeholder={`Your Password`}
-                        withAsterisk
-                        name="rePassword"
-                        value={registerForm.values.rePassword}
-                        onChange={registerForm.handleChange}
-                        inputWrapperOrder={["label", "input", "error"]}
-                        error={registerForm.touched.rePassword && registerForm.errors.rePassword}
-                        className={classes.input}
-                     />
-                  </Box>
-               </Box>
-               <Button loading={register.isPending} type="submit" fullWidth style={{ flexShrink: `0` }}>
-                  Register
-               </Button>
-            </Paper>
-
-            <Text ta="center">
-               Don&apos;t have an account?{" "}
-               <Anchor<"a">
-                  href="#"
-                  fw={700}
-                  onClick={(event) => {
-                     event.preventDefault();
-                     router.push("/login");
-                  }}
-               >
-                  Login
-               </Anchor>
-            </Text>
-         </Stack>
-      </Suspense>
+               Login
+            </Anchor>
+         </Text>
+      </Stack>
    );
 }
