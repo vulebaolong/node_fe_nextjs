@@ -15,19 +15,19 @@ const fetchGet = async (endpoint: string) => {
       }
 
       const data = await response.json();
-      console.log("✅ Dữ liệu nhận được:", data);
+      console.log("Dữ liệu nhận được:", data);
       return data;
    } catch (error: any) {
-      console.error("❌ Lỗi khi gọi API:", error.message);
+      console.error("Lỗi khi gọi API:", error.message);
       return null;
    }
 };
 
-export const useGetDemo = (endpoint: string) => {
+export const useGetDemo = (endpoint: string, page: number, pageSize: number, filters: { [key: string]: any }) => {
    return useQuery({
-      queryKey: ["get-data-demo"],
+      queryKey: ["get-data-demo", page, pageSize, filters],
       queryFn: async () => {
-         return (await fetchGet(endpoint)) || [];
+         return (await fetchGet(`${endpoint}?page=${page}&pageSize=${pageSize}&filters=${JSON.stringify(filters)}`)) || [];
       },
    });
 };

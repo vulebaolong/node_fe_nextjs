@@ -4,6 +4,8 @@
 import { FacebookButton } from "@/components/buttons/FacebookButton";
 import { GoogleButton } from "@/components/buttons/GoogleButton";
 import { Logo } from "@/components/logo/Logo";
+import SwitchLang from "@/components/switch-lang/SwitchLang";
+import ButtonToggleTheme from "@/components/toggle-theme/button/ButtonToggleTheme";
 import useRouter from "@/hooks/use-router-custom";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
 import { Anchor, Box, Center, Divider, Group, Paper, Text, Title, Transition } from "@mantine/core";
@@ -83,6 +85,13 @@ export default function Login() {
                Register
             </Anchor>
          </Text>
+
+         <Center>
+            <Group mt={`md`}>
+               <ButtonToggleTheme />
+               <SwitchLang />
+            </Group>
+         </Center>
       </Box>
    );
 }
