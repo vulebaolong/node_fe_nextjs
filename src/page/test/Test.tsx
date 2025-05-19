@@ -10,10 +10,10 @@ export default function Test() {
    return (
       <Stack py={100}>
          <GetDemo />
-         <TextToSpeak />
+         {/* <TextToSpeak />
          <SwitchLanguage />
          <Zustand />
-         <Text className={`${classes[`box-1`]}`}>123</Text>
+         <Text className={`${classes[`box-1`]}`}>123</Text> */}
          <ToggleTheme />
       </Stack>
    );
