@@ -56,4 +56,7 @@ export const ENDPOINT = {
       DELETE: "chat",
       UPDATE: "chat",
    },
+   STREAM: {
+      GET: "stream"
+   }
 };
