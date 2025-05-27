@@ -12,8 +12,11 @@ export const FOLDER_IMAGE_BE = `images/`;
 export const TITLE = `Cyber Community`;
 export const LOGO = `/images/logo/logo-512x512.png`;
 
+export const NEXT_PUBLIC_IS_PRODUCTION = process.env.NEXT_PUBLIC_IS_PRODUCTION === "TRUE" ? true : false;
+
 console.log({
    NEXT_PUBLIC_BASE_DOMAIN_API,
    NEXT_PUBLIC_GOOGLE_CLIENT_ID,
    NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY,
+   NEXT_PUBLIC_IS_PRODUCTION
 });

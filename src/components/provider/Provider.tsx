@@ -21,6 +21,7 @@ import ProviderRedux from "./redux/ProviderRedux";
 import SocketProvider from "./socket/SocketProvider";
 import { RootStoreProvider } from "./stores/RootStoreProvider";
 import ToastProvider from "./toast/ToastProvider";
+import RainbowKitProvider from "./rainbowkit/RainbowKitProvider";
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
@@ -50,7 +51,7 @@ export default function Provider({ children }: { children: ReactNode }) {
                   <ToastProvider />
                   <SocketProvider>
                      <GoogleProvider>
-                        {children}
+                        <RainbowKitProvider>{children}</RainbowKitProvider>
                      </GoogleProvider>
                   </SocketProvider>
                </MantineProvider>
