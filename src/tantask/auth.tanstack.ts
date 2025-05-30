@@ -2,15 +2,16 @@ import {
    getInfoAction,
    loginFacebookction,
    loginFormAction,
-   loginGoogleAuthenticatorAction,
+   loginFormGaAction,
    loginGooleAction,
+   loginGooleGaAction,
    registerAction,
 } from "@/actions/auth.action";
 import { resError } from "@/helpers/function.helper";
 import useRouter from "@/hooks/use-router-custom";
 import { useAppDispatch } from "@/redux/hooks";
 import { SET_INFO } from "@/redux/slices/user.slice";
-import { TLoginFormReq, TRegisterReq } from "@/types/auth.type";
+import { TLoginFormGaReq, TLoginFormReq, TLoginGoogleGaReq, TRegisterReq } from "@/types/auth.type";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -100,19 +101,6 @@ export const useLoginForm = () => {
    });
 };
 
-export const useLoginGoogleAuthenticator = () => {
-   return useMutation({
-      mutationFn: async (payload: TLoginFormReq) => {
-         const data = await loginGoogleAuthenticatorAction(payload);
-         return data;
-      },
-      onError: (error) => {
-         console.log(error);
-         toast.error(resError(error, `Login failed`));
-      },
-   });
-};
-
 export const useLoginFacebook = () => {
    return useMutation({
       mutationFn: async (payload: TLoginFacebookReq) => {
@@ -126,10 +114,36 @@ export const useLoginFacebook = () => {
    });
 };
 
-export const useLoginGoolge = () => {
+export const useLoginGoogle = () => {
    return useMutation({
       mutationFn: async (payload: { code: string }) => {
          const data = await loginGooleAction(payload);
+         return data;
+      },
+      onError: (error) => {
+         console.log(error);
+         toast.error(resError(error, `Login failed`));
+      },
+   });
+};
+
+export const useLoginFormGa = () => {
+   return useMutation({
+      mutationFn: async (payload: TLoginFormGaReq) => {
+         const data = await loginFormGaAction(payload);
+         return data;
+      },
+      onError: (error) => {
+         console.log(error);
+         toast.error(resError(error, `Login failed`));
+      },
+   });
+};
+
+export const useLoginGoogleGa = () => {
+   return useMutation({
+      mutationFn: async (payload: TLoginGoogleGaReq) => {
+         const data = await loginGooleGaAction(payload);
          return data;
       },
       onError: (error) => {

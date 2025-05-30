@@ -62,7 +62,7 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
          useloginForm.mutate(payload, {
             onSuccess: (data) => {
                console.log({ data });
-               if (data.isGoogleAuthenticator) {
+               if (data?.isGoogleAuthenticator) {
                   setStep(`login-google-authentication`);
                } else {
                   router.push(ROUTER_CLIENT.HOME);

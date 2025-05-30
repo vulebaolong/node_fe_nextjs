@@ -43,7 +43,7 @@ export default function SettingAccount() {
                      </Text>
                   </Stack>
                </Group>
-               <Button onClick={logout} variant="subtle" radius="xl">
+               <Button onClick={logout} variant="default" radius="xl">
                   {t(`Logout`)}
                </Button>
             </Group>

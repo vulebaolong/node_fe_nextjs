@@ -1,10 +1,7 @@
-import { ROUTER_CLIENT } from "@/constant/router.constant";
-import { useLoginGoogleAuthenticator } from "@/tantask/auth.tanstack";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
-import { Box, Stack, Group, Anchor, Center, Title, PinInput, Button, Text } from "@mantine/core";
+import { Anchor, Box, Button, Center, Group, PinInput, Stack, Text, Title } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useFormik } from "formik";
-import useRouter from "@/hooks/use-router-custom";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
@@ -14,11 +11,8 @@ type TProps = {
    payloadLogin: TPayloadLoginGoogleAuthenticator | null;
 };
 
-export default function LoginGoogleAuthenticator({ setStep, payloadLogin }: TProps) {
-   const loginGoogleAuthenticator = useLoginGoogleAuthenticator();
-   const router = useRouter();
-
-   const loginGoogleAuthenticatorForm = useFormik({
+export default function LoginGa({ setStep, payloadLogin }: TProps) {
+   const loginGAForm = useFormik({
       initialValues: {
          token: "",
       },
@@ -39,13 +33,6 @@ export default function LoginGoogleAuthenticator({ setStep, payloadLogin }: TPro
          };
 
          console.log({ payload });
-
-         loginGoogleAuthenticator.mutate(payload, {
-            onSuccess: () => {
-               router.push(ROUTER_CLIENT.HOME);
-               toast.success(`Login successfully`);
-            },
-         });
       },
    });
    return (
@@ -53,7 +40,7 @@ export default function LoginGoogleAuthenticator({ setStep, payloadLogin }: TPro
          component="form"
          onSubmit={(e) => {
             e.preventDefault();
-            loginGoogleAuthenticatorForm.handleSubmit();
+            loginGAForm.handleSubmit();
          }}
       >
          <Stack h={200}>
@@ -82,11 +69,11 @@ export default function LoginGoogleAuthenticator({ setStep, payloadLogin }: TPro
                   <PinInput
                      length={6}
                      name="token"
-                     value={loginGoogleAuthenticatorForm.values.token}
+                     value={loginGAForm.values.token}
                      onChange={(e) => {
-                        loginGoogleAuthenticatorForm.setFieldValue(`token`, e);
+                        loginGAForm.setFieldValue(`token`, e);
                      }}
-                     error={!!(loginGoogleAuthenticatorForm.touched.token && loginGoogleAuthenticatorForm.errors.token)}
+                     error={!!(loginGAForm.touched.token && loginGAForm.errors.token)}
                   />
                </Center>
                <Center>
@@ -96,9 +83,7 @@ export default function LoginGoogleAuthenticator({ setStep, payloadLogin }: TPro
                         fontSize: `var(--input-error-size, calc(var(--mantine-font-size-sm) - calc(0.125 * var(--mantine-scale))))`,
                      }}
                   >
-                     {loginGoogleAuthenticatorForm.errors.someField && typeof loginGoogleAuthenticatorForm.errors.someField === "string"
-                        ? loginGoogleAuthenticatorForm.errors.someField
-                        : null}
+                     {loginGAForm.errors.someField && typeof loginGAForm.errors.someField === "string" ? loginGAForm.errors.someField : null}
                   </Text>
                </Center>
             </Box>

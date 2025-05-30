@@ -13,6 +13,15 @@ export type TLoginFormReq = {
    password: string;
 };
 
+export type TLoginFormGaReq = {
+   token: string;
+} & TLoginFormReq;
+
+export type TLoginGoogleGaReq = {
+   email: string;
+   token: string;
+};
+
 export type TLogin2FaReq = {
    email: string;
    password: string;
