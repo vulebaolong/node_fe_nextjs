@@ -17,7 +17,7 @@ export default function HeaderAdmin({ mobileOpened, desktopOpened, toggleMobile,
          <Group h="100%">
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom={breakpoint} size="sm" />
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom={breakpoint} size="sm" />
-            <Logo />
+            <Logo width={40}/>
          </Group>
          <Box className={`${MOBILE_HIDDEN_DESKTOP_VISIBLE}`}>
             <UserControl />

@@ -17,7 +17,7 @@ export default function GetDemo() {
    const totalPageRef = useRef(0);
    const [totalPage, setTotalPage] = useState(0);
    const [page, setPage] = useState(1);
-   const [pageSize, setPageSize] = useState(3);
+   const [pageSize] = useState(3);
    const [filtersValue, setFiltersValue] = useState({});
 
    const getDemo = useGetDemo(`article`, page, pageSize, filtersValue);

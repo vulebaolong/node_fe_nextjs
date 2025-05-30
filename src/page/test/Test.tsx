@@ -1,10 +1,6 @@
-import SwitchLanguage from "@/components/test/SwitchLanguage";
-import ToggleTheme from "@/components/test/ToggleTheme";
-import Zustand from "@/components/test/zustand/Zustand";
-import { Stack, Text } from "@mantine/core";
-import classes from "./Test.module.css";
-import TextToSpeak from "@/components/test/text-to-speak/TextToSpeak";
 import GetDemo from "@/components/test/get-demo/GetDemo";
+import ToggleTheme from "@/components/test/ToggleTheme";
+import { Stack } from "@mantine/core";
 
 export default function Test() {
    return (

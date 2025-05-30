@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 
 export function useRichTextEditor(initialContent?: string) {
    const [content, setContent] = useState(initialContent);
+   const [editorKey, setEditorKey] = useState(Date.now());
 
    const extensions = [
       StarterKit,
@@ -20,10 +21,7 @@ export function useRichTextEditor(initialContent?: string) {
       Subscript,
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Image.configure({
-         inline: false,
-         allowBase64: true,
-      }),
+      Image.configure({ inline: false, allowBase64: true }),
    ];
 
    const editor = useEditor({
@@ -37,5 +35,10 @@ export function useRichTextEditor(initialContent?: string) {
       }
    }, [content, editor]);
 
-   return { editor, setContent };
+   const resetEditor = () => {
+      setContent("");
+      setEditorKey(Date.now()); // force rebuild
+   };
+
+   return { editor, setContent, resetEditor, editorKey };
 }

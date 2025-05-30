@@ -9,7 +9,7 @@ type TProps = {
 export default function RootPage({ children }: TProps) {
    // const pathname = usePathname();
    // const router = useRouter();
-   // const getInfo = useGetInfo();
+   // const getInfo = useGetInfoMutation();
    // const [allowRender, setAllowRender] = useState(!protect);
 
    // useEffect(() => {

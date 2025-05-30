@@ -19,5 +19,18 @@
    },
    "home-right": {
       "Contact person": "Người liên hệ"
+   },
+   "setting": {
+      "Display language": "Ngôn ngữ",
+      "Display mode": "Chế độ hiển thị",
+      "Appearance": "Hiển thị",
+      "Account": "Tài khoản",
+      "vi": "Tiếng Việt",
+      "en": "Tiếng Anh",
+      "Logout": "Đăng xuất",
+      "General Settings": "Cài đặt chung",
+      "Light": "Sáng",
+      "Dark": "Tối",
+      "Google Authenticator (2FA)": "Xác thực Google (2FA)"
    }
 }

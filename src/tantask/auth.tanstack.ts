@@ -15,31 +15,34 @@ import { TLoginFacebookReq } from "@/types/facebook.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
-export const useGetInfo = () => {
+export const useQueryInfo = () => {
    const dispatch = useAppDispatch();
-   return useMutation({
-      mutationFn: async () => {
-         const data = await getInfoAction();
-         console.log({ useGetInfo: data });
-         dispatch(SET_INFO(data));
-         return data;
+
+   return useQuery({
+      queryKey: ["query-info"],
+      queryFn: async () => {
+         try {
+            const data = await getInfoAction();
+            if (!data) return null;
+            console.log({ useGetInfoMutation: data });
+            dispatch(SET_INFO(data));
+            return data;
+         } catch (error) {
+            console.log(error);
+            return null;
+         }
       },
    });
 };
 
-export const useQueryInfo2 = (protect: boolean) => {
+export const useGetInfoMutation = () => {
    const dispatch = useAppDispatch();
    const router = useRouter();
-
-   return useQuery({
-      queryKey: ["query-info-protect"],
-      queryFn: async () => {
-         if (!protect) return true;
+   return useMutation({
+      mutationFn: async () => {
          try {
             const data = await getInfoAction();
-            if (!data) return false;
-
-            console.log({ useGetInfo: data });
+            console.log({ useGetInfoMutation: data });
             dispatch(SET_INFO(data));
             return true;
          } catch (error) {
@@ -51,7 +54,7 @@ export const useQueryInfo2 = (protect: boolean) => {
    });
 };
 
-export const useQueryInfo = () => {
+export const useGetInfoQuery = () => {
    const dispatch = useAppDispatch();
 
    return useQuery({
@@ -60,7 +63,7 @@ export const useQueryInfo = () => {
          try {
             const data = await getInfoAction();
             if (!data) return null;
-            console.log({ useGetInfo: data });
+            console.log({ useGetInfoQuery: data });
             dispatch(SET_INFO(data));
             return data;
          } catch (error) {

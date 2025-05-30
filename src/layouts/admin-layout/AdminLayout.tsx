@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
          <AppShell.Header>
             <HeaderAdmin mobileOpened={mobileOpened} desktopOpened={desktopOpened} toggleMobile={toggleMobile} toggleDesktop={toggleDesktop} />
          </AppShell.Header>
-         <AppShell.Navbar p="md">
+         <AppShell.Navbar p="sm">
             <NavbarAdmin closeMobile={closeMobile} />
          </AppShell.Navbar>
          <AppShell.Main>{children}</AppShell.Main>
