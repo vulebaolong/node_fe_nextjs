@@ -1,5 +1,4 @@
 "use client";
-import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/tiptap/styles.css";
@@ -16,7 +15,7 @@ import timezone from "dayjs/plugin/timezone";
 import utc from "dayjs/plugin/utc";
 import { ReactNode } from "react";
 import GoogleProvider from "./google/GoogleProvider";
-import { resolver, themeOverride } from "./mantine/theme";
+import MantineProvider from "./mantine/MantineProvider";
 import ProviderRedux from "./redux/ProviderRedux";
 import SocketProvider from "./socket/SocketProvider";
 import { RootStoreProvider } from "./stores/RootStoreProvider";
@@ -46,7 +45,7 @@ export default function Provider({ children }: { children: ReactNode }) {
       <QueryClientProvider client={queryClient}>
          <RootStoreProvider>
             <ProviderRedux>
-               <MantineProvider theme={themeOverride} defaultColorScheme="dark" cssVariablesResolver={resolver}>
+               <MantineProvider >
                   <ToastProvider />
                   <SocketProvider>
                      <GoogleProvider>

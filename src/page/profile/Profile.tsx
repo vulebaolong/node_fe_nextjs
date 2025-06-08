@@ -4,7 +4,7 @@ import Avatar from "@/components/avatar/Avatar";
 import Badge from "@/components/badge/Badge";
 import { resError } from "@/helpers/function.helper";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetInfo } from "@/tantask/auth.tanstack";
+import { useGetInfoMutation } from "@/tantask/auth.tanstack";
 import { useUploadAvatarCloud, useUploadAvatarLocal } from "@/tantask/user.tanstack";
 import { Avatar as AvatarMantine, Button, Center, Container, Group, Paper, rem, Stack, Text } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
@@ -18,7 +18,7 @@ export function Profile() {
    const [preview, setPreview] = useState<string | null>(null);
    const uploadAvatarLocal = useUploadAvatarLocal();
    const uploadAvatarCloud = useUploadAvatarCloud();
-   const getInfo = useGetInfo();
+   const getInfo = useGetInfoMutation();
 
    const handleUploadLocal = async () => {
       if (file === null) return;

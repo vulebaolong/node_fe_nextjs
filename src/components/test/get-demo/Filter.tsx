@@ -6,8 +6,8 @@ import { Dispatch, SetStateAction } from "react";
 
 type TProps = {
    filters: any[];
-   setFiltersValue: Dispatch<SetStateAction<{}>>;
-   filtersValue: {}
+   setFiltersValue: Dispatch<SetStateAction<any>>;
+   filtersValue: any
 };
 
 export default function Filter({ filters, setFiltersValue, filtersValue }: TProps) {

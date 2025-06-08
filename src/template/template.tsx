@@ -2,7 +2,7 @@
 
 import useRouter from "@/hooks/use-router-custom";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetInfo } from "@/tantask/auth.tanstack";
+import { useGetInfoMutation } from "@/tantask/auth.tanstack";
 import { Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 
@@ -13,7 +13,7 @@ type TProps = {
 
 export default function Template({ children, protect = false }: TProps) {
    const router = useRouter();
-   const getInfo = useGetInfo();
+   const getInfo = useGetInfoMutation();
    const [allowRender, setAllowRender] = useState(!protect);
    const loadingPage = useAppSelector((state) => state.setting.loadingPage);
 

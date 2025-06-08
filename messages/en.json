@@ -19,5 +19,18 @@
    },
    "home-right": {
       "Contact person": "Contact person"
+   },
+   "setting": {
+      "Display language": "Display language",
+      "Display mode": "Display mode",
+      "Appearance": "Appearance",
+      "Account": "Account",
+      "vi": "Vietnamese",
+      "en": "English",
+      "Logout": "Logout",
+      "General Settings": "General Settings",
+      "Light": "Light",
+      "Dark": "Dark",
+      "Google Authenticator (2FA)": "Google Authenticator (2FA)"
    }
 }

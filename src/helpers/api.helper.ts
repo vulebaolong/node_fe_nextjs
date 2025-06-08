@@ -54,12 +54,17 @@ export const refreshToken = async () => {
    }
 };
 
-export async function logout(urlRedirect: string = `/login`) {
+export async function logout() {
    await clearTokensAction();
 
    if (typeof window !== "undefined") {
       // Client
-      if (urlRedirect) window.location.href = urlRedirect;
+      window.location.reload();
+      window.location.href = "/login";
+   } else {
+      // Server
+      const { redirect } = await import("next/navigation");
+      redirect("/login");
    }
 }
 

@@ -1,0 +1,2 @@
+export const CLOSE_MODAL_CHECK_GA = `CLOSE_MODAL_CHECK_GA`;
+export const NEED_TO_CHECK_GA = `NEED_TO_CHECK_GA`;

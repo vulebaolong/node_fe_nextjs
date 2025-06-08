@@ -1,9 +1,9 @@
 import { ROUTER_CLIENT } from "@/constant/router.constant";
-import { useLoginGoolge } from "@/tantask/auth.tanstack";
+import { useLoginGoogle } from "@/tantask/auth.tanstack";
 import { Button, ButtonProps } from "@mantine/core";
 import { useGoogleLogin } from "@react-oauth/google";
 import useRouter from "@/hooks/use-router-custom";
-// import { useLoginGoolge } from "../../api/tanstack/auth.tanstack";
+// import { useLoginGoogle } from "../../api/tanstack/auth.tanstack";
 // import { setAccessToken, setRefreshToken } from "../../../helpers/auth.helper";
 // import { useAppDispatch } from "../../../store/store";
 // import { UPDATE_IS_LOGIN } from "../../../store/slices/user/user.slice";
@@ -45,7 +45,7 @@ function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
 
 export function GoogleButton(props: ButtonProps & React.ComponentPropsWithoutRef<"button">) {
    const router = useRouter();
-   const loginGoogle = useLoginGoolge();
+   const loginGoogle = useLoginGoogle();
    const [loading, setLoading] = useState(false);
 
    const login = useGoogleLogin({

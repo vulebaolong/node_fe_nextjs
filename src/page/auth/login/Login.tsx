@@ -12,7 +12,7 @@ import { Anchor, Box, Center, Divider, Group, Paper, Text, Title, Transition } f
 import { useState } from "react";
 import classes from "./../Auth.module.css";
 import LoginForm from "./login-form/LoginForm";
-import LoginGoogleAuthenticator from "./login-google-authenticator/LoginGoogleAuthenticator";
+import LoginGoogleAuthenticator from "./login-ga/LoginGa";
 
 export default function Login() {
    const router = useRouter();
@@ -30,7 +30,7 @@ export default function Login() {
 
          <Group grow mb="md" mt="md">
             <GoogleButton radius="xl">Google</GoogleButton>
-            <FacebookButton radius="xl">Facebook</FacebookButton>
+            <FacebookButton disabled radius="xl">Facebook</FacebookButton>
          </Group>
 
          <Divider label="Or continue with email" labelPosition="center" my="lg" />

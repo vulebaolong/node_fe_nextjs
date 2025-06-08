@@ -1,11 +1,11 @@
 import { MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
 import { ROUTER_ADMIN } from "@/constant/router.constant";
 import { Box, Divider, NavLink, ScrollArea, Stack } from "@mantine/core";
-import { IconGauge } from "@tabler/icons-react";
+import { IconFingerprint, IconGauge } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserAction from "../user-action/UserAction";
-import UserMenu from "../user-menu/UserMenu";
+import UserMenuLoginYes from "../user-menu/UserMenuLoginYes";
 
 const navLinks = [
    {
@@ -16,7 +16,7 @@ const navLinks = [
    {
       label: "Role",
       href: ROUTER_ADMIN.ROLE,
-      icon: <IconGauge size={16} stroke={1.5} />,
+      icon: <IconFingerprint size={16} stroke={1.5} />,
    },
 ];
 
@@ -29,7 +29,7 @@ export default function NavbarAdmin({ closeMobile }: TProps) {
    return (
       <Stack h={`100%`}>
          <Box className={` ${MOBILE_VISIBLE_DESKTOP_HIDDEN}`}>
-            <UserMenu />
+            <UserMenuLoginYes onClick={closeMobile} />
          </Box>
 
          <Divider className={` ${MOBILE_VISIBLE_DESKTOP_HIDDEN}`} />

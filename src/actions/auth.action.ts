@@ -4,7 +4,7 @@ import { ENDPOINT } from "@/constant/endpoint.constant";
 import api from "@/helpers/api.helper";
 import { clearTokens, setAccessToken, setRefreshToken } from "@/helpers/cookies.helper";
 import { TRes } from "@/types/app.type";
-import { TLoginFormReq, TLoginRes, TRegisterReq, TRegisterRes } from "@/types/auth.type";
+import { TLoginFormGaReq, TLoginFormReq, TLoginGoogleGaReq, TLoginRes, TRegisterReq, TRegisterRes } from "@/types/auth.type";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import { TUser } from "@/types/user.type";
 
@@ -66,6 +66,38 @@ export async function loginFormAction(payload: TLoginFormReq) {
    }
 }
 
+export async function loginGooleGaAction(payload: TLoginGoogleGaReq) {
+   try {
+      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
+      
+      if (data?.accessToken && data?.refreshToken) {
+         await setAccessToken(data?.accessToken);
+         await setRefreshToken(data?.refreshToken);
+      }
+
+      return data;
+   } catch (error) {
+      console.error("Login failed:", error);
+      throw error;
+   }
+}
+
+export async function loginFormGaAction(payload: TLoginFormGaReq) {
+   try {
+      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
+      
+      if (data?.accessToken && data?.refreshToken) {
+         await setAccessToken(data?.accessToken);
+         await setRefreshToken(data?.refreshToken);
+      }
+
+      return data;
+   } catch (error) {
+      console.error("Login failed:", error);
+      throw error;
+   }
+}
+
 export async function loginGoogleAuthenticatorAction(payload: TLoginFormReq) {
    try {
       const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN_GOOGLE_AUTHENTICATOR, payload);
@@ -81,6 +113,8 @@ export async function loginGoogleAuthenticatorAction(payload: TLoginFormReq) {
       throw error;
    }
 }
+
+
 
 export async function getInfoAction() {
    try {

@@ -1,4 +1,4 @@
-import { useGetInfo } from "@/tantask/auth.tanstack";
+import { useGetInfoMutation } from "@/tantask/auth.tanstack";
 import { useGetQrGoogleAuthenticator } from "@/tantask/google-authenticator.tanstack";
 import { ActionIcon, Box, Center, Loader, Modal, Stack, Text, Title } from "@mantine/core";
 import { IconScan, IconX } from "@tabler/icons-react";
@@ -12,7 +12,7 @@ type TProps = {
 };
 export default function ModalGoogleAuthenticator({ opened, close }: TProps) {
    const getQrGoogleAuthenticator = useGetQrGoogleAuthenticator();
-   const getInfo = useGetInfo();
+   const getInfo = useGetInfoMutation();
 
    useEffect(() => {
       if (!opened) return;

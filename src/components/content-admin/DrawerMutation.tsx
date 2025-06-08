@@ -1,13 +1,12 @@
+import { buildInitialValues, buildValidationSchema } from "@/helpers/function.helper";
+import { useIsMobile } from "@/hooks/is-mobile.hook";
 import { Box, Button, Drawer, NumberInput, Radio, Select, Stack, TagsInput, Textarea, TextInput } from "@mantine/core";
-import { RichTextEditor } from "@mantine/tiptap";
 import { UseMutationResult } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import CustomPasswordInput from "../password-input/CustomPasswordInput";
 import { TFieldCreate } from "./ContentAdmin";
-import { useRichTextEditor } from "./hook";
-import { useIsMobile } from "@/hooks/is-mobile.hook";
-import { buildInitialValues, buildValidationSchema } from "@/helpers/function.helper";
+import TextEditor from "./TextEditor";
 
 type TProps = {
    editData: any;
@@ -22,25 +21,11 @@ type TProps = {
 
 export default function DrawerMutation({ editData, updates, creates, update, create, setEditData, opened, close }: TProps) {
    const isMobile = useIsMobile();
-   const { editor, setContent } = useRichTextEditor(undefined);
-
-   useEffect(() => {
-      // Merge đầy đủ field
-      const fullValues = { ...createForm.initialValues, ...editData };
-      console.log({ fullValues });
-      createForm.setValues(fullValues);
-
-      // Tìm field editor và set content
-      const editorField = creates.find((field) => field.type === "editor");
-      if (editorField && editData[editorField.name]) {
-         setContent(editData[editorField.name]);
-      }
-   }, [editData]);
-
    const initialValues = useMemo(() => buildInitialValues(editData ? updates : creates), [editData, updates, creates]);
    const validationSchema = useMemo(() => buildValidationSchema(editData ? updates : creates), [editData, updates, creates]);
+
    const createForm = useFormik({
-      initialValues,
+      initialValues: editData ? { ...initialValues, ...editData } : initialValues,
       validationSchema,
       enableReinitialize: true,
       onSubmit: async (values) => {
@@ -53,19 +38,20 @@ export default function DrawerMutation({ editData, updates, creates, update, cre
                formData = new FormData();
                formData.append(key, value);
                payload[key] = formData;
+            } else if (Array.isArray(value) && value.some((v) => v instanceof File || typeof v === "string")) {
+               payload[key] = value.map((v) => {
+                  if (v instanceof File) {
+                     const formDatas1 = new FormData();
+                     formDatas1.append(key, v);
+                     return formDatas1;
+                  } else if (typeof v === "string") {
+                     const formDatas2 = new FormData();
+                     formDatas2.append(key, v);
+                     return formDatas2;
+                  }
+               });
             }
          });
-
-         const editorField = creates.find((field) => field.type === "editor");
-
-         if (editorField) {
-            payload[editorField.name] = editor?.getHTML();
-
-            if (!payload[editorField.name]) {
-               createForm.setFieldError(editorField.name, `${editorField.label} không được để trống`);
-               return;
-            }
-         }
 
          console.log({ payload });
 
@@ -97,18 +83,15 @@ export default function DrawerMutation({ editData, updates, creates, update, cre
             close();
             createForm.resetForm();
             setEditData(null);
-            setContent("");
          }}
          title={editData ? "Update" : "Create"}
-         size={isMobile ? `90%` : `50%`}
+         size={isMobile ? `90%` : `70%`}
       >
          <form onSubmit={createForm.handleSubmit}>
             <Stack>
                {(editData ? updates : creates).map((field) => {
                   const error =
-                     createForm.touched[field.name] && typeof createForm.errors[field.name] === "string"
-                        ? (createForm.errors[field.name] as string)
-                        : undefined;
+                     createForm.touched[field.name] && createForm.errors[field.name] ? (createForm.errors[field.name] as string) : undefined;
 
                   if (field.type === "custom" && field.component) {
                      return (
@@ -214,32 +197,45 @@ export default function DrawerMutation({ editData, updates, creates, update, cre
                                  createForm.setFieldValue(field.name, value);
                               }
                            }}
+                           error={error}
                            inputWrapperOrder={["label", "input", "error"]}
                         />
                      );
                   }
 
                   if (field.type === "tags") {
+                     const rawValue = createForm.values?.[field.name];
+
+                     const selectedValues = Array.isArray(rawValue)
+                        ? rawValue
+                             .map((item: number) => {
+                                const label = field.enum?.[item];
+                                return typeof label === "string" ? label.trim() : null;
+                             })
+                             .filter(Boolean) 
+                        : [];
+
                      return (
                         <TagsInput
-                           placeholder={field.placeholder || field.label}
                            key={field.name}
+                           placeholder={field.placeholder || field.label}
                            withAsterisk={field.withAsterisk}
                            label={field.label}
                            data={field.dataTags}
-                           // value={(createForm.values[field.name] || []).map((item: number) => field.enum[item]).filter(Boolean)}
-                           value={
-                              Array.isArray(createForm.values[field.name])
-                                 ? createForm.values[field.name].map((item: number) => field.enum?.[item])
-                                 : []
-                           }
+                           value={selectedValues}
+                           error={error}
                            onChange={(e) => {
-                              createForm.setFieldValue(
-                                 field.name,
-                                 e.map((item: any) => field.enum?.[item as keyof typeof field.enum] as number)
-                              );
+                              const parsed = Array.isArray(e)
+                                 ? e
+                                      .map((item: any) => Object.entries(field.enum || {}).find(([, val]) => val === item)?.[0])
+                                      .filter(Boolean)
+                                      .map(Number) 
+                                 : [];
+
+                              createForm.setFieldValue(field.name, parsed);
                            }}
                            inputWrapperOrder={["label", "input", "error"]}
+                           {...field?.props}
                         />
                      );
                   }
@@ -248,54 +244,12 @@ export default function DrawerMutation({ editData, updates, creates, update, cre
                      return (
                         <Box key={field.name}>
                            <label>{field.label}</label>
-                           <RichTextEditor key={1} editor={editor}>
-                              <RichTextEditor.Toolbar sticky stickyOffset={60}>
-                                 <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Bold />
-                                    <RichTextEditor.Italic />
-                                    <RichTextEditor.Underline />
-                                    <RichTextEditor.Strikethrough />
-                                    <RichTextEditor.ClearFormatting />
-                                    <RichTextEditor.Highlight />
-                                    <RichTextEditor.Code />
-                                 </RichTextEditor.ControlsGroup>
-
-                                 <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.H1 />
-                                    <RichTextEditor.H2 />
-                                    <RichTextEditor.H3 />
-                                    <RichTextEditor.H4 />
-                                 </RichTextEditor.ControlsGroup>
-
-                                 <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Blockquote />
-                                    <RichTextEditor.Hr />
-                                    <RichTextEditor.BulletList />
-                                    <RichTextEditor.OrderedList />
-                                    <RichTextEditor.Subscript />
-                                    <RichTextEditor.Superscript />
-                                 </RichTextEditor.ControlsGroup>
-
-                                 <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Link />
-                                    <RichTextEditor.Unlink />
-                                 </RichTextEditor.ControlsGroup>
-
-                                 <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.AlignLeft />
-                                    <RichTextEditor.AlignCenter />
-                                    <RichTextEditor.AlignJustify />
-                                    <RichTextEditor.AlignRight />
-                                 </RichTextEditor.ControlsGroup>
-
-                                 <RichTextEditor.ControlsGroup>
-                                    <RichTextEditor.Undo />
-                                    <RichTextEditor.Redo />
-                                 </RichTextEditor.ControlsGroup>
-                              </RichTextEditor.Toolbar>
-
-                              <RichTextEditor.Content />
-                           </RichTextEditor>
+                           <TextEditor
+                              value={createForm.values[field.name]}
+                              onUpdate={(value) => {
+                                 createForm.setFieldValue(field.name, value.editor.getHTML());
+                              }}
+                           />
                         </Box>
                      );
                   }
@@ -309,6 +263,8 @@ export default function DrawerMutation({ editData, updates, creates, update, cre
                            onChange={(value) => {
                               createForm.setFieldValue(field.name, Number(value));
                            }}
+                           error={error}
+                           inputWrapperOrder={["label", "input", "error"]}
                            withAsterisk={field.withAsterisk}
                         >
                            <Stack gap={10}>
@@ -323,7 +279,7 @@ export default function DrawerMutation({ editData, updates, creates, update, cre
                   return null;
                })}
                <Button loading={update?.isPending || create?.isPending} type="submit">
-                  Save
+                  {editData ? "Update" : "Create"}
                </Button>
             </Stack>
          </form>

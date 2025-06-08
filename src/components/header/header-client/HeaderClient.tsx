@@ -4,20 +4,18 @@ import DrawerListChat from "@/components/drawer/drawer-list-chat/DrawerListChat"
 import DrawerNavbar from "@/components/drawer/drawer-navbar/DrawerNavbar";
 import { Logo } from "@/components/logo/Logo";
 import UserControl from "@/components/user-control/UserControl";
-import { MOBILE_HIDDEN_DESKTOP_VISIBLE, MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
-import { ROUTER_CLIENT } from "@/constant/router.constant";
+import { MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
 import { useQueryInfo } from "@/tantask/auth.tanstack";
 import { ActionIcon, Box, Burger, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBrandMessengerFilled, IconBrandRumble, IconBuildingStore, IconDeviceGamepad, IconHome, IconUsersGroup } from "@tabler/icons-react";
-import useRouter from "@/hooks/use-router-custom";
+import { IconBrandMessengerFilled } from "@tabler/icons-react";
 import classes from "./HeaderClient.module.css";
 
 export default function HeaderClient() {
    // const t = useTranslations(`header`);
    const [opened, handleDrawerNavbar] = useDisclosure(false);
    const [openedListChat, handleDrawerListChat] = useDisclosure(false);
-   const router = useRouter();
+   // const router = useRouter();
    useQueryInfo();
 
    return (
@@ -33,7 +31,7 @@ export default function HeaderClient() {
                   <Logo />
                </Group>
 
-               <Group
+               {/* <Group
                   style={{
                      position: `absolute`,
                      top: `50%`,
@@ -68,15 +66,15 @@ export default function HeaderClient() {
                   <ActionIcon w={`80px`} h={`80%`} variant="subtle" color="gray">
                      <IconDeviceGamepad style={{ width: "50%", height: "50%" }} stroke={1.5} />
                   </ActionIcon>
-               </Group>
+               </Group> */}
 
                {/* right */}
-               <Box className={`${MOBILE_HIDDEN_DESKTOP_VISIBLE}`}>
+               <Group>
                   <UserControl />
-               </Box>
-               <ActionIcon onClick={handleDrawerListChat.open} radius={"xl"} className={`${MOBILE_VISIBLE_DESKTOP_HIDDEN}`} variant="default">
-                  <IconBrandMessengerFilled style={{ width: "70%", height: "70%" }} stroke={1.5} />
-               </ActionIcon>
+                  <ActionIcon onClick={handleDrawerListChat.open} radius={"xl"} className={`${MOBILE_VISIBLE_DESKTOP_HIDDEN}`} variant="default">
+                     <IconBrandMessengerFilled color="indigo" style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                  </ActionIcon>
+               </Group>
             </Group>
          </header>
          <DrawerNavbar opened={opened} close={handleDrawerNavbar.close} />

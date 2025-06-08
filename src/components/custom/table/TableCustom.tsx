@@ -135,7 +135,6 @@ function TableCustom<T>(props: TProps<T>) {
       return (
          <>
             {table.getRowModel().rows.map((row, rowIndex) => {
-               console.log({ row: row.original });
                return (
                   <TableTr
                      key={rowIndex}
@@ -154,7 +153,19 @@ function TableCustom<T>(props: TProps<T>) {
                         );
                      })}
                      {(onEdit || onDelete) && (
-                        <TableTd style={{ ...styleTableTd }}>
+                        <TableTd
+                           style={{ ...styleTableTd, position: "sticky", right: 0, padding: `0 30px` }}
+                           sx={(theme, u) => {
+                              return {
+                                 [u.dark]: {
+                                    backgroundColor: `var(--mantine-color-dark-7)`,
+                                 },
+                                 [u.light]: {
+                                    backgroundColor: `white`,
+                                 },
+                              };
+                           }}
+                        >
                            <Group wrap="nowrap">
                               {onDetail && (
                                  <ActionIcon onClick={() => onDetail?.(row.original)} variant="outline">
@@ -261,11 +272,7 @@ function TableCustom<T>(props: TProps<T>) {
                <LoadingOverlay visible={queryData.isLoading} zIndex={1000} overlayProps={{ radius: "sm", bg: `transparent` }} />
                <NodataOverlay visiable={!queryData.isLoading && (!queryData.data || queryData.data.items.length === 0 || queryData.isError)} />
 
-               <ScrollArea
-                  type="always"
-                  offsetScrollbars
-                  styles={{ thumb: { backgroundColor: `var(--mantine-color-blue-7)` }, root: { height: heightScroll } }}
-               >
+               <ScrollArea type="always" offsetScrollbars styles={{ thumb: { backgroundColor: `#daa785` }, root: { height: heightScroll } }}>
                   <Table stickyHeader style={{ ...styleTable }} withColumnBorders striped>
                      <TableThead style={{ ...styleTableThead }}>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -281,7 +288,7 @@ function TableCustom<T>(props: TProps<T>) {
                               })}
                               {(onEdit || onDelete) && (
                                  <TableTh key={`action`} style={{ ...styleTableTh }}>
-                                    <Box w={100}>Hành động</Box>
+                                    <Box></Box>
                                  </TableTh>
                               )}
                            </TableTr>

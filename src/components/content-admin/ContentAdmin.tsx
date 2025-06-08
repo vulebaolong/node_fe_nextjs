@@ -1,17 +1,22 @@
-import { Box, Button, Center, ComboboxData, ComboboxStringData, Group, Modal, Stack, Text, Title } from "@mantine/core";
+import { TResPagination } from "@/types/app.type";
+import { Button, Center, ComboboxData, ComboboxStringData, Group, Modal, Stack, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
 import { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 import { FormikProps } from "formik";
 import React, { ReactNode, useRef, useState } from "react";
-import DrawerMutation from "./DrawerMutation";
-import { TResPagination } from "@/types/app.type";
 import TableCustom, { TFilterOption, TPayloadTable } from "../custom/table/TableCustom";
+import DrawerMutation from "./DrawerMutation";
+
+export type FieldType = "text" | "password" | "number" | "select" | "select-boolean" | "date" | "custom" | "tags" | "textArea" | "editor" | "radio";
 
 export type TFieldCreate = {
+   initValue?: any;
    label: string;
    name: string;
-   type: "text" | "password" | "number" | "select" | "date" | "custom" | "tags" | "textArea" | "editor" | "radio";
+   type: FieldType;
+
+   props?: any;
 
    placeholder?: string;
    withAsterisk?: boolean;
@@ -33,11 +38,11 @@ export type TFieldCreate = {
 
    // Với tags
    dataTags?: ComboboxStringData; // mảng string (label enum)
-   
+
    // Với radio
    dataRadios?: string[]; // mảng string (label enum)
-   
-   enum?: Record<string, number>; // dùng để map label -> id
+
+   enum?: Record<any, any>; // dùng để map label -> id
 
    // custom
    component?: (props: { value: any; error: string | undefined; setValue: (value: any) => void; createForm: FormikProps<any> }) => React.ReactElement;
@@ -84,7 +89,6 @@ export default function ContentAdmin<T>(props: TProps<T>) {
 
    return (
       <>
-         <Box></Box>
          <Stack>
             <Group justify="space-between">
                <Title order={2} mb="md">

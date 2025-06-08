@@ -1,49 +1,34 @@
 "use client";
 
-import { Container, Divider, Paper, Stack, Text } from "@mantine/core";
-import { Fragment } from "react";
-import EmailVerification from "./email-verification/EmailVerification";
-import GoogleAuthentication from "./google-authenticator/GoogleAuthentication";
-import LoginPasssword from "./login-password/LoginPasssword";
-
-const list = [
-   {
-      title: `Two-Factor Authentication (2FA)`,
-      subTitle: `Two-Factor Authentication (2FA)`,
-      items: [<GoogleAuthentication key="google-auth" />, <EmailVerification key="email-verification" />],
-   },
-   {
-      title: `Advanced Settings`,
-      subTitle: `Advanced Settings`,
-      items: [<LoginPasssword key="login-password" />],
-   },
-];
+import { Container, Stack, Title } from "@mantine/core";
+import { useTranslations } from "next-intl";
+import SettingAccount from "./SettingAccount";
+import SettingAppearance from "./SettingAppearance";
+// import SettingGoogleAuthenticator from "./SettingGoogleAuthenticator";
 
 export default function Setting() {
-   return (
-      <Container py={100}>
-         <Stack gap={50}>
-            {list.map((item, i) => {
-               return (
-                  <Paper key={i} shadow="md" radius="lg" withBorder p="xl">
-                     <Text fz={24}>{item.title}</Text>
-                     <Text fz={12} c="dimmed">
-                        {item.subTitle}
-                     </Text>
+   const t = useTranslations("setting");
 
-                     <Stack mt={50}>
-                        {item.items.map((service, i) => {
-                           return (
-                              <Fragment key={i}>
-                                 {i !== 0 && <Divider />}
-                                 {service}
-                              </Fragment>
-                           );
-                        })}
-                     </Stack>
-                  </Paper>
-               );
-            })}
+   return (
+      <Container pt={50} pb={100}>
+         <Stack gap={50}>
+            <Title
+               order={2}
+               ta="center"
+               mt="sm"
+               sx={{
+                  fontWeight: 900,
+                  fontSize: `clamp(28px, 4vw, 34px)`,
+               }}
+            >
+               {t(`General Settings`)}
+            </Title>
+
+            <Stack>
+               <SettingAccount />
+               <SettingAppearance />
+               {/* <SettingGoogleAuthenticator /> */}
+            </Stack>
          </Stack>
       </Container>
    );
