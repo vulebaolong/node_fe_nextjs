@@ -1,6 +1,7 @@
 "use client";
 
 import Paper from "@/components/custom/paper/PaperCustom";
+import useRouter from "@/hooks/use-router-custom";
 import { usePermissionGroupByModule } from "@/tantask/permission.tanstack";
 import { useDetailRole, useTogglePermission } from "@/tantask/role.tanstack";
 import { Accordion, ActionIcon, Badge, Box, Group, Stack, Switch, Text, Title } from "@mantine/core";
@@ -9,8 +10,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { resError } from "../../../../helpers/function.helper";
-import classes from "./RoleDetail.module.css";
-import useRouter from "@/hooks/use-router-custom";
 
 export default function RoleDetail() {
    const { id } = useParams<{ id: string }>();
@@ -21,8 +20,6 @@ export default function RoleDetail() {
    const detailRole = useDetailRole(id || `0`);
    const permissionGroupByModule = usePermissionGroupByModule(id || `0`);
    const togglePermission = useTogglePermission();
-
-   console.log(`abc`, permissionGroupByModule.data);
 
    const handleClickSwitch = (permissionId: number) => {
       if (!id) return;
@@ -79,16 +76,42 @@ export default function RoleDetail() {
                      <Accordion.Item key={i1} value={key}>
                         <Accordion.Control>{key}</Accordion.Control>
                         <Accordion.Panel>
-                           <Box className={`${classes.moduleWrap}`}>
+                           <Box
+                              sx={(_, u) => {
+                                 return {
+                                    gap: `20px`,
+                                    display: `grid`,
+                                    [u.largerThan(`md`)]: {
+                                       gridTemplateColumns: `1fr 1fr`,
+                                    },
+                                    [u.smallerThan(`md`)]: {
+                                       gridTemplateColumns: `1fr`,
+                                    },
+                                 };
+                              }}
+                           >
                               {permissions.map((permission, i2) => {
                                  // console.log({ permission });
                                  return (
-                                    <Paper className={`${classes[`box-1`]}`} shadow="xs" withBorder radius="md" key={i2}>
+                                    <Paper sx={{ padding: `20px` }} shadow="xs" withBorder radius="md" key={i2}>
                                        <Group wrap="nowrap" justify="space-between" gap={0}>
                                           <Stack>
                                              <Group wrap="nowrap" gap={5}>
                                                 <Title order={6}>
-                                                   <Text className={`${classes[`max-width-1`]}`} truncate inherit>
+                                                   <Text
+                                                      sx={(_, u) => {
+                                                         return {
+                                                            [u.largerThan(`md`)]: {
+                                                               maxWidth: `175px`,
+                                                            },
+                                                            [u.smallerThan(`md`)]: {
+                                                               maxWidth: `100px`,
+                                                            },
+                                                         };
+                                                      }}
+                                                      truncate
+                                                      inherit
+                                                   >
                                                       {permission.name}
                                                    </Text>
                                                 </Title>
@@ -107,19 +130,23 @@ export default function RoleDetail() {
                                                 </Badge>
                                              </Group>
 
-                                             <Text fz={12} truncate className={`${classes[`max-width-2`]}`} c="dimmed" fs="italic" w={`auto`}>
+                                             <Text fz={12} truncate sx={{ maxWidth: `200px` }} c="dimmed" fs="italic" w={`auto`}>
                                                 {permission.endpoint}
                                              </Text>
                                           </Stack>
 
                                           <Switch
-                                             disabled={togglePermission.isPending}
+                                             // dis   abled={togglePermission.isPending}
                                              onClick={() => {
                                                 handleClickSwitch(permission.id);
                                              }}
                                              onLabel={`ON`}
                                              offLabel={`OFF`}
-                                             checked={!!permission.isActive}
+                                             checked={
+                                                togglePermission.isPending
+                                                   ? undefined // Giữ trạng thái hiện tại, không làm gì
+                                                   : !!permission.isActive // Chỉ cập nhật khi không đang gọi API
+                                             }
                                              styles={{
                                                 track: {
                                                    cursor: `pointer`,
