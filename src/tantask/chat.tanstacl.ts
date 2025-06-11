@@ -31,7 +31,7 @@ export const useMessageListChat = ({ page, filters }: TMessageListChatAll) => {
       queryFn: async () => {
          const query = `page=${page}&filters=${JSON.stringify(filters)}&pageSize=10`;
          const data = await getListMessageChatAction(query);
-         console.log({ data });
+         // console.log({ data });
          return data;
       },
    });

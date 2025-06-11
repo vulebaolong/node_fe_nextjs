@@ -24,35 +24,39 @@ export default function UserDetail() {
    const queryClient = useQueryClient();
    const detailUser = useDetailUser(id || `0`);
 
-   useEffect(() => {
-      if (!socket) return;
-      listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, (data: { userRecipient: TUser; chatGroupId: number }) => {
-         console.log({ JOIN_ROOM_FIRST: data });
-         addUserToChatList(
-            { ava: data.userRecipient.avatar, id: data.userRecipient.id, name: data.userRecipient.fullName, roleId: data.userRecipient.roleId, chatGroupId: data.chatGroupId },
-            () => {
-               queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
-               queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
-            }
-         );
-      });
-   }, [socket]);
+   // useEffect(() => {
+   //    if (!socket) return;
+   //    listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, (data: { userRecipient: TUser; chatGroupId: number }) => {
+   //       console.log({ JOIN_ROOM_FIRST: data });
+   //       addUserToChatList(
+   //          { ava: data.userRecipient.avatar, id: data.userRecipient.id, name: data.userRecipient.fullName, roleId: data.userRecipient.roleId, chatGroupId: data.chatGroupId },
+   //          () => {
+   //             queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
+   //             queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+   //          }
+   //       );
+   //    });
+   // }, [socket]);
 
-   useEffect(() => {
-      return () => {
-         if (!socket) return;
-         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST);
-      };
-   }, []);
-
-   useEffect(() => {
-      if (!info?.id || !detailUser.data?.id || !chatGroupId) return;
-   }, [chatGroupId]);
+   // useEffect(() => {
+   //    return () => {
+   //       if (!socket) return;
+   //       removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST);
+   //    };
+   // }, []);
 
    const handleChat = () => {
       if (!info?.id || !detailUser.data?.id || !socket) return;
 
-      emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, { userIdSender: info.id, userIdRecipient: detailUser.data.id, userRecipient: detailUser.data });
+      // emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, { userIdSender: info.id, userIdRecipient: detailUser.data.id, userRecipient: detailUser.data });
+
+      addUserToChatList(
+         { ava: detailUser.data.avatar, id: detailUser.data.id, name: detailUser.data.fullName, roleId: detailUser.data.roleId },
+         () => {
+            queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
+            queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+         }
+      );
 
       console.log({
          id1: info?.id,

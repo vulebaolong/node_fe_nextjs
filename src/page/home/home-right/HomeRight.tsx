@@ -25,38 +25,24 @@ export default function HomeRight() {
    const findAllChatGroupByToken = useFindAllChatGroup();
    const queryClient = useQueryClient();
 
-   useEffect(() => {
-      if (!socket) return;
-
-      listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, (data: { userRecipient: TUser; chatGroupId: number }) => {
-         console.log({ [`REPLY - ${SOCKET_CHAT_MES.JOIN_ROOM_ONE}`]: data });
-
-         addUserToChatList(
-            {
-               ava: data.userRecipient.avatar,
-               id: data.userRecipient.id,
-               name: data.userRecipient.fullName,
-               roleId: data.userRecipient.roleId,
-               chatGroupId: data.chatGroupId,
-            },
-            () => {
-               queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
-               queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
-            }
-         );
-      });
-   }, [socket]);
-
-   useEffect(() => {
-      return () => {
-         if (!socket) return;
-         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE);
-      };
-   }, []);
+  
 
    const handleClickUser = (user: TUser, chatGroup: ChatGroup) => {
-      if (!socket || !userId) return;
-      emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, { userRecipient: user, chatGroupId: chatGroup.id });
+      // if (!socket || !userId) return;
+
+      addUserToChatList(
+         {
+            ava: user.avatar,
+            id: user.id,
+            name: user.fullName,
+            roleId: user.roleId,
+            chatGroupId: chatGroup.id,
+         },
+         () => {
+            queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
+            queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+         }
+      );
    };
 
    return (

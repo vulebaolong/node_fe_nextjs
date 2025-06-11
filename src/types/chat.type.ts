@@ -18,7 +18,7 @@ export type TChatListItem = {
    name: string;
    ava: string;
    roleId: number;
-   chatGroupId: number;
+   chatGroupId?: number;
 };
 
 export type TPayloadReceiveMessage = {

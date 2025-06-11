@@ -1,13 +1,15 @@
-import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
-import { emitToEvent, listenToEvent, removeEventListener } from "@/helpers/chat.helper";
+import { CHAT_LIST_ITEM, SOCKET_CHAT_MES } from "@/constant/chat.constant";
+import { addChatGroup, emitToEvent, getChatListUser, listenToEvent, removeEventListener } from "@/helpers/chat.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { TChatListItem } from "@/types/chat.type";
-import { Divider, Stack } from "@mantine/core";
+import { Center, Divider, Loader, Stack } from "@mantine/core";
 import { useEffect, useState } from "react";
 import MessageHeader from "./message-header/MessageHeader";
 import MessageInput from "./message-input/MessageInput";
 import MessageList from "./message-list/MessageList";
+import { TUser } from "@/types/user.type";
+import { useQueryClient } from "@tanstack/react-query";
 
 type TProps = {
    item: TChatListItem;
@@ -15,15 +17,51 @@ type TProps = {
 };
 
 export default function ChatUserItem({ i, item }: TProps) {
-   const [onlyOne, setOnlyOne] = useState(1);
-   const userId = useAppSelector((state) => state.user.info?.id);
    const { socket } = useSocket();
+   const [chatGroupId, setChatGroupId] = useState<number | null>(null);
+   const [onlyOne, setOnlyOne] = useState(1);
+   const info = useAppSelector((state) => state.user.info);
+   const queryClient = useQueryClient();
 
    useEffect(() => {
-      if (socket && onlyOne === 1 && userId) {
+      if (socket && onlyOne === 1) {
          setOnlyOne((prev) => prev++);
+
+         if (item.chatGroupId) {
+            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, (data: { userRecipient: TUser; chatGroupId: number }) => {
+               // có bao nhiêu ChatUserItem thì JOIN_ROOM_ONE sẽ chạy bấy nhiêu
+               // vì là chat nhiều cũng lúc, nên nếu bật cùng lúc nhiều chat box sẽ bị tín hiệu cuối cùng ghi đè
+               if (data.chatGroupId === item.chatGroupId) {
+                  console.log({ [`REPLY - ${SOCKET_CHAT_MES.JOIN_ROOM_ONE}`]: data });
+                  setChatGroupId(data.chatGroupId);
+               }
+            });
+            emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, { userRecipient: {}, chatGroupId: item.chatGroupId });
+         } else {
+            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, (data: { userRecipient: TUser; chatGroupId: number }) => {
+               // vì chỉ có một chat box nên không được kiểm tra
+               console.log({ [`REPLY - ${SOCKET_CHAT_MES.JOIN_ROOM_FIRST}`]: data }, item.chatGroupId);
+               addChatGroup(item.id, data.chatGroupId, () => {
+                  queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
+                  queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+               });
+               const chatListUserItem = getChatListUser(CHAT_LIST_ITEM);
+               chatListUserItem.find((chatListItem: TChatListItem) => {
+                  if (chatListItem.id === item.id && chatListItem.chatGroupId === data.chatGroupId) {
+                     setChatGroupId(data.chatGroupId);
+                  }
+               });
+            });
+            emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, { userIdSender: info?.id, userIdRecipient: item.id });
+         }
       }
-   }, [socket, userId, item.id]);
+      return () => {
+         if (!socket) return;
+         removeEventListener(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE);
+         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST);
+         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE);
+      };
+   }, [socket]);
 
    useEffect(() => {
       return () => {
@@ -58,9 +96,15 @@ export default function ChatUserItem({ i, item }: TProps) {
       >
          <MessageHeader item={item} />
          <Divider />
-         <MessageList item={item} chatGroupId={item.chatGroupId} />
+         <MessageList item={item} chatGroupId={chatGroupId} />
+         {/* {chatGroupId ? (
+         ) : (
+            <Center flex={1}>
+               <Loader color={`#480303`} size={`md`} />
+            </Center>
+         )} */}
          <Divider />
-         <MessageInput item={item} chatGroupId={item.chatGroupId} />
+         <MessageInput item={item} chatGroupId={chatGroupId} />
       </Stack>
    );
 }

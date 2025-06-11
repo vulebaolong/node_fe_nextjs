@@ -49,18 +49,38 @@ export const removeUserFromChatList = (userRemove: TChatListItem, key: string, o
    if (onSuccess) onSuccess();
 };
 
+export const addChatGroup = (id: number, chatGroupId: number, onSuccess?: () => void) => {
+   const chatListUserItem = getChatListUser(CHAT_LIST_ITEM);
+   chatListUserItem.forEach((item: TChatListItem, i: number) => {
+      if (!item?.chatGroupId && item.id === id) {
+         chatListUserItem[i].chatGroupId = chatGroupId;
+      }
+   });
+   localStorage.setItem(CHAT_LIST_ITEM, JSON.stringify(chatListUserItem));
+
+   const chatListUserBubble = getChatListUser(CHAT_LIST_BUBBLE);
+   chatListUserBubble.forEach((item: TChatListItem, i: number) => {
+      if (!item?.chatGroupId && item.id === id) {
+         chatListUserBubble[i].chatGroupId = chatGroupId;
+      }
+   });
+   localStorage.setItem(CHAT_LIST_BUBBLE, JSON.stringify(chatListUserBubble));
+
+   if (onSuccess) onSuccess();
+};
+
 export const openUserFromBuble = (userMove: TChatListItem, onSuccess?: () => void) => {
    removeUserFromChatList(userMove, CHAT_LIST_BUBBLE);
    addUserToChatList(userMove);
    if (onSuccess) onSuccess();
 };
 
-export function listenToEvent(socket: SocketIOClient.Socket , eventName: string, callback: (...args: any[]) => void) {
+export function listenToEvent(socket: SocketIOClient.Socket, eventName: string, callback: (...args: any[]) => void) {
    socket?.on(eventName, callback);
    logWithColor.tag(`🟢 LISTENING - `, `green`).mes(eventName);
 }
 
-export function removeEventListener(socket: SocketIOClient.Socket , eventName: string, callback?: (...args: any[]) => void) {
+export function removeEventListener(socket: SocketIOClient.Socket, eventName: string, callback?: (...args: any[]) => void) {
    if (callback) {
       socket?.off(eventName, callback);
    } else {
@@ -69,7 +89,7 @@ export function removeEventListener(socket: SocketIOClient.Socket , eventName: s
    logWithColor.tag(`🔴 REMOVED - `, `red`).mes(eventName);
 }
 
-export function emitToEvent(socket: SocketIOClient.Socket , eventName: string, payload: any) {
+export function emitToEvent(socket: SocketIOClient.Socket, eventName: string, payload: any) {
    socket?.emit(eventName, payload);
    logWithColor.tag(`🔵 EMIT - `, `blue`).mes(eventName);
 }
