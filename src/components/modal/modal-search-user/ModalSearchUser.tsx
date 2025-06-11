@@ -3,11 +3,12 @@ import TagUser from "@/components/tag-user/TagUser";
 import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { animationList } from "@/helpers/function.helper";
 import useRouter from "@/hooks/use-router-custom";
+import { useAppSelector } from "@/redux/hooks";
 import { useSearchNameUser } from "@/tantask/user.tanstack";
 import { Box, Divider, Input, LoadingOverlay, Modal, Stack } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 type TProps = {
    opened: boolean;
@@ -17,7 +18,7 @@ type TProps = {
 export default function ModalSearchUser({ opened, close }: TProps) {
    const [search, setSearch] = useState("");
    const searchNameUser = useSearchNameUser();
-
+   const id = useAppSelector((state) => state.user.info?.id);
    const router = useRouter();
 
    const handleSearch = useDebouncedCallback(async (query: string) => {
@@ -76,6 +77,7 @@ export default function ModalSearchUser({ opened, close }: TProps) {
                visiable={!searchNameUser.isPending && (!searchNameUser.data || searchNameUser.data.items.length === 0 || searchNameUser.isError)}
             />
             {searchNameUser.data?.items.map((user, i) => {
+               if (user.id === id) return <Fragment key={i} />;
                return (
                   <Box
                      key={i}
@@ -85,6 +87,7 @@ export default function ModalSearchUser({ opened, close }: TProps) {
                      }}
                      sx={{
                         ...animationList(i),
+                        padding: `5px`,
                         cursor: "pointer",
                         borderRadius: `5px`,
                         "--button-hover": `var(--mantine-color-default-hover)`,

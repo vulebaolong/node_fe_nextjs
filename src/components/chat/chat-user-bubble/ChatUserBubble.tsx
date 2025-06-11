@@ -3,7 +3,7 @@ import { CHAT_LIST_BUBBLE } from "@/constant/chat.constant";
 import { openUserFromBuble, removeUserFromChatList } from "@/helpers/chat.helper";
 import { TChatListItem } from "@/types/chat.type";
 import { TUser } from "@/types/user.type";
-import { ActionIcon, Box, Transition } from "@mantine/core";
+import { ActionIcon, Box, Tooltip, Transition } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -46,7 +46,9 @@ export default function ChatUserBubble({ item, i }: TProps) {
          ref={ref}
          onClick={handleOpenUserChat}
       >
-         <Avatar style={{ width: `60px`, height: `60px` }} user={{ avatar: item.ava, fullName: item.name } as TUser} />
+         <Tooltip label={item.name} position="left">
+            <Avatar style={{ width: `60px`, height: `60px` }} user={{ avatar: item.ava, fullName: item.name } as TUser} />
+         </Tooltip>
          <Box
             style={{
                position: `absolute`,

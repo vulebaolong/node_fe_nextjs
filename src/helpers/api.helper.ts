@@ -1,6 +1,7 @@
 import { clearTokensAction } from "@/actions/auth.action";
 import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
 import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from "./cookies.helper";
+import { CHAT_LIST_BUBBLE, CHAT_LIST_ITEM } from "@/constant/chat.constant";
 
 let isRefreshing = false;
 let failedQueue: { resolve: (token: string) => void; reject: (err: any) => void }[] = [];
@@ -59,6 +60,8 @@ export async function logout() {
 
    if (typeof window !== "undefined") {
       // Client
+      localStorage.setItem(CHAT_LIST_ITEM, JSON.stringify([]));
+      localStorage.setItem(CHAT_LIST_BUBBLE, JSON.stringify([]));
       window.location.reload();
       window.location.href = "/login";
    } else {

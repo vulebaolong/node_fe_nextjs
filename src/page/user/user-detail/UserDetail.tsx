@@ -3,30 +3,57 @@
 import Avatar from "@/components/avatar/Avatar";
 import Badge from "@/components/badge/Badge";
 import Paper from "@/components/custom/paper/PaperCustom";
-import { addUserToChatList } from "@/helpers/chat.helper";
+import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
+import { addUserToChatList, emitToEvent, listenToEvent, removeEventListener } from "@/helpers/chat.helper";
+import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useDetailUser } from "@/tantask/user.tanstack";
+import { TUser } from "@/types/user.type";
 import { Box, Button, Center, Container, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function UserDetail() {
    const { id } = useParams<{ id: string }>();
    const info = useAppSelector((state) => state.user.info);
-   const [opened, handleOpenChat] = useDisclosure();
-   const queryClient = useQueryClient();
+   const { socket } = useSocket();
+   const [chatGroupId, setChatGroupId] = useState<number | null>(null);
 
+   const queryClient = useQueryClient();
    const detailUser = useDetailUser(id || `0`);
 
-   const handleChat = () => {
-      if (!info?.id || !detailUser.data?.id) return;
-      handleOpenChat.open();
-
-      addUserToChatList({ ava: detailUser.data.avatar, id: detailUser.data.id, name: detailUser.data.fullName, roleId: detailUser.data.roleId }, () => {
-         queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
-         queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+   useEffect(() => {
+      if (!socket) return;
+      listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, (data: { userRecipient: TUser; chatGroupId: number }) => {
+         console.log({ JOIN_ROOM_FIRST: data });
+         addUserToChatList(
+            { ava: data.userRecipient.avatar, id: data.userRecipient.id, name: data.userRecipient.fullName, roleId: data.userRecipient.roleId, chatGroupId: data.chatGroupId },
+            () => {
+               queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
+               queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+            }
+         );
       });
+   }, [socket]);
+
+   useEffect(() => {
+      return () => {
+         if (!socket) return;
+         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST);
+      };
+   }, []);
+
+   useEffect(() => {
+      if (!info?.id || !detailUser.data?.id || !chatGroupId) return;
+   }, [chatGroupId]);
+
+   const handleChat = () => {
+      if (!info?.id || !detailUser.data?.id || !socket) return;
+
+      emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, { userIdSender: info.id, userIdRecipient: detailUser.data.id, userRecipient: detailUser.data });
+
       console.log({
          id1: info?.id,
          id2: detailUser.data?.id,
@@ -68,17 +95,6 @@ export default function UserDetail() {
                </Paper>
             </Stack>
          </Container>
-         {/* {opened && detailUser.data && (
-            <ChatUserItem
-               item={{
-                  ava: detailUser.data?.avatar,
-                  id: detailUser.data?.id,
-                  name: detailUser.data?.fullName,
-                  roleId: detailUser.data.roleId,
-               }}
-               i={0}
-            />
-         )} */}
       </>
    );
 }

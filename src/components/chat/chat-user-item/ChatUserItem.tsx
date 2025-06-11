@@ -18,24 +18,17 @@ export default function ChatUserItem({ i, item }: TProps) {
    const [onlyOne, setOnlyOne] = useState(1);
    const userId = useAppSelector((state) => state.user.info?.id);
    const { socket } = useSocket();
-   const [chatGroupId, setChatGroupId] = useState<number | null>(null);
 
    useEffect(() => {
       if (socket && onlyOne === 1 && userId) {
          setOnlyOne((prev) => prev++);
-         listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, (data: { chatGroupId: number }) => {
-            console.log({ JOIN_ROOM: data });
-            setChatGroupId(data.chatGroupId);
-         });
-         emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, { userIdSender: userId, userIdRecipient: item.id });
       }
    }, [socket, userId, item.id]);
 
    useEffect(() => {
       return () => {
-         if (socket && chatGroupId) {
-            removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM);
-            socket.emit(SOCKET_CHAT_MES.LEAVE_ROOM, { chatGroupId });
+         if (socket && item.chatGroupId) {
+            socket.emit(SOCKET_CHAT_MES.LEAVE_ROOM, { chatGroupId: item.chatGroupId });
          }
       };
    }, []);
@@ -65,9 +58,9 @@ export default function ChatUserItem({ i, item }: TProps) {
       >
          <MessageHeader item={item} />
          <Divider />
-         <MessageList item={item} chatGroupId={chatGroupId} />
+         <MessageList item={item} chatGroupId={item.chatGroupId} />
          <Divider />
-         <MessageInput item={item} chatGroupId={chatGroupId} />
+         <MessageInput item={item} chatGroupId={item.chatGroupId} />
       </Stack>
    );
 }

@@ -2,11 +2,12 @@
 
 import TagUser from "@/components/tag-user/TagUser";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
-import { addUserToChatList, listenToEvent } from "@/helpers/chat.helper";
+import { addUserToChatList, emitToEvent, listenToEvent, removeEventListener } from "@/helpers/chat.helper";
 import { animationList } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useFindAllChatGroup } from "@/tantask/user.tanstack";
+import { ChatGroup } from "@/types/chat-group.type";
 import { TUser } from "@/types/user.type";
 import { ActionIcon, Box, Group, Stack, Text } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
@@ -16,34 +17,47 @@ import { Fragment, useEffect, useState } from "react";
 
 export default function HomeRight() {
    const t = useTranslations(`home-right`);
-   // const findAllUser = useFindAllUser();
-   const findAllChatGroupByToken = useFindAllChatGroup();
    const userId = useAppSelector((state) => state.user.info?.id);
-   const queryClient = useQueryClient();
-   const [listIdUserNoti, setListIdUserNoti] = useState<number[]>([]);
-
-   const handleClickUser = (user: TUser) => {
-      addUserToChatList({ ava: user.avatar, id: user.id, name: user.fullName, roleId: user.roleId }, () => {
-         queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
-         queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
-      });
-   };
-
    const { socket } = useSocket();
 
+   const [listIdUserNoti, _] = useState<number[]>([]);
+
+   const findAllChatGroupByToken = useFindAllChatGroup();
+   const queryClient = useQueryClient();
+
    useEffect(() => {
-      if (socket) {
-         listenToEvent(socket, SOCKET_CHAT_MES.NOTI_MESSAGE, (data) => {
-            console.log({ data });
-            setListIdUserNoti((prev) => {
-               return [...prev, data.payload.userIdSender];
-            });
-            queryClient.invalidateQueries({ queryKey: ["user-list"] });
-            queryClient.invalidateQueries({ queryKey: ["chat-group-list"] });
-            queryClient.invalidateQueries({ queryKey: ["chat-group-by-token-list"] });
-         });
-      }
+      if (!socket) return;
+
+      listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, (data: { userRecipient: TUser; chatGroupId: number }) => {
+         console.log({ [`REPLY - ${SOCKET_CHAT_MES.JOIN_ROOM_ONE}`]: data });
+
+         addUserToChatList(
+            {
+               ava: data.userRecipient.avatar,
+               id: data.userRecipient.id,
+               name: data.userRecipient.fullName,
+               roleId: data.userRecipient.roleId,
+               chatGroupId: data.chatGroupId,
+            },
+            () => {
+               queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
+               queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+            }
+         );
+      });
    }, [socket]);
+
+   useEffect(() => {
+      return () => {
+         if (!socket) return;
+         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE);
+      };
+   }, []);
+
+   const handleClickUser = (user: TUser, chatGroup: ChatGroup) => {
+      if (!socket || !userId) return;
+      emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, { userRecipient: user, chatGroupId: chatGroup.id });
+   };
 
    return (
       <>
@@ -74,7 +88,7 @@ export default function HomeRight() {
                      <Box
                         key={i}
                         onClick={() => {
-                           handleClickUser(user.Users);
+                           handleClickUser(user.Users, chatGroup);
                         }}
                         style={{ cursor: "pointer", ...animationList(i) }}
                      >

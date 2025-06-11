@@ -126,10 +126,12 @@ export default function MessageList({ item, chatGroupId }: TProps) {
 
    const { socket } = useSocket();
    useEffect(() => {
-      if (socket && onlyOne === 1 && userId) {
+      if (socket && onlyOne === 1) {
          setOnlyOne((prev) => prev++);
+         console.log(123);
          listenToEvent(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE, (data: TPayloadData) => {
             console.log({ RECEIVE_MESSAGE: data });
+            if (chatGroupId !== data.chatGroupId) return; // tránh trường hợp gửi message cho các box chat đang mở
             setIsNewMess(true);
             setMessageList((prev) => {
                if (prev === null) return [data];
@@ -137,13 +139,15 @@ export default function MessageList({ item, chatGroupId }: TProps) {
             });
          });
       }
+   }, [socket]);
 
+   useEffect(() => {
       return () => {
          if (socket) {
             removeEventListener(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE);
          }
       };
-   }, [socket, userId]);
+   }, []);
 
    const renderContent = () => {
       if (messageListChat.isLoading && messageList.length === 0) {
