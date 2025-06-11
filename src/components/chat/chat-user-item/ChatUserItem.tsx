@@ -28,7 +28,7 @@ export default function ChatUserItem({ i, item }: TProps) {
          setOnlyOne((prev) => prev++);
 
          if (item.chatGroupId) {
-            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, (data: { userRecipient: TUser; chatGroupId: number }) => {
+            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, (data: { chatGroupId: number }) => {
                // có bao nhiêu ChatUserItem thì JOIN_ROOM_ONE sẽ chạy bấy nhiêu
                // vì là chat nhiều cũng lúc, nên nếu bật cùng lúc nhiều chat box sẽ bị tín hiệu cuối cùng ghi đè
                if (data.chatGroupId === item.chatGroupId) {
@@ -36,9 +36,9 @@ export default function ChatUserItem({ i, item }: TProps) {
                   setChatGroupId(data.chatGroupId);
                }
             });
-            emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, { userRecipient: {}, chatGroupId: item.chatGroupId });
+            emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, { chatGroupId: item.chatGroupId });
          } else {
-            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, (data: { userRecipient: TUser; chatGroupId: number }) => {
+            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, (data: { chatGroupId: number }) => {
                // vì chỉ có một chat box nên không được kiểm tra
                console.log({ [`REPLY - ${SOCKET_CHAT_MES.JOIN_ROOM_FIRST}`]: data }, item.chatGroupId);
                addChatGroup(item.id, data.chatGroupId, () => {
@@ -96,13 +96,13 @@ export default function ChatUserItem({ i, item }: TProps) {
       >
          <MessageHeader item={item} />
          <Divider />
-         <MessageList item={item} chatGroupId={chatGroupId} />
-         {/* {chatGroupId ? (
+         {chatGroupId ? (
+            <MessageList item={item} chatGroupId={chatGroupId} />
          ) : (
             <Center flex={1}>
                <Loader color={`#480303`} size={`md`} />
             </Center>
-         )} */}
+         )}
          <Divider />
          <MessageInput item={item} chatGroupId={chatGroupId} />
       </Stack>

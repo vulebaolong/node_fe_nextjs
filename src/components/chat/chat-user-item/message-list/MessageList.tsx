@@ -135,12 +135,6 @@ export default function MessageList({ item, chatGroupId }: TProps) {
             });
          });
       }
-      return () => {
-         if (socket) {
-            // removeEventListener(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE);
-            console.log({ RECEIVE_MESSAGE: chatGroupId, item });
-         }
-      };
    }, [socket, item]);
 
    const renderContent = () => {
