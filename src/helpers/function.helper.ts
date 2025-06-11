@@ -5,7 +5,9 @@ import { TFieldCreate } from "@/components/content-admin/ContentAdmin";
 
 export const checkPathImage = (path: string | null | undefined) => {
    if (!path) return path;
-   if (path.includes(`http`)) return path;
+   if (path.includes(`http`)) {
+      return path;
+   }
 
    if (path.includes(`local`)) {
       return `${NEXT_PUBLIC_BASE_DOMAIN_API}${FOLDER_IMAGE_BE}${path}`;
@@ -127,4 +129,12 @@ export function buildValidationSchema(fields: TFieldCreate[]) {
    });
 
    return Yup.object().shape(shape);
+}
+
+export function animationList(rowIndex: number) {
+   return {
+      opacity: "0",
+      animation: "fadeInUp 0.5s forwards",
+      animationDelay: `${50 * rowIndex}ms`,
+   };
 }

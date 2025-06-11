@@ -1,9 +1,10 @@
 "use client";
 
+import Avatar from "@/components/avatar/Avatar";
 import Paper from "@/components/custom/paper/PaperCustom";
 import { logout } from "@/helpers/api.helper";
 import { useAppSelector } from "@/redux/hooks";
-import { Avatar, Button, Group, Stack, Text, Title } from "@mantine/core";
+import {  Button, Group, Stack, Text, Title } from "@mantine/core";
 import { useTranslations } from "next-intl";
 
 export default function SettingAccount() {
@@ -33,7 +34,7 @@ export default function SettingAccount() {
                      gap: 10,
                   }}
                >
-                  <Avatar size={`md`} name={info?.fullName} color="initials" />
+                  <Avatar size={`md`} user={info} color="initials" />
                   <Stack gap={0}>
                      <Text truncate sx={{ fontWeight: 900, fontSize: `16px`, maxWidth: `130px` }}>
                         {info?.fullName}

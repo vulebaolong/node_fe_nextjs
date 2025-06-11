@@ -13,9 +13,10 @@ import { useSocket } from "@/hooks/socket.hook";
 
 type TProps = {
    item: TChatListItem;
+   chatGroupId: number | null;
 };
 
-export default function MessageInput({ item }: TProps) {
+export default function MessageInput({ item, chatGroupId }: TProps) {
    const userId = useAppSelector((state) => state.user.info?.id);
    const email = useAppSelector((state) => state.user.info?.email);
    const { socket, isConnected } = useSocket();
@@ -40,6 +41,7 @@ export default function MessageInput({ item }: TProps) {
          message: value,
          userIdSender: userId,
          userIdRecipient: item.id,
+         chatGroupId
       });
       setValue(``);
    };
@@ -47,6 +49,7 @@ export default function MessageInput({ item }: TProps) {
       <Box p={10}>
          <Group gap={2} align="center">
             <Textarea
+               disabled={!chatGroupId}
                radius="xl"
                onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
                placeholder="Write a message..."

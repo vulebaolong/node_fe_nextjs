@@ -2,11 +2,12 @@ import { ROUTER_ADMIN, ROUTER_CLIENT } from "@/constant/router.constant";
 import { logout } from "@/helpers/api.helper";
 import useRouter from "@/hooks/use-router-custom";
 import { useAppSelector } from "@/redux/hooks";
-import { Avatar, Divider, Group, Stack, Text } from "@mantine/core";
+import {  Divider, Group, Stack, Text } from "@mantine/core";
 import { IconCrown, IconLogout, IconSettings, IconUserSearch } from "@tabler/icons-react";
 import { Dispatch, Fragment, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import UserMenuItem from "./UserMenuItem";
+import Avatar from "../avatar/Avatar";
 
 const listMenu = [
    {
@@ -17,7 +18,7 @@ const listMenu = [
    {
       label: "Profile",
       icon: <IconUserSearch size={16} />,
-      href: null,
+      href: ROUTER_CLIENT.PROFILE,
    },
    {
       label: "Setting",
@@ -54,7 +55,9 @@ export default function UserMenuLoginYes({ onClick }: TProps) {
                gap: 10,
             }}
          >
-            <Avatar size={`md`} name={info?.fullName} color="initials" />
+            {/* <Avatar size={`md`} name={info?.fullName} color="initials" /> */}
+            <Avatar size={`md`} style={{width: `38px`, height: `38px`, padding: `0px`}} user={info} color="initials" />
+
             <Stack gap={0}>
                <Text truncate sx={{ fontWeight: 900, fontSize: `16px`, maxWidth: `130px` }}>
                   {info?.fullName}

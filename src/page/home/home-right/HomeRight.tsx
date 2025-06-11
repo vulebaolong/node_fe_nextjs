@@ -1,22 +1,23 @@
 "use client";
 
 import TagUser from "@/components/tag-user/TagUser";
+import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { addUserToChatList, listenToEvent } from "@/helpers/chat.helper";
+import { animationList } from "@/helpers/function.helper";
+import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
-import { useFindAllUser } from "@/tantask/user.tanstack";
+import { useFindAllChatGroup } from "@/tantask/user.tanstack";
 import { TUser } from "@/types/user.type";
 import { ActionIcon, Box, Group, Stack, Text } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import { Fragment, useEffect, useState } from "react";
-import classes from "./HomeRight.module.css";
 import { useTranslations } from "next-intl";
-import { useSocket } from "@/hooks/socket.hook";
-import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
+import { Fragment, useEffect, useState } from "react";
 
 export default function HomeRight() {
    const t = useTranslations(`home-right`);
-   const findAllUser = useFindAllUser();
+   // const findAllUser = useFindAllUser();
+   const findAllChatGroupByToken = useFindAllChatGroup();
    const userId = useAppSelector((state) => state.user.info?.id);
    const queryClient = useQueryClient();
    const [listIdUserNoti, setListIdUserNoti] = useState<number[]>([]);
@@ -38,6 +39,8 @@ export default function HomeRight() {
                return [...prev, data.payload.userIdSender];
             });
             queryClient.invalidateQueries({ queryKey: ["user-list"] });
+            queryClient.invalidateQueries({ queryKey: ["chat-group-list"] });
+            queryClient.invalidateQueries({ queryKey: ["chat-group-by-token-list"] });
          });
       }
    }, [socket]);
@@ -53,18 +56,29 @@ export default function HomeRight() {
                   <IconSearch style={{ width: "70%", height: "70%" }} stroke={1.5} />
                </ActionIcon>
             </Group>
-            <Stack className={`${classes[`box-1`]}`}>
-               {findAllUser.data?.items?.map((user, i) => {
+            <Stack
+               sx={{
+                  overflow: "auto",
+                  height: `100%`,
+                  scrollbarWidth: "none",
+                  "&::-webkit-scrollbar": {
+                     display: "none",
+                  },
+               }}
+            >
+               {findAllChatGroupByToken.data?.items?.map((chatGroup, i) => {
+                  const user = chatGroup.ChatGroupMember.find((user) => user.userId !== userId);
+                  if (!user) return;
                   if (user.id === userId) return <Fragment key={i}></Fragment>;
                   return (
                      <Box
                         key={i}
                         onClick={() => {
-                           handleClickUser(user);
+                           handleClickUser(user.Users);
                         }}
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", ...animationList(i) }}
                      >
-                        <TagUser user={user} fw={listIdUserNoti.includes(user.id) ? `bold` : `normal`} />
+                        <TagUser user={user.Users} fw={listIdUserNoti.includes(user.id) ? `bold` : `normal`} />
                      </Box>
                   );
                })}

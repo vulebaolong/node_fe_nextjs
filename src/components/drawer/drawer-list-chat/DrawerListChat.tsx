@@ -2,9 +2,10 @@ import Nodata from "@/components/no-data/Nodata";
 import TagUser from "@/components/tag-user/TagUser";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { addUserToChatList, listenToEvent } from "@/helpers/chat.helper";
+import { animationList } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
-import { useFindAllUser } from "@/tantask/user.tanstack";
+import { useFindAllChatGroup } from "@/tantask/user.tanstack";
 import { TUser } from "@/types/user.type";
 import { Box, Center, Drawer, Loader, Stack } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
@@ -16,7 +17,7 @@ type TProps = {
 };
 
 export default function DrawerListChat({ opened, close }: TProps) {
-   const findAllUser = useFindAllUser();
+   const findAllUser = useFindAllChatGroup();
    const userId = useAppSelector((state) => state.user.info?.id);
    const queryClient = useQueryClient();
    const [listIdUserNoti, setListIdUserNoti] = useState<number[]>([]);
@@ -38,6 +39,8 @@ export default function DrawerListChat({ opened, close }: TProps) {
                return [...prev, data.payload.userIdSender];
             });
             queryClient.invalidateQueries({ queryKey: ["user-list"] });
+            queryClient.invalidateQueries({ queryKey: ["chat-group-list"] });
+            queryClient.invalidateQueries({ queryKey: ["chat-group-by-token-list"] });
          });
       }
    }, [socket]);
@@ -61,17 +64,19 @@ export default function DrawerListChat({ opened, close }: TProps) {
 
       return (
          <>
-            {findAllUser.data?.items?.map((user, i) => {
+            {findAllUser.data?.items?.map((chatGroup, i) => {
+               const user = chatGroup.ChatGroupMember.find((user) => user.userId !== userId);
+               if (!user) return;
                if (user.id === userId) return <Fragment key={i}></Fragment>;
                return (
                   <Box
                      key={i}
                      onClick={() => {
-                        handleClickUser(user);
+                        handleClickUser(user.Users);
                      }}
-                     style={{ cursor: "pointer" }}
+                     style={{ cursor: "pointer", ...animationList(i) }}
                   >
-                     <TagUser user={user} fw={listIdUserNoti.includes(user.id) ? `bold` : `normal`} />
+                     <TagUser user={user.Users} fw={listIdUserNoti.includes(user.id) ? `bold` : `normal`} />
                   </Box>
                );
             })}

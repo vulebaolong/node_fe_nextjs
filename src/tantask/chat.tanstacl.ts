@@ -23,14 +23,15 @@ export const useGetChatListUserBubble = () => {
 
 type TMessageListChatAll = {
    page: number;
-   userIdRecipient: number;
+   filters: any;
 };
-export const useMessageListChat = ({ page, userIdRecipient }: TMessageListChatAll) => {
+export const useMessageListChat = ({ page, filters }: TMessageListChatAll) => {
    return useQuery({
-      queryKey: ["get-message-list-chat", page, userIdRecipient],
+      queryKey: ["get-message-list-chat", page, filters],
       queryFn: async () => {
-         const query = `page=${page}&userIdRecipient=${userIdRecipient}&pageSize=10`;
+         const query = `page=${page}&filters=${JSON.stringify(filters)}&pageSize=10`;
          const data = await getListMessageChatAction(query);
+         console.log({ data });
          return data;
       },
    });

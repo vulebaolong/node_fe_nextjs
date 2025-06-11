@@ -1,12 +1,14 @@
 type IconEmptyProps = {
    colorMode?: "dark" | "light";
+   width?: number;
+   height?: number;
 };
 
-export default function IconEmpty({ colorMode = "dark" }: IconEmptyProps) {
+export default function IconEmpty({ colorMode = "dark", width = 64, height = 41 }: IconEmptyProps) {
    const isDark = colorMode === "dark";
 
    return (
-      <svg width={64} height={41} viewBox="0 0 64 41" xmlns="http://www.w3.org/2000/svg">
+      <svg width={width} height={height} viewBox="0 0 64 41" xmlns="http://www.w3.org/2000/svg">
          <g transform="translate(0 1)" fill="none" fillRule="evenodd">
             <ellipse fill={isDark ? "var(--mantine-color-dark-2)" : "var(--mantine-color-gray-2)"} cx={32} cy={33} rx={32} ry={7} />
             <g fillRule="nonzero" stroke={isDark ? "var(--mantine-color-dark-2)" : "var(--mantine-color-gray-2)"}>

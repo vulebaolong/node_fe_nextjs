@@ -1,8 +1,7 @@
-import { ReactNode } from "react";
-import classes from "./ClientLayout.module.css";
-import FooterClient from "@/components/footer/footer-client/FooterClient";
 import ChatContainer from "@/components/chat/chat-container/ChatContainer";
+import FooterClient from "@/components/footer/footer-client/FooterClient";
 import HeaderClient from "@/components/header/header-client/HeaderClient";
+import { ReactNode } from "react";
 
 type TProps = {
    children: ReactNode;
@@ -12,11 +11,21 @@ export default function ClientLayout({ children }: TProps) {
    return (
       <>
          <HeaderClient />
-         <main className={`${classes.main}`}>
-            <div className={`${classes[`home-page`]}`}>{children}</div>
+         <main style={{ paddingTop: `var(--height-header)` }}>
+            <div
+               style={{
+                  position: `relative`,
+                  zIndex: 1,
+                  boxShadow: `var(--mantine-shadow-md)`,
+                  backgroundColor: `var(--mantine-color-body)`,
+                  minHeight: `100vh`,
+               }}
+            >
+               {children}
+            </div>
             <div>
-               <div className={`${classes[`footer-spacer`]}`}></div>
-               <div className={`${classes[`footer-wraper`]}`}>
+               <div style={{ height: `400px` }}></div>
+               <div style={{ position: `fixed`, bottom: 0, left: 0, right: 0 }}>
                   <FooterClient />
                </div>
             </div>

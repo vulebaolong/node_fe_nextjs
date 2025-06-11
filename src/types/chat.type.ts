@@ -21,14 +21,13 @@ export type TChatListItem = {
 };
 
 export type TPayloadReceiveMessage = {
-   roomId: string;
+   roomId: number;
    payload: TPayloadData;
 };
 
 export type TPayloadData = {
-   message: string;
-   userId: number;
-   roomId: string;
+   messageText: string;
+   userIdSender: number;
    createdAt: string
 };
 

@@ -2,11 +2,12 @@
 
 import { useAppSelector } from "@/redux/hooks";
 import { useGetInfoQuery } from "@/tantask/auth.tanstack";
-import { Avatar, Group, Menu, Text } from "@mantine/core";
+import { Group, Menu, Text } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
 import { useState } from "react";
 import UserMenuLoginNo from "../user-menu/UserMenuLoginNo";
 import UserMenuLoginYes from "../user-menu/UserMenuLoginYes";
+import Avatar from "../avatar/Avatar";
 
 type TProps = {
    colorText?: string;
@@ -21,7 +22,7 @@ export default function UserControl({ colorText = "black" }: TProps) {
       <Menu shadow="md" width={220} opened={opened} onChange={setOpened}>
          <Menu.Target>
             {info ? (
-               <Avatar size={32} sx={{ cursor: `pointer` }} name={info?.fullName} color="initials" />
+               <Avatar size={32} sx={{ cursor: `pointer` }} user={info} color="initials" />
             ) : (
                <Group
                   gap={2}

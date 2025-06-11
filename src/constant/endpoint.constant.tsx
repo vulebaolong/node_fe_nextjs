@@ -33,6 +33,8 @@ export const ENDPOINT = {
       LOGOUT_DEVICE: `session-login/logout-device`,
    },
    USER: `user`,
+   CHAT_GROUP: `chat-group`,
+   CHAT_GROUP_BY_TOKEN: `chat-group-by-token`,
    UPLOAD_AVATAR_LOCAL: `user/avatar-local`,
    UPLOAD_AVATAR_CLOUD: `user/avatar-cloud`,
    ROLE: `role`,
@@ -50,10 +52,5 @@ export const ENDPOINT = {
       DELETE: "reaction-article",
       UPDATE: "reaction-article",
    },
-   CHAT: {
-      CREATE: "chat",
-      FIND_ALL: "chat",
-      DELETE: "chat",
-      UPDATE: "chat",
-   },
+   CHAT_MESSAGE: "chat-message",
 };

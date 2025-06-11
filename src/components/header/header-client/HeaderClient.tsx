@@ -3,24 +3,37 @@
 import DrawerListChat from "@/components/drawer/drawer-list-chat/DrawerListChat";
 import DrawerNavbar from "@/components/drawer/drawer-navbar/DrawerNavbar";
 import { Logo } from "@/components/logo/Logo";
+import ModalSearchUser from "@/components/modal/modal-search-user/ModalSearchUser";
 import UserControl from "@/components/user-control/UserControl";
 import { MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
 import { useQueryInfo } from "@/tantask/auth.tanstack";
-import { ActionIcon, Box, Burger, Group } from "@mantine/core";
+import { ActionIcon, Box, Burger, Button, Group, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconBrandMessengerFilled } from "@tabler/icons-react";
-import classes from "./HeaderClient.module.css";
+import { IconBrandMessengerFilled, IconSearch } from "@tabler/icons-react";
 
 export default function HeaderClient() {
    // const t = useTranslations(`header`);
    const [opened, handleDrawerNavbar] = useDisclosure(false);
+   const [openedSearchUser, handleSearchUser] = useDisclosure(false);
    const [openedListChat, handleDrawerListChat] = useDisclosure(false);
    // const router = useRouter();
    useQueryInfo();
 
    return (
       <>
-         <header className={`${classes[`header`]}`}>
+         <header
+            style={{
+               backgroundColor: `var(--mantine-color-body)`,
+               height: `var(--height-header)`,
+               position: `fixed`,
+               top: 0,
+               left: 0,
+               right: 0,
+               zIndex: 101,
+               borderBottom: `1px solid var(--mantine-color-gray-light)`,
+               padding: `0px 20px`,
+            }}
+         >
             <Group justify="space-between" h={`100%`} wrap="nowrap">
                {/* left */}
                <Group gap={2} wrap="nowrap">
@@ -28,7 +41,14 @@ export default function HeaderClient() {
                      <Burger size={"sm"} opened={opened} onClick={handleDrawerNavbar.open} />
                   </Box>
 
-                  <Logo />
+                  <Group>
+                     <Logo />
+                     <Button onClick={handleSearchUser.open} c={"dimmed"} leftSection={<IconSearch size={16} />} variant="default" radius="xl" size="md">
+                        <Text size="sm" fw={400}>
+                           Tìm kiếm người dùng
+                        </Text>
+                     </Button>
+                  </Group>
                </Group>
 
                {/* <Group
@@ -79,6 +99,7 @@ export default function HeaderClient() {
          </header>
          <DrawerNavbar opened={opened} close={handleDrawerNavbar.close} />
          <DrawerListChat opened={openedListChat} close={handleDrawerListChat.close} />
+         <ModalSearchUser opened={openedSearchUser} close={handleSearchUser.close}/>
       </>
    );
 }

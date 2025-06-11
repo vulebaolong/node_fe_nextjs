@@ -8,13 +8,19 @@ import HomeRight from "./home-right/HomeRight";
 export default function Home() {
    return (
       <Box
-         sx={{
-            display: "grid",
-            gridTemplateColumns: "250px 1fr 250px",
-            gridTemplateRows: "1fr",
-            gap: 20,
-            height: "calc(100dvh - var(--height-header))",
-            padding: "20px",
+         sx={(_, u) => {
+            return {
+               display: "grid",
+               [u.largerThan("md")]: {
+                  gridTemplateColumns: "250px 1fr 250px",
+               },
+               [u.smallerThan("md")]: {
+                  gridTemplateColumns: "1fr",
+               },
+               gap: 20,
+               height: "calc(100dvh - var(--height-header))",
+               padding: "20px",
+            };
          }}
       >
          <Box

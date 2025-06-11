@@ -10,10 +10,9 @@ type TProps = {
    iconChevronDown?: boolean;
 } & AvatarProps;
 
-
-const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRef<"div">>(({ user, style, iconChevronDown = false, ...props }, ref) => {
-   return (
-      <Box p={7}>
+const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRef<"div">>(
+   ({ user, style, iconChevronDown = false, ...props }, ref) => {
+      return (
          <Box pos={`relative`} w={`min-content`}>
             <AvatarMantine
                style={{ ...style }}
@@ -68,9 +67,9 @@ const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRe
                </Box>
             )}
          </Box>
-      </Box>
-   );
-});
+      );
+   }
+);
 
 Avatar.displayName = "Avatar";
 
