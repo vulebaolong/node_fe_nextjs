@@ -19,7 +19,6 @@ type TProps = {
 };
 
 export default function MessageList({ item, chatGroupId }: TProps) {
-   const [onlyOne, setOnlyOne] = useState(1);
    const [isOne, setIsOne] = useState(true);
    const [totalPage, setTotalPage] = useState(0);
    const [isNewMess, setIsNewMess] = useState(false);

@@ -2,6 +2,7 @@ import { CHAT_LIST_BUBBLE, CHAT_LIST_ITEM } from "@/constant/chat.constant";
 import { TChatListItem } from "@/types/chat.type";
 import _ from "lodash";
 import { logWithColor } from "./function.helper";
+import { Socket } from "socket.io-client";
 
 export const getChatListUser = (key: string) => {
    const stringLocal = localStorage.getItem(key);
@@ -75,12 +76,12 @@ export const openUserFromBuble = (userMove: TChatListItem, onSuccess?: () => voi
    if (onSuccess) onSuccess();
 };
 
-export function listenToEvent(socket: SocketIOClient.Socket, eventName: string, callback: (...args: any[]) => void) {
+export function listenToEvent(socket: Socket, eventName: string, callback: (...args: any[]) => void) {
    socket?.on(eventName, callback);
    logWithColor.tag(`🟢 LISTENING - `, `green`).mes(eventName);
 }
 
-export function removeEventListener(socket: SocketIOClient.Socket, eventName: string, callback?: (...args: any[]) => void) {
+export function removeEventListener(socket: Socket, eventName: string, callback?: (...args: any[]) => void) {
    if (callback) {
       socket?.off(eventName, callback);
    } else {
@@ -89,7 +90,7 @@ export function removeEventListener(socket: SocketIOClient.Socket, eventName: st
    logWithColor.tag(`🔴 REMOVED - `, `red`).mes(eventName);
 }
 
-export function emitToEvent(socket: SocketIOClient.Socket, eventName: string, payload: any) {
+export function emitToEvent(socket: Socket, eventName: string, payload: any) {
    socket?.emit(eventName, payload);
    logWithColor.tag(`🔵 EMIT - `, `blue`).mes(eventName);
 }

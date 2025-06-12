@@ -1,10 +1,8 @@
 "use client";
 
 import TagUser from "@/components/tag-user/TagUser";
-import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
-import { addUserToChatList, emitToEvent, listenToEvent, removeEventListener } from "@/helpers/chat.helper";
+import { addUserToChatList } from "@/helpers/chat.helper";
 import { animationList } from "@/helpers/function.helper";
-import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useFindAllChatGroup } from "@/tantask/user.tanstack";
 import { ChatGroup } from "@/types/chat-group.type";
@@ -13,23 +11,18 @@ import { ActionIcon, Box, Group, Stack, Text } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 
 export default function HomeRight() {
    const t = useTranslations(`home-right`);
    const userId = useAppSelector((state) => state.user.info?.id);
-   const { socket } = useSocket();
 
-   const [listIdUserNoti, _] = useState<number[]>([]);
+   // const [listIdUserNoti, _] = useState<number[]>([]);
 
    const findAllChatGroup = useFindAllChatGroup();
    const queryClient = useQueryClient();
 
-  
-
    const handleClickUser = (user: TUser, chatGroup: ChatGroup) => {
-      // if (!socket || !userId) return;
-
       addUserToChatList(
          {
             ava: user.avatar,
@@ -78,7 +71,8 @@ export default function HomeRight() {
                         }}
                         style={{ cursor: "pointer", ...animationList(i) }}
                      >
-                        <TagUser user={user.Users} fw={listIdUserNoti.includes(user.id) ? `bold` : `normal`} />
+                        {/* <TagUser user={user.Users} fw={listIdUserNoti.includes(user.id) ? `bold` : `normal`} /> */}
+                        <TagUser user={user.Users} />
                      </Box>
                   );
                })}

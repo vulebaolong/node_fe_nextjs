@@ -4,12 +4,11 @@ import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { TChatListItem } from "@/types/chat.type";
 import { Center, Divider, Loader, Stack } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import MessageHeader from "./message-header/MessageHeader";
 import MessageInput from "./message-input/MessageInput";
 import MessageList from "./message-list/MessageList";
-import { TUser } from "@/types/user.type";
-import { useQueryClient } from "@tanstack/react-query";
 
 type TProps = {
    item: TChatListItem;
