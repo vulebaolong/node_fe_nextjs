@@ -57,7 +57,7 @@ export default function ChatUserItem({ i, item }: TProps) {
       }
       return () => {
          if (!socket) return;
-         removeEventListener(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE);
+         removeEventListener(socket, SOCKET_CHAT_MES.SEND_MESSAGE);
          removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST);
          removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE);
       };

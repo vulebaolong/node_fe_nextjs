@@ -1,4 +1,12 @@
-import { findAllChatGroupAction, findAllChatGroupByTokenAction, findAllUserAction, getDetailUserAction, searchNameUserAction, uploadAvatarCloudAction, uploadAvatarLocalAction } from "@/actions/user.action";
+import {
+   findAllChatGroupAction,
+   findAllChatGroupByTokenAction,
+   findAllUserAction,
+   getDetailUserAction,
+   searchNameUserAction,
+   uploadAvatarCloudAction,
+   uploadAvatarLocalAction,
+} from "@/actions/user.action";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useUploadAvatarLocal = () => {
@@ -34,6 +42,7 @@ export const useFindAllChatGroup = () => {
       queryKey: ["chat-group-list"],
       queryFn: async () => {
          const data = await findAllChatGroupAction();
+         console.log({ findAllChatGroup: data });
          return data;
       },
    });

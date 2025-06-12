@@ -3,19 +3,22 @@
 import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
 import { useAppSelector } from "@/redux/hooks";
 import { createContext, useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
+import { io, Socket } from "socket.io-client";
+// import io from "socket.io-client";
 
 const SOCKET_URL = NEXT_PUBLIC_BASE_DOMAIN_API;
 
 interface SocketContextType {
-   socket: SocketIOClient.Socket | null;
+   socket: Socket | null;
+   // socket: SocketIOClient.Socket | null;
    isConnected: boolean;
 }
 
 export const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export default function SocketProvider({ children }: { children: React.ReactNode }) {
-   const socketRef = useRef<SocketIOClient.Socket | null>(null);
+   const socketRef = useRef<Socket | null>(null);
+   // const socketRef = useRef<SocketIOClient.Socket | null>(null);
    const [isConnected, setIsConnected] = useState(false);
    const info = useAppSelector((state) => state.user.info);
 

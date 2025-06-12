@@ -22,7 +22,7 @@ export default function HomeRight() {
 
    const [listIdUserNoti, _] = useState<number[]>([]);
 
-   const findAllChatGroupByToken = useFindAllChatGroup();
+   const findAllChatGroup = useFindAllChatGroup();
    const queryClient = useQueryClient();
 
   
@@ -66,8 +66,8 @@ export default function HomeRight() {
                   },
                }}
             >
-               {findAllChatGroupByToken.data?.items?.map((chatGroup, i) => {
-                  const user = chatGroup.ChatGroupMember.find((user) => user.userId !== userId);
+               {(findAllChatGroup.data?.items || []).map((chatGroup, i) => {
+                  const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.userId !== userId);
                   if (!user) return;
                   if (user.id === userId) return <Fragment key={i}></Fragment>;
                   return (

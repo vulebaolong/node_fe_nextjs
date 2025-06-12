@@ -17,7 +17,7 @@ type TProps = {
 };
 
 export default function DrawerListChat({ opened, close }: TProps) {
-   const findAllUser = useFindAllChatGroup();
+   const findAllChatGroup = useFindAllChatGroup();
    const userId = useAppSelector((state) => state.user.info?.id);
    const queryClient = useQueryClient();
    const [listIdUserNoti, setListIdUserNoti] = useState<number[]>([]);
@@ -46,7 +46,7 @@ export default function DrawerListChat({ opened, close }: TProps) {
    }, [socket]);
 
    const renderContent = () => {
-      if (findAllUser.isLoading) {
+      if (findAllChatGroup.isLoading) {
          return (
             <Center h={`100%`}>
                <Loader />
@@ -54,7 +54,7 @@ export default function DrawerListChat({ opened, close }: TProps) {
          );
       }
 
-      if (!findAllUser.data || findAllUser.data.items.length === 0 || findAllUser.isError) {
+      if (!findAllChatGroup.data || findAllChatGroup.data.items.length === 0 || findAllChatGroup.isError) {
          return (
             <Center h={`100%`}>
                <Nodata />
@@ -64,8 +64,8 @@ export default function DrawerListChat({ opened, close }: TProps) {
 
       return (
          <>
-            {findAllUser.data?.items?.map((chatGroup, i) => {
-               const user = chatGroup.ChatGroupMember.find((user) => user.userId !== userId);
+            {(findAllChatGroup.data?.items || []).map((chatGroup, i) => {
+               const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.userId !== userId);
                if (!user) return;
                if (user.id === userId) return <Fragment key={i}></Fragment>;
                return (

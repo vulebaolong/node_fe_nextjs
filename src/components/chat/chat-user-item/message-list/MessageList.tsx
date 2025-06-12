@@ -1,10 +1,10 @@
 import Nodata from "@/components/no-data/Nodata";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
-import { listenToEvent, removeEventListener } from "@/helpers/chat.helper";
+import { listenToEvent } from "@/helpers/chat.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useMessageListChat } from "@/tantask/chat.tanstacl";
-import { TChatListItem, TPayloadData, TPayloadReceiveMessage } from "@/types/chat.type";
+import { TChatListItem, TPayloadData } from "@/types/chat.type";
 import { ActionIcon, Box, Center, Loader, Stack } from "@mantine/core";
 import { useIntersection } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons-react";
@@ -38,7 +38,7 @@ export default function MessageList({ item, chatGroupId }: TProps) {
    });
 
    useEffect(() => {
-      if (!messageListChat.data || !chatGroupId) return;
+      if (!messageListChat.data || !chatGroupId || !messageListChat.data || !messageListChat.data?.items) return;
       const mesList = messageListChat.data.items.reverse();
       setMessageList((prev) => {
          setScrollPosition(targetRefContainer.current.scrollHeight);
@@ -125,8 +125,8 @@ export default function MessageList({ item, chatGroupId }: TProps) {
    const { socket } = useSocket();
    useEffect(() => {
       if (socket) {
-         listenToEvent(socket, SOCKET_CHAT_MES.RECEIVE_MESSAGE, (data: TPayloadData) => {
-            console.log({ RECEIVE_MESSAGE: data, chatGroupId, item });
+         listenToEvent(socket, SOCKET_CHAT_MES.SEND_MESSAGE, (data: TPayloadData) => {
+            console.log({ SEND_MESSAGE: data, chatGroupId, item });
             if (item.chatGroupId !== data.chatGroupId) return; // tránh trường hợp gửi message cho các box chat đang mở
             setIsNewMess(true);
             setMessageList((prev) => {

@@ -4,7 +4,7 @@ export interface ChatGroup {
   name: any
   userId: number
   Users: Users
-  ChatGroupMember: ChatGroupMember[]
+  ChatGroupMembers: ChatGroupMembers[]
   id: number
   deletedBy: number
   isDeleted: boolean
@@ -41,7 +41,7 @@ export interface Roles {
   updatedAt: string
 }
 
-export interface ChatGroupMember {
+export interface ChatGroupMembers {
   userId: number
   Users: TUser
   chatGroupId: number

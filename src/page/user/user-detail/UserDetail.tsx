@@ -14,6 +14,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function UserDetail() {
    const { id } = useParams<{ id: string }>();
@@ -64,6 +65,10 @@ export default function UserDetail() {
       });
    };
 
+   const handleMakeFriend = () => {
+      toast.info("Tính năng đang được phát triển");
+   };
+
    return (
       <>
          <Container py={100}>
@@ -89,7 +94,7 @@ export default function UserDetail() {
                      </Box>
                      <Center>
                         <Group>
-                           <Button>Kết bạn</Button>
+                           <Button onClick={handleMakeFriend}>Kết bạn</Button>
                            <Button onClick={handleChat} variant="default">
                               Nhắn tin
                            </Button>
