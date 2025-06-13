@@ -8,10 +8,10 @@ import { useGetChatMessage } from "@/tantask/chat.tanstacl";
 import { TChatListItem, TPayloadData } from "@/types/chat.type";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import RecipientMessageItem from "../../message/recipient/RecipientMessageItem";
+import SenderMessageItem from "../../message/sender/SenderMessageItem";
 import LoadingGetMessage from "./LoadingGetMessage";
 import ScrollToBottom from "./ScrollToBottom";
-import SenderMessageItem from "../../message/sender/SenderMessageItem";
-import RecipientMessageItem from "../../message/recipient/RecipientMessageItem";
 
 type TProps = {
    item: TChatListItem;
@@ -21,11 +21,13 @@ type TProps = {
 export default function MessageList({ item, chatGroupId }: TProps) {
    const totalPageRef = useRef(0);
    const totalItemRef = useRef(0);
-   const hasScrolledInitially = useRef(false);
+   const hasScrolledInitiallyRef = useRef(false);
+   const shouldScrollRef = useRef(false);
+   const isAtBottomRef = useRef(true);
+
    const [page, setPage] = useState(1);
    const [isAtBottom, setIsAtBottom] = useState(true);
    const [allMessages, setAllMessages] = useState<TPayloadData[]>([]);
-   const shouldScrollRef = useRef(false);
 
    const virtuosoRef = useRef<VirtuosoHandle>(null);
 
@@ -42,6 +44,9 @@ export default function MessageList({ item, chatGroupId }: TProps) {
       if (chatMessage.data?.totalPage) totalPageRef.current = chatMessage.data.totalPage;
       if (chatMessage.data?.totalItem) totalItemRef.current = chatMessage.data.totalItem;
    }, [chatMessage.data?.totalPage, chatMessage.data?.totalItem]);
+   useEffect(() => {
+      isAtBottomRef.current = isAtBottom;
+   }, [isAtBottom]);
 
    // Prepend data vào allMessages
    useEffect(() => {
@@ -55,8 +60,8 @@ export default function MessageList({ item, chatGroupId }: TProps) {
 
    // Scroll đến đáy khi lần đầu
    useEffect(() => {
-      if (!hasScrolledInitially.current && allMessages.length > 0) {
-         hasScrolledInitially.current = true;
+      if (!hasScrolledInitiallyRef.current && allMessages.length > 0) {
+         hasScrolledInitiallyRef.current = true;
          multiRAF(scrollToBottom);
       }
    }, [allMessages.length]);
@@ -69,7 +74,16 @@ export default function MessageList({ item, chatGroupId }: TProps) {
       listenToEvent(socket, SOCKET_CHAT_MES.SEND_MESSAGE, (data: TPayloadData) => {
          console.log({ SEND_MESSAGE: data, chatGroupId, item });
          if (item.chatGroupId !== data.chatGroupId) return;
-         if (data.userIdSender === user?.id) shouldScrollRef.current = true;
+
+         // 👉 Nếu bạn gửi => luôn scroll
+         if (data.userIdSender === user?.id) {
+            shouldScrollRef.current = true;
+         }
+         // 👉 Nếu người khác gửi và bạn đang ở cuối => scroll
+         else if (isAtBottomRef.current) {
+            shouldScrollRef.current = true;
+         }
+
          setAllMessages((prev) => {
             if (prev.length === 0) return [data];
             return [...prev, data];
@@ -105,12 +119,6 @@ export default function MessageList({ item, chatGroupId }: TProps) {
       <div style={{ position: "relative", height: "400px" }}>
          <ScrollToBottom isAtBottom={isAtBottom} onClick={scrollToBottom} />
          <LoadingGetMessage isLoading={chatMessage.isLoading} />
-
-         {/* <LoadingOverlay
-            visible={chatMessage.isLoading && allMessages.length === 0}
-            zIndex={1000}
-            overlayProps={{ radius: "sm", bg: "transparent" }}
-         /> */}
          <NodataOverlay visible={!chatMessage.isLoading && allMessages.length === 0} />
 
          <Virtuoso

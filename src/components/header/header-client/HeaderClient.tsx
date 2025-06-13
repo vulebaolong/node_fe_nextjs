@@ -43,7 +43,14 @@ export default function HeaderClient() {
 
                   <Group>
                      <Logo />
-                     <Button onClick={handleSearchUser.open} c={"dimmed"} leftSection={<IconSearch size={16} />} variant="default" radius="xl" size="md">
+                     <Button
+                        onClick={handleSearchUser.open}
+                        c={"dimmed"}
+                        leftSection={<IconSearch size={16} />}
+                        variant="default"
+                        radius="xl"
+                        size="md"
+                     >
                         <Text size="sm" fw={400}>
                            Tìm kiếm người dùng
                         </Text>
@@ -91,15 +98,21 @@ export default function HeaderClient() {
                {/* right */}
                <Group>
                   <UserControl />
-                  <ActionIcon onClick={handleDrawerListChat.open} radius={"xl"} className={`${MOBILE_VISIBLE_DESKTOP_HIDDEN}`} variant="default">
-                     <IconBrandMessengerFilled color="indigo" style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                  <ActionIcon
+                     sx={{ cursor: "pointer" }}
+                     onClick={handleDrawerListChat.open}
+                     radius={"xl"}
+                     className={`${MOBILE_VISIBLE_DESKTOP_HIDDEN}`}
+                     variant="default"
+                  >
+                     <IconBrandMessengerFilled color="var(--mantine-color-blue-filled)" style={{ width: "70%", height: "70%" }} stroke={1.5} />
                   </ActionIcon>
                </Group>
             </Group>
          </header>
          <DrawerNavbar opened={opened} close={handleDrawerNavbar.close} />
          <DrawerListChat opened={openedListChat} close={handleDrawerListChat.close} />
-         <ModalSearchUser opened={openedSearchUser} close={handleSearchUser.close}/>
+         <ModalSearchUser opened={openedSearchUser} close={handleSearchUser.close} />
       </>
    );
 }
