@@ -35,19 +35,34 @@ export default function MessageInput({ item }: TProps) {
       if (!email) return toast.warning(`email: ${email}`);
       if (value.trim() === ``) return;
       if (!isConnected) return toast.warning(`Disconnected. Refresh to reconnect.`);
-      if(!item.chatGroupId) return toast.warning(`ChatGroupId: ${item}`);
+      if (!item.chatGroupId) return toast.warning(`ChatGroupId: ${item}`);
 
       console.log({ userId, message: value });
       socket?.emit(SOCKET_CHAT_MES.SEND_MESSAGE, {
          message: value,
          userIdSender: userId,
          userIdRecipient: item.id,
-         chatGroupId: item.chatGroupId
+         chatGroupId: item.chatGroupId,
       });
       setValue(``);
    };
    return (
-      <Box p={10}>
+      <Box
+         sx={(_, u) => {
+            return {
+               padding: 10,
+               position: `relative`,
+               zIndex: 2,
+               [u.dark]: {
+                  backgroundColor: `var(--mantine-color-dark-6)`,
+               },
+               [u.light]: {
+                  backgroundColor: `var(--mantine-color-gray-2)`,
+               },
+            };
+         }}
+         p={10}
+      >
          <Group gap={2} align="center">
             <Textarea
                disabled={!item.chatGroupId}

@@ -3,11 +3,11 @@
 import { ENDPOINT } from "@/constant/endpoint.constant";
 import api from "@/helpers/api.helper";
 import { TRes, TResPagination } from "@/types/app.type";
-import { TCreateChatRes } from "@/types/chat.type";
+import { TCreateChatRes, TPayloadData } from "@/types/chat.type";
 
-export async function getListMessageChatAction(query:string) {
+export async function getGetChatMessageAction(query:string) {
    try {
-      const { data } = await api.get<TRes<TResPagination<TCreateChatRes>>>(`${ENDPOINT.CHAT_MESSAGE}?${query}`);
+      const { data } = await api.get<TRes<TResPagination<TPayloadData>>>(`${ENDPOINT.CHAT_MESSAGE}?${query}`);
       return data;
    } catch (error) {
       console.error("Get List User Failed", error);

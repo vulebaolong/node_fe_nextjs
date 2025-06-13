@@ -2,14 +2,15 @@ import { Box } from "@mantine/core";
 import classes from "./Sender.module.css";
 import SenderMessageItem from "./sender-message-item/SenderMessageItem";
 import { TMessageItem } from "@/types/chat.type";
+import { Ref } from "react";
 
 type TProps = {
    messageItem: TMessageItem;
-   isLast: boolean;
-   refToShowButtonScroll: (element: any) => void;
+   isLast?: boolean;
+   refToShowButtonScroll?: Ref<HTMLDivElement> | undefined;
 };
 
-export default function Sender({ messageItem, isLast, refToShowButtonScroll }: TProps) {
+export default function Sender({ messageItem, isLast = false, refToShowButtonScroll }: TProps) {
    return (
       <>
          {isLast ? (

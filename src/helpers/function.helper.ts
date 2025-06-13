@@ -138,3 +138,20 @@ export function animationList(rowIndex: number) {
       animationDelay: `${50 * rowIndex}ms`,
    };
 }
+
+export const wait = (miliseconds: number) => {
+   return new Promise(function (resolve) {
+      setTimeout(resolve, miliseconds);
+   });
+};
+
+export function multiRAF(callback: () => void, count = 3) {
+   const raf = () => {
+      if (count <= 0) {
+         callback();
+      } else {
+         requestAnimationFrame(() => multiRAF(callback, count - 1));
+      }
+   };
+   raf();
+}

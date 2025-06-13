@@ -3,7 +3,7 @@ import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { listenToEvent } from "@/helpers/chat.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
-import { useMessageListChat } from "@/tantask/chat.tanstacl";
+import { useGetChatMessage } from "@/tantask/chat.tanstacl";
 import { TChatListItem, TPayloadData } from "@/types/chat.type";
 import { ActionIcon, Box, Center, Loader, Stack } from "@mantine/core";
 import { useIntersection } from "@mantine/hooks";
@@ -29,7 +29,7 @@ export default function MessageList({ item, chatGroupId }: TProps) {
    const [page, setPage] = useState(1);
    const user = useAppSelector((state) => state.user.info);
 
-   const messageListChat = useMessageListChat({
+   const messageListChat = useGetChatMessage({
       page,
       filters: {
          chatGroupId,

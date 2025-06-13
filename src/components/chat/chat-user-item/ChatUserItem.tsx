@@ -8,7 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import MessageHeader from "./message-header/MessageHeader";
 import MessageInput from "./message-input/MessageInput";
-import MessageList from "./message-list/MessageList";
+import MessageList from "./message-list-v2/MessageList";
 
 type TProps = {
    item: TChatListItem;

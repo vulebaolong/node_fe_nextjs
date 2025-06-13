@@ -74,7 +74,7 @@ export default function ModalSearchUser({ opened, close }: TProps) {
             <LoadingOverlay visible={searchNameUser.isPending} zIndex={1000} overlayProps={{ radius: "sm", bg: `transparent` }} />
             <NodataOverlay
                width={50}
-               visiable={!searchNameUser.isPending && (!searchNameUser.data || searchNameUser.data?.items?.length === 0 || searchNameUser.isError)}
+               visible={!searchNameUser.isPending && (!searchNameUser.data || searchNameUser.data?.items?.length === 0 || searchNameUser.isError)}
             />
             {searchNameUser.data?.items?.map((user, i) => {
                if (user.id === id) return <Fragment key={i} />;

@@ -1,6 +1,7 @@
-import { getListMessageChatAction } from "@/actions/chat.action";
+import { getGetChatMessageAction } from "@/actions/chat.action";
 import { CHAT_LIST_BUBBLE, CHAT_LIST_ITEM } from "@/constant/chat.constant";
 import { getChatListUser } from "@/helpers/chat.helper";
+import { wait } from "@/helpers/function.helper";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetChatListUserItem = () => {
@@ -25,13 +26,16 @@ type TMessageListChatAll = {
    page: number;
    filters: any;
 };
-export const useMessageListChat = ({ page, filters }: TMessageListChatAll) => {
+export const useGetChatMessage = ({ page, filters }: TMessageListChatAll) => {
    return useQuery({
       queryKey: ["get-message-list-chat", page, filters],
       queryFn: async () => {
+         console.log(`tiến hành lấy danh sách chat`);
          const query = `page=${page}&filters=${JSON.stringify(filters)}&pageSize=10`;
-         const data = await getListMessageChatAction(query);
-         // console.log({ data });
+         const data = await getGetChatMessageAction(query);
+         await wait(3000);
+         // throw new Error("error");
+         console.log({ useGetChatMessage: data });
          return data;
       },
    });

@@ -270,7 +270,7 @@ function TableCustom<T>(props: TProps<T>) {
          <Stack>
             <Paper pos="relative" shadow="md" radius="lg" withBorder p="md">
                <LoadingOverlay visible={queryData.isLoading} zIndex={1000} overlayProps={{ radius: "sm", bg: `transparent` }} />
-               <NodataOverlay visiable={!queryData.isLoading && (!queryData.data || queryData.data.items.length === 0 || queryData.isError)} />
+               <NodataOverlay visible={!queryData.isLoading && (!queryData.data || queryData.data.items.length === 0 || queryData.isError)} />
 
                <ScrollArea type="always" offsetScrollbars styles={{ thumb: { backgroundColor: `#daa785` }, root: { height: heightScroll } }}>
                   <Table stickyHeader style={{ ...styleTable }} withColumnBorders striped>
