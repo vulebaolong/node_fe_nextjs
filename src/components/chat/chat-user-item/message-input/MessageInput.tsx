@@ -1,15 +1,14 @@
+import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
+import { useSocket } from "@/hooks/socket.hook";
+import { useAppSelector } from "@/redux/hooks";
+import { TChatListItem } from "@/types/chat.type";
 import { ActionIcon, Box, Group, Popover, Textarea, useMantineColorScheme } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { IconMoodSmile, IconSend2 } from "@tabler/icons-react";
 import Picker, { Theme } from "emoji-picker-react";
 import * as emoji from "node-emoji";
 import { useState } from "react";
-import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
-import { useAppSelector } from "@/redux/hooks";
-import { TChatListItem } from "@/types/chat.type";
 import { toast } from "react-toastify";
-import classes from "./MessageInput.module.css";
-import { useSocket } from "@/hooks/socket.hook";
 
 type TProps = {
    item: TChatListItem;
@@ -73,10 +72,27 @@ export default function MessageInput({ item }: TProps) {
                style={{ flex: `1` }}
                value={emoji.emojify(value)}
                onChange={(event) => setValue(event.target.value)}
-               className={`${classes[`message-input`]}`}
                autosize
                minRows={1}
                maxRows={5}
+               sx={(_, u) => {
+                  return {
+                     "& textarea, & input": {
+                        [u.dark]: {
+                           color: `white`,
+                        },
+                        [u.light]: {
+                           color: `black`,
+                        },
+                        fontSize: `14px`,
+                        fontWeight: 400,
+                        whiteSpace: `pre-wrap`,
+                        unicodeBidi: `isolate`,
+                        wordWrap: `break-word`,
+                        wordBreak: `break-word`,
+                     },
+                  };
+               }}
                styles={{
                   section: {
                      width: `fit-content`,

@@ -1,7 +1,7 @@
+import { formatLocalTime } from "@/helpers/function.helper";
 import { TMessageItem } from "@/types/chat.type";
 import { Group, Stack, Text } from "@mantine/core";
 import * as emoji from "node-emoji";
-import { formatLocalTime } from "../../../../../helpers/function.helper";
 
 type TProps = {
    messageItem: TMessageItem;

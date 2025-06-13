@@ -1,17 +1,17 @@
-import Nodata from "@/components/no-data/Nodata";
+import NodataOverlay from "@/components/no-data/NodataOverlay";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { listenToEvent } from "@/helpers/chat.helper";
+import { multiRAF } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useGetChatMessage } from "@/tantask/chat.tanstacl";
 import { TChatListItem, TPayloadData } from "@/types/chat.type";
-import { ActionIcon, Box, Center, Loader, Stack } from "@mantine/core";
-import { useIntersection } from "@mantine/hooks";
-import { IconChevronDown } from "@tabler/icons-react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import Recipient from "../../message/recipient/Recipient";
-import Sender from "../../message/sender/Sender";
-import classes from "./MessageList.module.css";
+import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import LoadingGetMessage from "./LoadingGetMessage";
+import ScrollToBottom from "./ScrollToBottom";
+import SenderMessageItem from "../../message/sender/SenderMessageItem";
+import RecipientMessageItem from "../../message/recipient/RecipientMessageItem";
 
 type TProps = {
    item: TChatListItem;
@@ -19,17 +19,19 @@ type TProps = {
 };
 
 export default function MessageList({ item, chatGroupId }: TProps) {
-   const [isOne, setIsOne] = useState(true);
-   const [totalPage, setTotalPage] = useState(0);
-   const [isNewMess, setIsNewMess] = useState(false);
-   const [isLoadmore, setIsLoadmore] = useState(false);
-   const [scrollPosition, setScrollPosition] = useState(0);
-
-   const [messageList, setMessageList] = useState<TPayloadData[]>([]);
+   const totalPageRef = useRef(0);
+   const totalItemRef = useRef(0);
+   const hasScrolledInitially = useRef(false);
    const [page, setPage] = useState(1);
+   const [isAtBottom, setIsAtBottom] = useState(true);
+   const [allMessages, setAllMessages] = useState<TPayloadData[]>([]);
+   const shouldScrollRef = useRef(false);
+
+   const virtuosoRef = useRef<VirtuosoHandle>(null);
+
    const user = useAppSelector((state) => state.user.info);
 
-   const messageListChat = useGetChatMessage({
+   const chatMessage = useGetChatMessage({
       page,
       filters: {
          chatGroupId,
@@ -37,188 +39,115 @@ export default function MessageList({ item, chatGroupId }: TProps) {
    });
 
    useEffect(() => {
-      if (!messageListChat.data || !chatGroupId || !messageListChat.data || !messageListChat.data?.items) return;
-      const mesList = messageListChat.data.items.reverse();
-      setMessageList((prev) => {
-         setScrollPosition(targetRefContainer.current.scrollHeight);
-         if (prev.length === 0) return mesList;
-         return [...mesList, ...prev];
+      if (chatMessage.data?.totalPage) totalPageRef.current = chatMessage.data.totalPage;
+      if (chatMessage.data?.totalItem) totalItemRef.current = chatMessage.data.totalItem;
+   }, [chatMessage.data?.totalPage, chatMessage.data?.totalItem]);
+
+   // Prepend data vào allMessages
+   useEffect(() => {
+      if (!chatMessage.data?.items) return;
+      const messages = chatMessage.data.items.reverse();
+      setAllMessages((prev) => {
+         if (prev.length === 0) return messages;
+         return [...messages, ...prev];
       });
-   }, [messageListChat.data, chatGroupId]);
+   }, [chatMessage.data?.items]);
 
+   // Scroll đến đáy khi lần đầu
    useEffect(() => {
-      if (messageListChat.data?.totalPage) {
-         setTotalPage(messageListChat.data?.totalPage);
-      } else {
-         setTotalPage(totalPage);
+      if (!hasScrolledInitially.current && allMessages.length > 0) {
+         hasScrolledInitially.current = true;
+         multiRAF(scrollToBottom);
       }
-   }, [messageListChat.data?.totalPage]);
+   }, [allMessages.length]);
 
-   const userId = useAppSelector((state) => state.user.info?.id);
-
-   const targetRefContainer = useRef<any>(null);
-
-   const { ref: refToShowButtonScroll, entry: entryButtonScroll } = useIntersection({
-      root: targetRefContainer.current,
-      threshold: 0,
-   });
-   const { ref: refLoadMore, entry: entryLoadMore } = useIntersection({
-      root: targetRefContainer.current,
-      threshold: 1,
-   });
-
-   const [isButtonScroll, setIsButtonScroll] = useState(false);
-   useEffect(() => {
-      if (entryButtonScroll?.isIntersecting === undefined) {
-      } else if (entryButtonScroll.isIntersecting === false) {
-         setIsButtonScroll(true);
-      } else if (entryButtonScroll.isIntersecting === true) {
-         setIsButtonScroll(false);
-      }
-   }, [entryButtonScroll?.isIntersecting]);
-
-   useEffect(() => {
-      if (messageList.length > 0) {
-         if (isOne) {
-            console.log(`Cuộn xuống cuối khi mới vào trang`);
-            targetRefContainer.current.scrollTop = targetRefContainer.current.scrollHeight;
-            setIsOne(false);
-         }
-
-         if (isLoadmore) {
-            console.log(`Cuộn lại top-list-trước để loadmore`);
-            targetRefContainer.current.scrollTop = targetRefContainer.current.scrollHeight - scrollPosition;
-            // isLoadmore = false;
-            setIsLoadmore(false);
-         }
-
-         const mesLast = messageList[messageList.length - 1];
-         if (isNewMess) {
-            if (mesLast.userIdSender === userId) {
-               console.log(`Cuộn xuống cuối khi có tin nhắn mới - 1`);
-               targetRefContainer.current.scrollTop = targetRefContainer.current.scrollHeight;
-               // isNewMess = false;
-               setIsNewMess(false);
-            } else {
-               if (!isButtonScroll && !entryLoadMore?.isIntersecting) {
-                  console.log(`Cuộn xuống cuối khi có tin nhắn mới - 2`);
-                  targetRefContainer.current.scrollTop = targetRefContainer.current.scrollHeight;
-                  // isNewMess = false;
-                  setIsNewMess(false);
-               }
-            }
-         }
-      }
-   }, [messageList]);
-
-   useEffect(() => {
-      if (entryLoadMore?.isIntersecting) {
-         if (messageList.length > 0 && !(page >= totalPage)) {
-            // isLoadmore = true;
-            setIsLoadmore(true);
-            setPage(page + 1);
-         }
-      }
-   }, [entryLoadMore?.isIntersecting]);
-
+   // Nhận tin nhắn mới qua socket
    const { socket } = useSocket();
    useEffect(() => {
-      if (socket) {
-         listenToEvent(socket, SOCKET_CHAT_MES.SEND_MESSAGE, (data: TPayloadData) => {
-            console.log({ SEND_MESSAGE: data, chatGroupId, item });
-            if (item.chatGroupId !== data.chatGroupId) return; // tránh trường hợp gửi message cho các box chat đang mở
-            setIsNewMess(true);
-            setMessageList((prev) => {
-               if (prev === null) return [data];
-               return [...prev, data];
-            });
+      if (!socket) return;
+
+      listenToEvent(socket, SOCKET_CHAT_MES.SEND_MESSAGE, (data: TPayloadData) => {
+         console.log({ SEND_MESSAGE: data, chatGroupId, item });
+         if (item.chatGroupId !== data.chatGroupId) return;
+         if (data.userIdSender === user?.id) shouldScrollRef.current = true;
+         setAllMessages((prev) => {
+            if (prev.length === 0) return [data];
+            return [...prev, data];
          });
-      }
-   }, [socket, item]);
+      });
+   }, [socket]);
 
-   const renderContent = () => {
-      if (messageListChat.isLoading && messageList.length === 0) {
-         return (
-            <Center h={`100%`}>
-               <Loader color={`#480303`} size={`md`} />
-            </Center>
-         );
+   // Khi allMessages thay đổi → nếu có flag scroll thì scroll
+   useEffect(() => {
+      if (shouldScrollRef.current) {
+         shouldScrollRef.current = false;
+         multiRAF(scrollToBottom);
       }
+   }, [allMessages.length]);
 
-      if (!messageList || messageList.length === 0) {
-         return (
-            <Center h={`100%`}>
-               <Nodata />
-            </Center>
-         );
-      }
+   // Kéo lên để load thêm
+   const handleStartReached = () => {
+      if (chatMessage.isFetching || page >= totalPageRef.current) return;
+      setPage((prev) => prev + 1);
+   };
 
-      return messageList.map((messageItem: TPayloadData, i: number) => {
-         const isLast = i === messageList.length - 1;
-         return (
-            <Fragment key={i}>
-               {messageItem.userIdSender === userId ? (
-                  <Sender
-                     refToShowButtonScroll={refToShowButtonScroll}
-                     isLast={isLast}
-                     messageItem={{
-                        avatar: user?.avatar,
-                        email: user?.fullName || `??`,
-                        message: messageItem.messageText,
-                        time: ``,
-                        userId: messageItem.userIdSender,
-                        roleId: user?.roleId || 0,
-                     }}
-                  />
-               ) : (
-                  <Recipient
-                     refToShowButtonScroll={refToShowButtonScroll}
-                     isLast={isLast}
-                     messageItem={{
-                        avatar: item.ava,
-                        email: item.name || `??`,
-                        message: messageItem.messageText,
-                        time: ``,
-                        userId: item.id,
-                        roleId: item.roleId,
-                     }}
-                  />
-               )}
-            </Fragment>
-         );
+   const scrollToBottom = () => {
+      console.log("scroll to bottom");
+      virtuosoRef.current?.scrollToIndex({
+         index: allMessages.length - 1,
+         align: "end",
       });
    };
 
+   const firstItemIndex = Math.max(0, totalItemRef.current - allMessages.length);
+
    return (
-      <>
-         <Stack ref={targetRefContainer} className={`${classes[`message-list`]}`}>
-            <Box ref={refLoadMore} className={`${classes[`load-more`]}`}>
-               {messageListChat.isLoading && messageList.length > 0 && (
-                  <Box h={30}>
-                     <Center h={`100%`}>
-                        <Loader color={`#480303`} size={`xs`} />
-                     </Center>
-                  </Box>
-               )}
-            </Box>
+      <div style={{ position: "relative", height: "400px" }}>
+         <ScrollToBottom isAtBottom={isAtBottom} onClick={scrollToBottom} />
+         <LoadingGetMessage isLoading={chatMessage.isLoading} />
 
-            {renderContent()}
+         {/* <LoadingOverlay
+            visible={chatMessage.isLoading && allMessages.length === 0}
+            zIndex={1000}
+            overlayProps={{ radius: "sm", bg: "transparent" }}
+         /> */}
+         <NodataOverlay visible={!chatMessage.isLoading && allMessages.length === 0} />
 
-            {isButtonScroll && (
-               <div className={`${classes[`back-to-bottom`]}`}>
-                  <ActionIcon
-                     onClick={() => {
-                        targetRefContainer.current.scrollTop = targetRefContainer.current.scrollHeight;
-                     }}
-                     variant="white"
-                     radius="xl"
-                     style={{ cursor: "pointer" }}
-                  >
-                     <IconChevronDown color="black" style={{ width: "70%", height: "70%" }} stroke={1.5} />
-                  </ActionIcon>
-               </div>
+         <Virtuoso
+            ref={virtuosoRef}
+            data={allMessages}
+            firstItemIndex={firstItemIndex}
+            style={{ height: "100%" }}
+            itemContent={(index, messageItem: TPayloadData) => (
+               <Fragment key={index}>
+                  {messageItem.userIdSender === user?.id ? (
+                     <SenderMessageItem
+                        messageItem={{
+                           avatar: user?.avatar,
+                           email: user?.fullName || "??",
+                           message: messageItem.messageText,
+                           time: "",
+                           userId: messageItem.userIdSender,
+                           roleId: user?.roleId || 0,
+                        }}
+                     />
+                  ) : (
+                     <RecipientMessageItem
+                        messageItem={{
+                           avatar: item.ava,
+                           email: item.name || "??",
+                           message: messageItem.messageText,
+                           time: "",
+                           userId: item.id,
+                           roleId: item.roleId,
+                        }}
+                     />
+                  )}
+               </Fragment>
             )}
-         </Stack>
-      </>
+            atBottomStateChange={setIsAtBottom}
+            startReached={handleStartReached}
+         />
+      </div>
    );
 }
