@@ -3,7 +3,7 @@ import { CHAT_LIST_BUBBLE } from "@/constant/chat.constant";
 import { openUserFromBuble, removeUserFromChatList } from "@/helpers/chat.helper";
 import { TChatListItem } from "@/types/chat.type";
 import { TUser } from "@/types/user.type";
-import { ActionIcon, Box, Tooltip, Transition } from "@mantine/core";
+import { ActionIcon, Box, Transition } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";

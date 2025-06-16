@@ -1,4 +1,4 @@
-import { ChatGroup, ChatGroupMember } from "./chat-group.type";
+import { ChatGroup } from "./chat-group.type";
 
 export type TCreateChatReq = {
    userIdRecipient: number;
