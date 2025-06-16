@@ -30,7 +30,7 @@ export default function MessageHeader({ item }: TProps) {
 
    return (
       <Group p={10} justify="space-between">
-         <TagUser user={{ avatar: item.ava, fullName: item.name } as TUser} />
+         <TagUser size={"sm"} user={{ avatar: item.ava, fullName: item.name } as TUser} />
          <ActionIcon onClick={handleDeleteListChat} variant="subtle" color="indigo" radius="xl" aria-label="Settings">
             <IconX style={{ width: "70%", height: "70%" }} stroke={1.5} />
          </ActionIcon>

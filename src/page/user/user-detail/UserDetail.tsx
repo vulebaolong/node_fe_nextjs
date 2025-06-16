@@ -23,7 +23,7 @@ export default function UserDetail() {
    const handleChat = () => {
       if (!info?.id || !detailUser.data?.id || !socket) return;
 
-      // emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, { userIdSender: info.id, userIdRecipient: detailUser.data.id, userRecipient: detailUser.data });
+      // emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, { userIdSender: info.id, userIdRecipient: detailUser.data.id, userRecipient: detailUser.data });
 
       addUserToChatList(
          { ava: detailUser.data.avatar, id: detailUser.data.id, name: detailUser.data.fullName, roleId: detailUser.data.roleId },

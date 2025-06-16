@@ -27,19 +27,19 @@ export default function ChatUserItem({ i, item }: TProps) {
          setOnlyOne((prev) => prev++);
 
          if (item.chatGroupId) {
-            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, (data: { chatGroupId: number }) => {
-               // có bao nhiêu ChatUserItem thì JOIN_ROOM_ONE sẽ chạy bấy nhiêu
+            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, (data: { chatGroupId: number }) => {
+               // có bao nhiêu ChatUserItem thì JOIN_ROOM sẽ chạy bấy nhiêu
                // vì là chat nhiều cũng lúc, nên nếu bật cùng lúc nhiều chat box sẽ bị tín hiệu cuối cùng ghi đè
+               console.log({ [`REPLY - ${SOCKET_CHAT_MES.JOIN_ROOM}`]: data }, item);
                if (data.chatGroupId === item.chatGroupId) {
-                  console.log({ [`REPLY - ${SOCKET_CHAT_MES.JOIN_ROOM_ONE}`]: data });
                   setChatGroupId(data.chatGroupId);
                }
             });
-            emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE, { chatGroupId: item.chatGroupId });
+            emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, { chatGroupId: item.chatGroupId });
          } else {
-            listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, (data: { chatGroupId: number }) => {
+            listenToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, (data: { chatGroupId: number }) => {
                // vì chỉ có một chat box nên không được kiểm tra
-               console.log({ [`REPLY - ${SOCKET_CHAT_MES.JOIN_ROOM_FIRST}`]: data }, item.chatGroupId);
+               console.log({ [`REPLY - ${SOCKET_CHAT_MES.CREATE_ROOM}`]: data }, item);
                addChatGroup(item.id, data.chatGroupId, () => {
                   queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
                   queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
@@ -51,14 +51,14 @@ export default function ChatUserItem({ i, item }: TProps) {
                   }
                });
             });
-            emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST, { userIdSender: info?.id, userIdRecipient: item.id });
+            emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, { ownerId: info?.id, targetUserIds: [item.id] });
          }
       }
       return () => {
          if (!socket) return;
          removeEventListener(socket, SOCKET_CHAT_MES.SEND_MESSAGE);
-         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_FIRST);
-         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM_ONE);
+         removeEventListener(socket, SOCKET_CHAT_MES.CREATE_ROOM);
+         removeEventListener(socket, SOCKET_CHAT_MES.JOIN_ROOM);
       };
    }, [socket]);
 

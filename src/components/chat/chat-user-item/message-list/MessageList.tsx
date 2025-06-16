@@ -116,7 +116,7 @@ export default function MessageList({ item, chatGroupId }: TProps) {
    const firstItemIndex = Math.max(0, totalItemRef.current - allMessages.length);
 
    return (
-      <div style={{ position: "relative", height: "400px" }}>
+      <div style={{ position: "relative", height: "100%" }}>
          <ScrollToBottom isAtBottom={isAtBottom} onClick={scrollToBottom} />
          <LoadingGetMessage isLoading={chatMessage.isLoading} />
          <NodataOverlay visible={!chatMessage.isLoading && allMessages.length === 0} />

@@ -2,9 +2,9 @@ import { TUser } from "./user.type"
 
 export interface ChatGroup {
   name: any
-  userId: number
-  Users: Users
-  ChatGroupMembers: ChatGroupMembers[]
+  ownerId: number
+  Owner: Owner
+  ChatGroupMembers: ChatGroupMember[]
   id: number
   deletedBy: number
   isDeleted: boolean
@@ -13,35 +13,10 @@ export interface ChatGroup {
   updatedAt: string
 }
 
-export interface Users {
-  email: string
-  fullName: string
-  avatar: string
-  facebookId: any
-  googleId: string
-  roleId: number
-  Roles: Roles
-  id: number
-  deletedBy: number
-  isDeleted: boolean
-  deletedAt: string
-  createdAt: string
-  updatedAt: string
-}
+export interface Owner extends TUser{}
 
-export interface Roles {
-  name: string
-  description: string
-  isActive: boolean
-  id: number
-  deletedBy: number
-  isDeleted: boolean
-  deletedAt: string
-  createdAt: string
-  updatedAt: string
-}
 
-export interface ChatGroupMembers {
+export interface ChatGroupMember {
   userId: number
   Users: TUser
   chatGroupId: number
@@ -52,4 +27,6 @@ export interface ChatGroupMembers {
   createdAt: string
   updatedAt: string
 }
+
+
 

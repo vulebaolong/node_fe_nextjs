@@ -67,7 +67,6 @@ export default function DrawerListChat({ opened, close }: TProps) {
             {(findAllChatGroup.data?.items || []).map((chatGroup, i) => {
                const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.userId !== userId);
                if (!user) return;
-               if (user.id === userId) return <Fragment key={i}></Fragment>;
                return (
                   <Box
                      key={i}
