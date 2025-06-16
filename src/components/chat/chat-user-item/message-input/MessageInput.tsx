@@ -15,7 +15,9 @@ type TProps = {
    chatGroupId: number | null;
 };
 
-export default function MessageInput({ item }: TProps) {
+export default function MessageInput({ item, chatGroupId }: TProps) {
+   console.log({ MessageInput: item });
+
    const userId = useAppSelector((state) => state.user.info?.id);
    const email = useAppSelector((state) => state.user.info?.email);
    const { socket, isConnected } = useSocket();
@@ -34,14 +36,14 @@ export default function MessageInput({ item }: TProps) {
       if (!email) return toast.warning(`email: ${email}`);
       if (value.trim() === ``) return;
       if (!isConnected) return toast.warning(`Disconnected. Refresh to reconnect.`);
-      if (!item.chatGroupId) return toast.warning(`ChatGroupId: ${item}`);
+      if (!chatGroupId) return toast.warning(`ChatGroupId: ${item}`);
 
       console.log({ userId, message: value });
       socket?.emit(SOCKET_CHAT_MES.SEND_MESSAGE, {
          message: value,
          userIdSender: userId,
          userIdRecipient: item.id,
-         chatGroupId: item.chatGroupId,
+         chatGroupId: chatGroupId,
       });
       setValue(``);
    };
@@ -64,7 +66,7 @@ export default function MessageInput({ item }: TProps) {
       >
          <Group gap={2} align="center">
             <Textarea
-               disabled={!item.chatGroupId}
+               disabled={!chatGroupId}
                radius="xl"
                onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
                placeholder="Write a message..."

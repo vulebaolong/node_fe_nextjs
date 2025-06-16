@@ -1,3 +1,5 @@
+import { ChatGroup, ChatGroupMember } from "./chat-group.type";
+
 export type TCreateChatReq = {
    userIdRecipient: number;
    message: string;
@@ -19,6 +21,7 @@ export type TChatListItem = {
    ava: string;
    roleId: number;
    chatGroupId?: number;
+   chatGroup?: ChatGroup;
 };
 
 export type TPayloadReceiveMessage = {

@@ -21,6 +21,7 @@ export default function ChatUserBubble({ item, i }: TProps) {
       e.stopPropagation();
       removeUserFromChatList(item, CHAT_LIST_BUBBLE, () => {
          queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
+         queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
       });
    };
 
@@ -46,9 +47,7 @@ export default function ChatUserBubble({ item, i }: TProps) {
          ref={ref}
          onClick={handleOpenUserChat}
       >
-         <Tooltip label={item.name} position="left">
-            <Avatar style={{ width: `60px`, height: `60px` }} user={{ avatar: item.ava, fullName: item.name } as TUser} />
-         </Tooltip>
+         <Avatar style={{ width: `60px`, height: `60px` }} user={{ avatar: item.ava, fullName: item.name } as TUser} />
          <Box
             style={{
                position: `absolute`,

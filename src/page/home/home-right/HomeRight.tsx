@@ -1,6 +1,8 @@
 "use client";
 
 import Avatar from "@/components/avatar/Avatar";
+import ModalCreateChatGroup from "@/components/modal/modal-create-chat-group/ModalCreateChatGroup";
+import NodataOverlay from "@/components/no-data/NodataOverlay";
 import TagUser from "@/components/tag-user/TagUser";
 import { addUserToChatList } from "@/helpers/chat.helper";
 import { animationList } from "@/helpers/function.helper";
@@ -8,18 +10,26 @@ import { useAppSelector } from "@/redux/hooks";
 import { useFindAllChatGroup } from "@/tantask/user.tanstack";
 import { ChatGroup } from "@/types/chat-group.type";
 import { TUser } from "@/types/user.type";
-import { ActionIcon, Avatar as AvatarMantine, Box, Group, Stack, Text, Tooltip } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+import { ActionIcon, Box, Group, LoadingOverlay, Stack, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import { IconPlus, IconSearch } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { Fragment } from "react";
 
-export default function HomeRight() {
+type TProps = {
+   onClose?: () => void;
+}
+
+export default function HomeRight({ onClose }: TProps) {
    const t = useTranslations(`home-right`);
    const userId = useAppSelector((state) => state.user.info?.id);
    const findAllChatGroup = useFindAllChatGroup();
    const queryClient = useQueryClient();
+   const [openedCreateChatGroup, handleModalCreateChatGroup] = useDisclosure(false);
 
    const handleClickUser = (user: TUser, chatGroup: ChatGroup) => {
+      if(onClose) onClose();
       addUserToChatList(
          {
             ava: user.avatar,
@@ -27,12 +37,17 @@ export default function HomeRight() {
             name: user.fullName,
             roleId: user.roleId,
             chatGroupId: chatGroup.id,
+            chatGroup: chatGroup,
          },
          () => {
             queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
             queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
          }
       );
+   };
+
+   const handleCreateChatGroup = () => {
+      handleModalCreateChatGroup.open();
    };
 
    return (
@@ -54,11 +69,19 @@ export default function HomeRight() {
                   "&::-webkit-scrollbar": {
                      display: "none",
                   },
+                  position: `relative`,
                }}
             >
+               <LoadingOverlay visible={findAllChatGroup.isLoading} zIndex={1000} overlayProps={{ radius: "sm", bg: `transparent` }} />
+               <NodataOverlay
+                  width={50}
+                  visible={
+                     !findAllChatGroup.isPending && (!findAllChatGroup.data || findAllChatGroup.data?.items?.length === 0 || findAllChatGroup.isError)
+                  }
+               />
                {(findAllChatGroup.data?.items || []).map((chatGroup, i) => {
                   const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.userId !== userId);
-                  if (!user) return;
+                  if (!user) return <Fragment key={i}></Fragment>;
                   if (chatGroup.ChatGroupMembers.length === 2) {
                      return (
                         <Box
@@ -66,7 +89,14 @@ export default function HomeRight() {
                            onClick={() => {
                               handleClickUser(user.Users, chatGroup);
                            }}
-                           style={{ cursor: "pointer", ...animationList(i) }}
+                           sx={{
+                              cursor: "pointer",
+                              ...animationList(i),
+                              "&:hover": { backgroundColor: `var(--mantine-color-gray-light-hover)` },
+                              transition: `background-color 0.2s ease`,
+                              padding: `5px`,
+                              borderRadius: `10px`,
+                           }}
                         >
                            <TagUser user={user.Users} />
                         </Box>
@@ -75,13 +105,10 @@ export default function HomeRight() {
                })}
             </Stack>
 
-            {/* <Group justify="space-between">
+            <Group justify="space-between">
                <Text opacity={0.7} fw={`bold`} fz={`md`}>
                   Nhóm chát
                </Text>
-               <ActionIcon variant="subtle" radius="xl">
-                  <IconSearch style={{ width: "70%", height: "70%" }} stroke={1.5} />
-               </ActionIcon>
             </Group>
             <Stack
                sx={{
@@ -91,11 +118,20 @@ export default function HomeRight() {
                   "&::-webkit-scrollbar": {
                      display: "none",
                   },
+                  gap: 0,
+                  position: `relative`,
                }}
             >
+               <LoadingOverlay visible={findAllChatGroup.isLoading} zIndex={1000} overlayProps={{ radius: "sm", bg: `transparent` }} />
+               <NodataOverlay
+                  width={50}
+                  visible={
+                     !findAllChatGroup.isPending && (!findAllChatGroup.data || findAllChatGroup.data?.items?.length === 0 || findAllChatGroup.isError)
+                  }
+               />
                {(findAllChatGroup.data?.items || []).map((chatGroup, i) => {
                   const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.userId !== userId);
-                  if (!user) return;
+                  if (!user) return <Fragment key={i}></Fragment>;
                   if (chatGroup.ChatGroupMembers.length > 2) {
                      return (
                         <Box
@@ -103,33 +139,72 @@ export default function HomeRight() {
                            onClick={() => {
                               handleClickUser(user.Users, chatGroup);
                            }}
-                           style={{ cursor: "pointer", ...animationList(i) }}
+                           sx={{
+                              cursor: "pointer",
+                              ...animationList(i),
+                              "&:hover": { backgroundColor: `var(--mantine-color-gray-light-hover)` },
+                              transition: `background-color 0.2s ease`,
+                              padding: `5px`,
+                              borderRadius: `10px`,
+                           }}
                         >
-                           <Tooltip.Group openDelay={300} closeDelay={100}>
-                              <AvatarMantine.Group spacing="sm">
-                                 {chatGroup.ChatGroupMembers.slice(0, 2).map((chatGroupMember) => {
-                                    return <Avatar user={chatGroupMember.Users} radius="xl" />;
-                                 })}
-                                 <Tooltip
-                                    withArrow
-                                    label={
-                                       <>
-                                          {chatGroup.ChatGroupMembers.slice(2).map((chatGroupMember) => {
-                                             return <div>{chatGroupMember.Users.fullName}</div>;
-                                          })}
-                                       </>
+                           <Group wrap="nowrap" gap={5}>
+                              <Box sx={{ width: `38px`, height: `38px`, position: `relative`, flexShrink: 0 }}>
+                                 {chatGroup.ChatGroupMembers.slice(0, 2).map((chatGroupMember, i) => {
+                                    if (i === 0) {
+                                       return (
+                                          <Box key={i} sx={{ position: `absolute`, bottom: 0, left: 0, zIndex: 2 }}>
+                                             <Avatar size={`sm`} user={chatGroupMember.Users} radius="xl" />
+                                          </Box>
+                                       );
+                                    } else {
+                                       return (
+                                          <Box key={i} sx={{ position: `absolute`, top: 0, right: 0, zIndex: 1 }}>
+                                             <Avatar size={`sm`} user={chatGroupMember.Users} radius="xl" />
+                                          </Box>
+                                       );
                                     }
-                                 >
-                                    <AvatarMantine radius="xl">{`+${chatGroup.ChatGroupMembers.length - 2}`}</AvatarMantine>
-                                 </Tooltip>
-                              </AvatarMantine.Group>
-                           </Tooltip.Group>
+                                 })}
+                              </Box>
+                              <Text truncate>{chatGroup.name}</Text>
+                           </Group>
                         </Box>
                      );
                   }
                })}
-            </Stack> */}
+               <Box
+                  onClick={handleCreateChatGroup}
+                  sx={{
+                     cursor: "pointer",
+                     ...animationList(0),
+                     "&:hover": { backgroundColor: `var(--mantine-color-gray-light-hover)` },
+                     transition: `background-color 0.2s ease`,
+                     padding: `5px`,
+                     borderRadius: `10px`,
+                  }}
+               >
+                  <Group wrap="nowrap" gap={5}>
+                     <Box
+                        sx={{
+                           width: `38px`,
+                           height: `38px`,
+                           position: `relative`,
+                           flexShrink: 0,
+                           display: `flex`,
+                           alignItems: `center`,
+                           justifyContent: `center`,
+                           borderRadius: `50%`,
+                           backgroundColor: `var(--mantine-color-gray-light-hover)`,
+                        }}
+                     >
+                        <IconPlus style={{ width: "60%", height: "60%" }} stroke={2.5} />
+                     </Box>
+                     <Text truncate>Tạo nhóm chát</Text>
+                  </Group>
+               </Box>
+            </Stack>
          </Stack>
+         <ModalCreateChatGroup opened={openedCreateChatGroup} close={handleModalCreateChatGroup.close} />
       </>
    );
 }

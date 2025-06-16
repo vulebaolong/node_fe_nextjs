@@ -3,7 +3,7 @@ import { TUser } from "./user.type"
 export interface ChatGroup {
   name: any
   ownerId: number
-  Owner: Owner
+  Owner: TUser
   ChatGroupMembers: ChatGroupMember[]
   id: number
   deletedBy: number
@@ -12,9 +12,6 @@ export interface ChatGroup {
   createdAt: string
   updatedAt: string
 }
-
-export interface Owner extends TUser{}
-
 
 export interface ChatGroupMember {
   userId: number

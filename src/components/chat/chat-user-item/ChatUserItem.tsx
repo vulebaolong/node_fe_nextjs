@@ -26,7 +26,7 @@ export default function ChatUserItem({ i, item }: TProps) {
       if (socket && onlyOne === 1) {
          setOnlyOne((prev) => prev++);
 
-         if (item.chatGroupId) {
+         if (item.chatGroup) {
             listenToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, (data: { chatGroupId: number }) => {
                // có bao nhiêu ChatUserItem thì JOIN_ROOM sẽ chạy bấy nhiêu
                // vì là chat nhiều cũng lúc, nên nếu bật cùng lúc nhiều chat box sẽ bị tín hiệu cuối cùng ghi đè
@@ -45,7 +45,7 @@ export default function ChatUserItem({ i, item }: TProps) {
                   queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
                });
                const chatListUserItem = getChatListUser(CHAT_LIST_ITEM);
-               chatListUserItem.find((chatListItem: TChatListItem) => {
+               chatListUserItem.find((chatListItem: any) => {
                   if (chatListItem.id === item.id && chatListItem.chatGroupId === data.chatGroupId) {
                      setChatGroupId(data.chatGroupId);
                   }
@@ -64,8 +64,8 @@ export default function ChatUserItem({ i, item }: TProps) {
 
    useEffect(() => {
       return () => {
-         if (socket && item.chatGroupId) {
-            socket.emit(SOCKET_CHAT_MES.LEAVE_ROOM, { chatGroupId: item.chatGroupId });
+         if (socket && item.chatGroup?.id) {
+            socket.emit(SOCKET_CHAT_MES.LEAVE_ROOM, { chatGroupId: item.chatGroup.id });
          }
       };
    }, []);

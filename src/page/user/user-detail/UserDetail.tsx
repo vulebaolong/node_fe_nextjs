@@ -54,9 +54,11 @@ export default function UserDetail() {
                      </Center>
 
                      <Box>
-                        <Text ta="center" fz="lg" fw={500} mt="md">
-                           {detailUser.data?.fullName}
-                        </Text>
+                        <Center>
+                           <Text truncate maw={300} fz="lg" fw={500} mt="md">
+                              {detailUser.data?.fullName}
+                           </Text>
+                        </Center>
 
                         <Text ta="center" c="dimmed" fz="sm">
                            {detailUser.data?.email}

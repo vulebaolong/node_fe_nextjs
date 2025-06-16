@@ -74,7 +74,7 @@ export function Profile() {
                   <Avatar user={info} size={120} radius={120} mx="auto" />
                </Center>
 
-               <Text ta="center" fz="lg" fw={500} mt="md">
+               <Text truncate maw={300} ta="center" fz="lg" fw={500} mt="md">
                   {info?.fullName}
                </Text>
 

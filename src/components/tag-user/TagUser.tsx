@@ -1,5 +1,5 @@
 import { TUser } from "@/types/user.type";
-import { Group, MantineSize, Text } from "@mantine/core";
+import { Box, Group, MantineSize, Text } from "@mantine/core";
 import Avatar from "../avatar/Avatar";
 
 type TProps = {
@@ -11,7 +11,9 @@ type TProps = {
 export default function TagUser({ user, fw = `normal`, size = `md` }: TProps) {
    return (
       <Group wrap="nowrap" gap={5}>
-         <Avatar size={size} user={user} />
+         <Box sx={{ flexShrink: 0 }}>
+            <Avatar size={size} user={user} />
+         </Box>
          <Text fw={fw} truncate>
             {user?.fullName}
          </Text>

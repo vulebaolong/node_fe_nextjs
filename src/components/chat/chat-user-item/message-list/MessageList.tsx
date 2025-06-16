@@ -1,6 +1,6 @@
 import NodataOverlay from "@/components/no-data/NodataOverlay";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
-import { listenToEvent } from "@/helpers/chat.helper";
+import { listenToEvent, removeEventListener } from "@/helpers/chat.helper";
 import { multiRAF } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
@@ -126,33 +126,36 @@ export default function MessageList({ item, chatGroupId }: TProps) {
             data={allMessages}
             firstItemIndex={firstItemIndex}
             style={{ height: "100%" }}
-            itemContent={(index, messageItem: TPayloadData) => (
-               <Fragment key={index}>
-                  {messageItem.userIdSender === user?.id ? (
-                     <SenderMessageItem
-                        messageItem={{
-                           avatar: user?.avatar,
-                           email: user?.fullName || "??",
-                           message: messageItem.messageText,
-                           time: "",
-                           userId: messageItem.userIdSender,
-                           roleId: user?.roleId || 0,
-                        }}
-                     />
-                  ) : (
-                     <RecipientMessageItem
-                        messageItem={{
-                           avatar: item.ava,
-                           email: item.name || "??",
-                           message: messageItem.messageText,
-                           time: "",
-                           userId: item.id,
-                           roleId: item.roleId,
-                        }}
-                     />
-                  )}
-               </Fragment>
-            )}
+            itemContent={(index, messageItem: TPayloadData) => {
+               const userRecipient = item.chatGroup?.ChatGroupMembers.find((item) => item.Users.id === messageItem.userIdSender)?.Users;
+               return (
+                  <Fragment key={index}>
+                     {messageItem.userIdSender === user?.id ? (
+                        <SenderMessageItem
+                           messageItem={{
+                              avatar: user?.avatar,
+                              email: user?.fullName || "??",
+                              message: messageItem.messageText,
+                              time: user?.createdAt || "",
+                              userId: messageItem.userIdSender,
+                              roleId: user?.roleId || 0,
+                           }}
+                        />
+                     ) : (
+                        <RecipientMessageItem
+                           messageItem={{
+                              avatar: userRecipient?.avatar,
+                              email: userRecipient?.fullName || "??",
+                              message: messageItem.messageText,
+                              time: userRecipient?.createdAt || "",
+                              userId: userRecipient?.id || 0,
+                              roleId: userRecipient?.roleId || 0,
+                           }}
+                        />
+                     )}
+                  </Fragment>
+               );
+            }}
             atBottomStateChange={setIsAtBottom}
             startReached={handleStartReached}
          />

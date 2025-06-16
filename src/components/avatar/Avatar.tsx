@@ -1,6 +1,6 @@
 import { checkPathImage } from "@/helpers/function.helper";
 import { TUser } from "@/types/user.type";
-import { Avatar as AvatarMantine, AvatarProps, Box, Tooltip } from "@mantine/core";
+import { Avatar as AvatarMantine, AvatarProps, Box, Text, Tooltip } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons-react";
 import Image from "next/image";
 import { forwardRef } from "react";
@@ -13,7 +13,7 @@ type TProps = {
 const Avatar = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRef<"div">>(
    ({ user, style, iconChevronDown = false, ...props }, ref) => {
       return (
-         <Tooltip label={user?.fullName} position="left">
+         <Tooltip label={<Text truncate maw={100}>{user?.fullName}</Text>} position="left">
             <Box pos={`relative`} w={`min-content`}>
                <AvatarMantine
                   style={{ ...style }}
