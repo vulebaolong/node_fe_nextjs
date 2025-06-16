@@ -27,7 +27,7 @@ export default function MessageHeader({ item }: TProps) {
          queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
       });
       if (socket) {
-         emitToEvent(socket, SOCKET_CHAT_MES.LEAVE_ROOM, { userIdSender: userId, userIdRecipient: item.id });
+         emitToEvent(socket, SOCKET_CHAT_MES.LEAVE_ROOM, { chatGroupId: item.chatGroupId });
       }
    };
 

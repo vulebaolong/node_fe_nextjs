@@ -65,7 +65,7 @@ export default function ChatUserItem({ i, item }: TProps) {
    useEffect(() => {
       return () => {
          if (socket && item.chatGroup?.id) {
-            socket.emit(SOCKET_CHAT_MES.LEAVE_ROOM, { chatGroupId: item.chatGroup.id });
+         emitToEvent(socket, SOCKET_CHAT_MES.LEAVE_ROOM, { chatGroupId: item.chatGroupId });
          }
       };
    }, []);
