@@ -5,7 +5,7 @@ import { multiRAF } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useGetChatMessage } from "@/tantask/chat.tanstacl";
-import { TChatListItem, TPayloadData } from "@/types/chat.type";
+import { TAllmessage, TStateChat } from "@/types/chat.type";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";
 import RecipientMessageItem from "../../message/recipient/RecipientMessageItem";
@@ -14,11 +14,11 @@ import LoadingGetMessage from "./LoadingGetMessage";
 import ScrollToBottom from "./ScrollToBottom";
 
 type TProps = {
-   item: TChatListItem;
-   chatGroupId: number | null;
+   stateChat: TStateChat;
+   dataSendMessage: TAllmessage;
 };
 
-export default function MessageList({ item, chatGroupId }: TProps) {
+export default function MessageList({ stateChat, dataSendMessage }: TProps) {
    const totalPageRef = useRef(0);
    const totalItemRef = useRef(0);
    const hasScrolledInitiallyRef = useRef(false);
@@ -27,7 +27,7 @@ export default function MessageList({ item, chatGroupId }: TProps) {
 
    const [page, setPage] = useState(1);
    const [isAtBottom, setIsAtBottom] = useState(true);
-   const [allMessages, setAllMessages] = useState<TPayloadData[]>([]);
+   const [allMessages, setAllMessages] = useState<TAllmessage[]>([]);
 
    const virtuosoRef = useRef<VirtuosoHandle>(null);
 
@@ -36,7 +36,7 @@ export default function MessageList({ item, chatGroupId }: TProps) {
    const chatMessage = useGetChatMessage({
       page,
       filters: {
-         chatGroupId,
+         chatGroupId: stateChat.chatGroupId,
       },
    });
 
@@ -67,29 +67,23 @@ export default function MessageList({ item, chatGroupId }: TProps) {
    }, [allMessages.length]);
 
    // Nhận tin nhắn mới qua socket
-   const { socket } = useSocket();
    useEffect(() => {
-      if (!socket) return;
+      if (!dataSendMessage?.chatGroupId) return;
 
-      listenToEvent(socket, SOCKET_CHAT_MES.SEND_MESSAGE, (data: TPayloadData) => {
-         console.log({ SEND_MESSAGE: data, chatGroupId, item });
-         if (item.chatGroupId !== data.chatGroupId) return;
+      // 👉 Nếu bạn gửi => luôn scroll
+      if (dataSendMessage.userIdSender === user?.id) {
+         shouldScrollRef.current = true;
+      }
+      // 👉 Nếu người khác gửi và bạn đang ở cuối => scroll
+      else if (isAtBottomRef.current) {
+         shouldScrollRef.current = true;
+      }
 
-         // 👉 Nếu bạn gửi => luôn scroll
-         if (data.userIdSender === user?.id) {
-            shouldScrollRef.current = true;
-         }
-         // 👉 Nếu người khác gửi và bạn đang ở cuối => scroll
-         else if (isAtBottomRef.current) {
-            shouldScrollRef.current = true;
-         }
-
-         setAllMessages((prev) => {
-            if (prev.length === 0) return [data];
-            return [...prev, data];
-         });
+      setAllMessages((prev) => {
+         if (prev.length === 0) return [dataSendMessage];
+         return [...prev, dataSendMessage];
       });
-   }, [socket]);
+   }, [dataSendMessage]);
 
    // Khi allMessages thay đổi → nếu có flag scroll thì scroll
    useEffect(() => {
@@ -126,29 +120,29 @@ export default function MessageList({ item, chatGroupId }: TProps) {
             data={allMessages}
             firstItemIndex={firstItemIndex}
             style={{ height: "100%" }}
-            itemContent={(index, messageItem: TPayloadData) => {
-               const userRecipient = item.chatGroup?.ChatGroupMembers.find((item) => item.Users.id === messageItem.userIdSender)?.Users;
+            itemContent={(index, messageItem: TAllmessage) => {
+               const userRecipient = stateChat.chatGroupMembers.find((member) => member.userId === messageItem.userIdSender);
                return (
                   <Fragment key={index}>
                      {messageItem.userIdSender === user?.id ? (
                         <SenderMessageItem
                            messageItem={{
                               avatar: user?.avatar,
-                              email: user?.fullName || "??",
                               message: messageItem.messageText,
-                              time: user?.createdAt || "",
+                              createdAt: messageItem.createdAt || "",
                               userId: messageItem.userIdSender,
                               roleId: user?.roleId || 0,
+                              fullName: user?.fullName,
                            }}
                         />
                      ) : (
                         <RecipientMessageItem
                            messageItem={{
                               avatar: userRecipient?.avatar,
-                              email: userRecipient?.fullName || "??",
+                              fullName: userRecipient?.fullName,
                               message: messageItem.messageText,
-                              time: userRecipient?.createdAt || "",
-                              userId: userRecipient?.id || 0,
+                              createdAt: messageItem.createdAt || "",
+                              userId: userRecipient?.userId || 0,
                               roleId: userRecipient?.roleId || 0,
                            }}
                         />

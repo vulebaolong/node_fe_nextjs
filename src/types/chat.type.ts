@@ -5,7 +5,7 @@ export type TCreateChatReq = {
    message: string;
 };
 
-export type TCreateChatRes = TPayloadData & {
+export type TCreateChatRes = TAllmessage & {
    deletedBy: number;
    isDeleted: boolean;
    deletedAt: string;
@@ -26,10 +26,10 @@ export type TChatListItem = {
 
 export type TPayloadReceiveMessage = {
    roomId: number;
-   payload: TPayloadData;
+   payload: TAllmessage;
 };
 
-export type TPayloadData = {
+export type TAllmessage = {
    messageText: string;
    userIdSender: number;
    chatGroupId: number;
@@ -38,11 +38,11 @@ export type TPayloadData = {
 
 export type TMessageItem = {
    message: string;
-   avatar: string | null;
-   email: string;
+   avatar: string | undefined
+   fullName: string | undefined
    userId: number;
    roleId: number;
-   time: string;
+   createdAt: string;
 };
 
 export type TStateChat = {
@@ -54,4 +54,5 @@ export type TStateChatMember = {
    userId: number;
    fullName: string;
    avatar: string;
+   roleId: number;
 };

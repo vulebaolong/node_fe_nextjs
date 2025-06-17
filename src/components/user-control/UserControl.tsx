@@ -22,7 +22,7 @@ export default function UserControl({ colorText = "black" }: TProps) {
       <Menu shadow="md" width={220} opened={opened} onChange={setOpened}>
          <Menu.Target>
             {info ? (
-               <Avatar size={32} sx={{ cursor: `pointer` }} user={info} color="initials" />
+               <Avatar size={32} sx={{ cursor: `pointer` }} fullName={info.fullName} avatar={info.avatar} color="initials" />
             ) : (
                <Group
                   gap={2}

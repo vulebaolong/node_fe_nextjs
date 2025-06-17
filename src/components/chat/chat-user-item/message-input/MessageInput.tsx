@@ -1,7 +1,7 @@
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
-import { TChatListItem } from "@/types/chat.type";
+import { TStateChat } from "@/types/chat.type";
 import { ActionIcon, Box, Group, Popover, Textarea, useMantineColorScheme } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { IconMoodSmile, IconSend2 } from "@tabler/icons-react";
@@ -11,13 +11,10 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 type TProps = {
-   item: TChatListItem;
-   chatGroupId: number | null;
+   stateChat: TStateChat
 };
 
-export default function MessageInput({ item, chatGroupId }: TProps) {
-   // console.log({ MessageInput: item });
-
+export default function MessageInput({ stateChat }: TProps) {
    const userId = useAppSelector((state) => state.user.info?.id);
    const email = useAppSelector((state) => state.user.info?.email);
    const { socket, isConnected } = useSocket();
@@ -36,14 +33,13 @@ export default function MessageInput({ item, chatGroupId }: TProps) {
       if (!email) return toast.warning(`email: ${email}`);
       if (value.trim() === ``) return;
       if (!isConnected) return toast.warning(`Disconnected. Refresh to reconnect.`);
-      if (!chatGroupId) return toast.warning(`ChatGroupId: ${item}`);
+      if (!stateChat.chatGroupId) return toast.warning(`ChatGroupId: ${stateChat.chatGroupId}`);
 
       console.log({ userId, message: value });
       socket?.emit(SOCKET_CHAT_MES.SEND_MESSAGE, {
          message: value,
          userIdSender: userId,
-         userIdRecipient: item.id,
-         chatGroupId: chatGroupId,
+         chatGroupId: stateChat.chatGroupId,
       });
       setValue(``);
    };
@@ -66,7 +62,7 @@ export default function MessageInput({ item, chatGroupId }: TProps) {
       >
          <Group gap={2} align="center">
             <Textarea
-               disabled={!chatGroupId}
+               disabled={!stateChat.chatGroupId}
                radius="xl"
                onKeyDown={getHotkeyHandler([["Enter", handleSubmit]])}
                placeholder="Write a message..."

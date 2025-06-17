@@ -71,12 +71,14 @@ export function Profile() {
          <Stack>
             <Paper shadow="lg" radius="lg" withBorder p={80} pt={100} bg="var(--mantine-color-body)">
                <Center>
-                  <Avatar user={info} size={120} radius={120} mx="auto" />
+                  <Avatar avatar={info?.avatar} fullName={info?.fullName} size={120} radius={120} mx="auto" />
                </Center>
 
-               <Text truncate maw={300} ta="center" fz="lg" fw={500} mt="md">
-                  {info?.fullName}
-               </Text>
+               <Center>
+                  <Text truncate maw={300} fz="lg" fw={500} mt="md">
+                     {info?.fullName}
+                  </Text>
+               </Center>
 
                <Text ta="center" c="dimmed" fz="sm">
                   {info?.email}

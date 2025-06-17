@@ -44,7 +44,6 @@ export const useFindAllChatGroup = () => {
       queryFn: async () => {
          const data = await findAllChatGroupAction();
          console.log({ findAllChatGroup: data });
-         await wait(500);
          return data;
       },
    });

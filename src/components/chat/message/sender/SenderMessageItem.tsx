@@ -21,26 +21,12 @@ export default function SenderMessageItem({ messageItem }: TProps) {
                   padding: "8px 12px",
                   borderRadius: `18px`,
                   backgroundImage: `linear-gradient(#aa00ff calc(100vh - 455px + 48px), #0070f6 calc(100% - 56px), #0070f6)`,
-                  // backgroundImage: `linear-gradient(rgb(170, 0, 255), rgb(0, 112, 246))`,
                   backgroundColor: `transparent`,
                   backgroundAttachment: `fixed`,
                   minWidth: `100px`,
                   gap: 0,
                }}
             >
-               {/* <Text
-                  sx={{
-                     color: "#C37900",
-                     fontSize: `12px`,
-                     fontWeight: 700,
-                     whiteSpace: `pre-wrap`,
-                     unicodeBidi: `isolate`,
-                     wordWrap: `break-word`,
-                     wordBreak: `break-word`,
-                  }}
-               >
-                  {messageItem.email || `??`}
-               </Text> */}
                <Text
                   sx={{
                      color: `white`,
@@ -65,12 +51,9 @@ export default function SenderMessageItem({ messageItem }: TProps) {
                      wordBreak: `break-word`,
                   }}
                >
-                  {formatLocalTime()}
+                  {formatLocalTime(messageItem.createdAt)}
                </Text>
             </Stack>
-            {/* <Box style={{ flexShrink: 0 }}>
-               <Avatar user={{ avatar: messageItem.avatar, fullName: messageItem.email, roleId: messageItem.roleId } as TUser} />
-            </Box> */}
          </Group>
       </Group>
    );

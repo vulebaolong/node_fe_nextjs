@@ -47,7 +47,7 @@ export default function Article({ article }: TProps) {
          {/* info */}
          <Group justify="space-between" wrap="nowrap" px={10} py={15}>
             <Box style={{ flexShrink: 0 }}>
-               <Avatar user={article.Users} />
+               <Avatar fullName={article.Users?.fullName} avatar={article.Users?.avatar} />
             </Box>
             <Stack gap={0} flex={1}>
                <Text fw={`bold`}>{article.Users?.fullName}</Text>

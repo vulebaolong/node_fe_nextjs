@@ -8,7 +8,7 @@ export default function HomeLeft() {
    const info = useAppSelector((state) => state.user.info);
    return (
       <Stack>
-         <TagUser user={info} />
+         <TagUser fullName={info?.fullName} avatar={info?.avatar} roleId={info?.roleId} />
       </Stack>
    );
 }

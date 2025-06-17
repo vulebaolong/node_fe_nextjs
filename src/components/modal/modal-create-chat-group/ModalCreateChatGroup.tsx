@@ -109,7 +109,7 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
                      return (
                         <Group key={i} sx={{ ...animationList(i), flexWrap: `nowrap`, gap: 5 }}>
                            <Box maw={`380px`}>
-                              <TagUser size={"sm"} user={user} />
+                              <TagUser sizeAvatar={`sm`} fullName={user.fullName} avatar={user.avatar} roleId={user.roleId} />
                            </Box>
                            <ActionIcon
                               variant="default"
@@ -181,7 +181,7 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
                                  },
                               }}
                            >
-                              <TagUser user={user} size={`sm`} />
+                              <TagUser sizeAvatar={`sm`} fullName={user.fullName} avatar={user.avatar} roleId={user.roleId} />
                            </Box>
                         );
                      })}

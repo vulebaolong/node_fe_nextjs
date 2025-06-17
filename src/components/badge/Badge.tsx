@@ -15,6 +15,6 @@ const Badge = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRef
    );
 });
 
-Badge.displayName = "Avatar";
+Badge.displayName = "Badge";
 
 export default Badge;

@@ -1,32 +1,31 @@
-import Avatar from "@/components/avatar/Avatar";
-import { CHAT_LIST_BUBBLE } from "@/constant/chat.constant";
-import { openUserFromBuble, removeUserFromChatList } from "@/helpers/chat.helper";
-import { TChatListItem } from "@/types/chat.type";
-import { TUser } from "@/types/user.type";
+import { CHAT_BUBBLE } from "@/constant/chat.constant";
+import { openChatFromBuble, removeChatOpened } from "@/helpers/chat.helper";
+import { TStateChat } from "@/types/chat.type";
 import { ActionIcon, Box, Transition } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import { IconX } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
+import AvatarChatGroup from "../chat-user-item/avatar-chat-group/AvatarChatGroup";
 
 type TProps = {
-   item: TChatListItem;
+   stateChat: TStateChat;
    i: number;
 };
 
-export default function ChatUserBubble({ item, i }: TProps) {
+export default function ChatUserBubble({ stateChat, i }: TProps) {
    const queryClient = useQueryClient();
    const { hovered, ref } = useHover();
 
    const handleDeleteListChat = (e: any) => {
       e.stopPropagation();
-      removeUserFromChatList(item, CHAT_LIST_BUBBLE, () => {
+      removeChatOpened(stateChat, CHAT_BUBBLE, () => {
          queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
          queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
       });
    };
 
    const handleOpenUserChat = () => {
-      openUserFromBuble(item, () => {
+      openChatFromBuble(stateChat, () => {
          queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
          queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
       });
@@ -47,7 +46,7 @@ export default function ChatUserBubble({ item, i }: TProps) {
          ref={ref}
          onClick={handleOpenUserChat}
       >
-         <Avatar style={{ width: `60px`, height: `60px` }} user={{ avatar: item.ava, fullName: item.name } as TUser} />
+         <AvatarChatGroup width={`60px`} height={`60px`} stateChat={stateChat} isTextName={false} />
          <Box
             style={{
                position: `absolute`,
@@ -55,6 +54,7 @@ export default function ChatUserBubble({ item, i }: TProps) {
                right: 7,
                width: `50%`,
                transform: `translate(50%, -50%)`,
+               zIndex: 3
             }}
          >
             <Transition mounted={hovered} transition="scale-y" duration={300} timingFunction="ease">

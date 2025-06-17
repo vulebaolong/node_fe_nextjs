@@ -1,21 +1,22 @@
-import { TUser } from "@/types/user.type";
 import { Box, Group, MantineSize, Text } from "@mantine/core";
 import Avatar from "../avatar/Avatar";
 
 type TProps = {
-   user?: TUser | null | undefined;
    fw?: string;
-   size?: number | (string & {}) | MantineSize | undefined;
+   sizeAvatar?: number | (string & {}) | MantineSize | undefined;
+   fullName?: string;
+   avatar?: string;
+   roleId?: number;
 };
 
-export default function TagUser({ user, fw = `normal`, size = `md` }: TProps) {
+export default function TagUser({ fullName, avatar, roleId, fw = `normal`, sizeAvatar = `md` }: TProps) {
    return (
       <Group wrap="nowrap" gap={5}>
          <Box sx={{ flexShrink: 0 }}>
-            <Avatar size={size} user={user} />
+            <Avatar size={sizeAvatar} fullName={fullName} avatar={avatar}  />
          </Box>
          <Text fw={fw} truncate>
-            {user?.fullName}
+            {fullName}
          </Text>
       </Group>
    );

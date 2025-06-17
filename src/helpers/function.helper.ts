@@ -46,32 +46,61 @@ export function moveElementToTop<T>(arr: T[], condition: (item: T) => boolean): 
 }
 
 export class LogWithColor {
-   private tagText: string = "";
-   private tagColor: string = "gray";
-   private messageText: string = "";
-   private messageColor: string = "black";
+   private bufferedSegments: { text: string; style: string }[] = [];
+   private lineMode = false;
 
-   // 🏷️ Thiết lập tag
-   tag(tag: string, color: string = "gray") {
-      this.tagText = tag;
-      this.tagColor = color;
-      return this; // 👈 Cho phép chain method tiếp theo
+   // ✉️ Gọi mes: nếu chưa bật .line(), log ngay; nếu đã bật .line(), lưu lại
+   mes(message: string | object, style: Partial<CSSStyleDeclaration> = {}) {
+      const text = typeof message === "object" ? JSON.stringify(message, null, 2) : message;
+
+      const styleStr = this.buildStyleString(style);
+
+      if (this.lineMode) {
+         this.bufferedSegments.push({ text, style: styleStr });
+      } else {
+         console.log(`%c${text}`, styleStr);
+      }
+
+      return this;
    }
 
-   // ✉️ Thiết lập message
-   mes(message: string, color: string = "white") {
-      this.messageText = message;
-      this.messageColor = color;
-      this.printLog();
+   // 📌 Gọi line: in ra tất cả những gì đã mes() trước đó
+   eln() {
+      if (this.bufferedSegments.length === 0) return;
+
+      const format = this.bufferedSegments.map(() => "%c%s").join(" ");
+      const args: any[] = [];
+
+      this.bufferedSegments.forEach((seg) => {
+         args.push(seg.style, seg.text);
+      });
+
+      console.log(format, ...args);
+
+      // reset trạng thái
+      this.bufferedSegments = [];
+      this.lineMode = false;
+
+      return this;
    }
 
-   // 📌 Thực hiện console.log với màu
-   private printLog() {
-      console.log(
-         `%c[${this.tagText}] %c${this.messageText}`,
-         `color: ${this.tagColor}; font-weight: bold;`,
-         `color: ${this.messageColor}; font-weight: bold;`
+   // 🚀 Bật chế độ line
+   sln() {
+      this.lineMode = true;
+      return this;
+   }
+
+   // 🧰 Helper: build style string
+   private buildStyleString(style: Partial<CSSStyleDeclaration>): string {
+      return (
+         Object.entries(style)
+            .map(([key, value]) => `${this.camelToKebab(key)}: ${value};`)
+            .join(" ") || "font-weight: bold;"
       );
+   }
+
+   private camelToKebab(str: string) {
+      return str.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`);
    }
 }
 

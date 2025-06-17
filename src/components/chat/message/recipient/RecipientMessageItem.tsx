@@ -21,7 +21,7 @@ export default function RecipientMessageItem({ messageItem }: TProps) {
          }}
       >
          <Box style={{ flexShrink: 0 }}>
-            <Avatar size={`sm`} user={{ avatar: messageItem.avatar, fullName: messageItem.email, roleId: messageItem.roleId } as TUser} />
+            <Avatar size={`sm`} fullName={messageItem.fullName} avatar={messageItem.avatar} />
          </Box>
          <Stack
             sx={(_, u) => {
@@ -39,19 +39,6 @@ export default function RecipientMessageItem({ messageItem }: TProps) {
                };
             }}
          >
-            {/* <Text
-               sx={{
-                  color: "#C37900",
-                  fontSize: `12px`,
-                  fontWeight: 700,
-                  whiteSpace: `pre-wrap`,
-                  unicodeBidi: `isolate`,
-                  wordWrap: `break-word`,
-                  wordBreak: `break-word`,
-               }}
-            >
-               {messageItem.email || `??`}
-            </Text> */}
             <Text
                sx={(_, u) => {
                   return {
@@ -90,7 +77,7 @@ export default function RecipientMessageItem({ messageItem }: TProps) {
                   };
                }}
             >
-               {formatLocalTime()}
+               {formatLocalTime(messageItem.createdAt)}
             </Text>
          </Stack>
       </Group>

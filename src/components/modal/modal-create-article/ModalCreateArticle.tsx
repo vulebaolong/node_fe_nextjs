@@ -66,7 +66,7 @@ export default function ModalCreateArticle({ opened, close }: TProps) {
       >
          <Stack p={5}>
             <Box py={5}>
-               <TagUser user={info} />
+               <TagUser fullName={info?.fullName} avatar={info?.avatar} roleId={info?.roleId} />
             </Box>
 
             {/* content */}

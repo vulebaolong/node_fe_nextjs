@@ -55,8 +55,7 @@ export default function UserMenuLoginYes({ onClick }: TProps) {
                gap: 10,
             }}
          >
-            {/* <Avatar size={`md`} name={info?.fullName} color="initials" /> */}
-            <Avatar size={`md`} style={{width: `38px`, height: `38px`, padding: `0px`}} user={info} color="initials" />
+            <Avatar size={`md`} style={{width: `38px`, height: `38px`, padding: `0px`}} fullName={info?.fullName} avatar={info?.avatar} color="initials" />
 
             <Stack gap={0}>
                <Text truncate sx={{ fontWeight: 900, fontSize: `16px`, maxWidth: `130px` }}>

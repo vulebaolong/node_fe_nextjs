@@ -45,7 +45,7 @@ export default function HomeCenter() {
          <Stack maw={680} mx={`auto`}>
             <Box className={`${classes[`box-1`]}`} px={10} py={15}>
                <Group wrap="nowrap">
-                  <Avatar user={info} />
+                  <Avatar fullName={info?.fullName} avatar={info?.avatar} />
                   <Button styles={{ inner: { justifyContent: `start` } }} onClick={open} size="md" flex={1} variant="light" color="gray" radius="xl">
                      <Text fz={`md`} fw={`bold`} w={`100%`}>
                         {info?.fullName} ơi, Bạn Đang Nghĩ Gì Thế
