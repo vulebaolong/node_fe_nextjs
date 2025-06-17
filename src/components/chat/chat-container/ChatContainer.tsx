@@ -9,18 +9,6 @@ import ChatUserItem from "../chat-user-item/ChatUserItem";
 export default function ChatContainer() {
    const chatListUserItem = useGetChatListUserItem();
    const chatListUserBubble = useGetChatListUserBubble();
-   // const { socket } = useSocket();
-
-   // useEffect(() => {
-   //    if (!socket) return;
-   //    listenToEvent(socket, SOCKET_CHAT_MES.SEND_MESSAGE, (data: TPayloadData) => {
-   //       console.log({ [`TỔNG - ${SOCKET_CHAT_MES.SEND_MESSAGE}`]: data });
-   //    });
-   //    return () => {
-   //       if (!socket) return;
-   //       removeEventListener(socket, SOCKET_CHAT_MES.SEND_MESSAGE);
-   //    };
-   // }, [socket]);
 
    return (
       <>

@@ -16,7 +16,7 @@ type TProps = {
 };
 
 export default function MessageInput({ item, chatGroupId }: TProps) {
-   console.log({ MessageInput: item });
+   // console.log({ MessageInput: item });
 
    const userId = useAppSelector((state) => state.user.info?.id);
    const email = useAppSelector((state) => state.user.info?.email);

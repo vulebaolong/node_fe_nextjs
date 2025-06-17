@@ -1,24 +1,21 @@
-import { useSocket } from "@/hooks/socket.hook";
+import Avatar from "@/components/avatar/Avatar";
 import TagUser from "@/components/tag-user/TagUser";
 import { CHAT_LIST_ITEM, SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { emitToEvent, removeUserFromChatList } from "@/helpers/chat.helper";
-import { useAppSelector } from "@/redux/hooks";
+import { useSocket } from "@/hooks/socket.hook";
 import { TChatListItem } from "@/types/chat.type";
 import { TUser } from "@/types/user.type";
 import { ActionIcon, Box, Group, Text } from "@mantine/core";
 import { IconX } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
-import Avatar from "@/components/avatar/Avatar";
 
 type TProps = {
    item: TChatListItem;
 };
 
 export default function MessageHeader({ item }: TProps) {
-   console.log({ item });
    const queryClient = useQueryClient();
    const { socket } = useSocket();
-   const userId = useAppSelector((state) => state.user.info?.id);
 
    const handleDeleteListChat = (e: any) => {
       e.stopPropagation();
