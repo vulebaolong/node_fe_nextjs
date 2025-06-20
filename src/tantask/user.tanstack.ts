@@ -7,7 +7,6 @@ import {
    uploadAvatarCloudAction,
    uploadAvatarLocalAction,
 } from "@/actions/user.action";
-import { wait } from "@/helpers/function.helper";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useUploadAvatarLocal = () => {

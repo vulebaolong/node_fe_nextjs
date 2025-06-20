@@ -96,7 +96,7 @@ export default function ModalSearchUser({ opened, close }: TProps) {
                         },
                      }}
                   >
-                     <TagUser fullName={user.fullName} avatar={user.avatar} roleId={user.roleId} sizeAvatar={`sm`} />
+                     <TagUser fullName={user.fullName} avatar={user.avatar}  sizeAvatar={`sm`} />
                   </Box>
                );
             })}

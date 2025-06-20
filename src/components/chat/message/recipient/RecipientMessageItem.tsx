@@ -1,7 +1,6 @@
 import Avatar from "@/components/avatar/Avatar";
 import { formatLocalTime } from "@/helpers/function.helper";
 import { TMessageItem } from "@/types/chat.type";
-import { TUser } from "@/types/user.type";
 import { Box, Group, Stack, Text } from "@mantine/core";
 import * as emoji from "node-emoji";
 

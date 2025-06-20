@@ -1,5 +1,5 @@
 import { checkPathImage } from "@/helpers/function.helper";
-import { Avatar as AvatarMantine, AvatarProps, Text, Tooltip } from "@mantine/core";
+import { Avatar as AvatarMantine, AvatarProps } from "@mantine/core";
 import { forwardRef } from "react";
 
 type TProps = {

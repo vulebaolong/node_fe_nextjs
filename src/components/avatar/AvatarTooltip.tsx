@@ -6,7 +6,7 @@ type TProps = {
    avatar?: string;
 };
 
-export default function AvatarTooltip({ fullName, avatar, ...props }: TProps) {
+export default function AvatarTooltip({ fullName, avatar }: TProps) {
    return (
       <Tooltip
          label={

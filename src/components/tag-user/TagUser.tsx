@@ -6,10 +6,9 @@ type TProps = {
    sizeAvatar?: number | (string & {}) | MantineSize | undefined;
    fullName?: string;
    avatar?: string;
-   roleId?: number;
 };
 
-export default function TagUser({ fullName, avatar, roleId, fw = `normal`, sizeAvatar = `md` }: TProps) {
+export default function TagUser({ fullName, avatar, fw = `normal`, sizeAvatar = `md` }: TProps) {
    return (
       <Group wrap="nowrap" gap={5}>
          <Box sx={{ flexShrink: 0 }}>
