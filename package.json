@@ -50,7 +50,7 @@
       "react-redux": "^9.2.0",
       "react-toastify": "^11.0.3",
       "react-virtuoso": "^4.12.8",
-      "socket.io-client": "^1.7.4",
+      "socket.io-client": "^4.8.1",
       "yup": "^1.6.1",
       "zustand": "^5.0.3"
    },
@@ -60,7 +60,6 @@
       "@types/node": "^20",
       "@types/react": "^19",
       "@types/react-dom": "^19",
-      "@types/socket.io-client": "^1.4.36",
       "eslint": "^9",
       "eslint-config-next": "15.1.7",
       "postcss": "^8.5.2",
