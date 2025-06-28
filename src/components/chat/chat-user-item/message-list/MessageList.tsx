@@ -68,7 +68,7 @@ export default function MessageList({ stateChat, dataSendMessage }: TProps) {
       if (!dataSendMessage?.chatGroupId) return;
 
       // 👉 Nếu bạn gửi => luôn scroll
-      if (dataSendMessage.userIdSender === user?.id) {
+      if (dataSendMessage.userIdSender === user?._id) {
          shouldScrollRef.current = true;
       }
       // 👉 Nếu người khác gửi và bạn đang ở cuối => scroll
@@ -121,14 +121,14 @@ export default function MessageList({ stateChat, dataSendMessage }: TProps) {
                const userRecipient = stateChat.chatGroupMembers.find((member) => member.userId === messageItem.userIdSender);
                return (
                   <Fragment key={index}>
-                     {messageItem.userIdSender === user?.id ? (
+                     {messageItem.userIdSender === user?._id ? (
                         <SenderMessageItem
                            messageItem={{
                               avatar: user?.avatar,
                               message: messageItem.messageText,
                               createdAt: messageItem.createdAt || "",
                               userId: messageItem.userIdSender,
-                              roleId: user?.roleId || 0,
+                              roleId: user.roleId || "",
                               fullName: user?.fullName,
                            }}
                         />
@@ -139,8 +139,8 @@ export default function MessageList({ stateChat, dataSendMessage }: TProps) {
                               fullName: userRecipient?.fullName,
                               message: messageItem.messageText,
                               createdAt: messageItem.createdAt || "",
-                              userId: userRecipient?.userId || 0,
-                              roleId: userRecipient?.roleId || 0,
+                              userId: userRecipient?.userId || "",
+                              roleId: userRecipient?.roleId || "",
                            }}
                         />
                      )}

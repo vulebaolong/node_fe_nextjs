@@ -1,29 +1,21 @@
+import { TBaseTimestamps } from "./base.type";
+
 export type TPermission = {
-   id: number;
+   _id: string;
    name: string;
    endpoint: string;
    method: string;
    module: string;
-   deletedBy: number;
-   isDeleted: boolean;
-   deletedAt: string;
-   createdAt: string;
-   updatedAt: string;
-   isActive?: number;
-};
+   isActive?: boolean;
+} & TBaseTimestamps;
 
-export type TPermissionGroupByMoudleRes = {
-   [key: string]: (TPermission & { Role_Permissions: TRolePermission })[];
+export type TListPermissionByRole = TPermission & {
+   RolePermissions: TRolePermission | null;
 };
 
 export type TRolePermission = {
-   id: number;
+   _id: string;
    roleId: number;
    permissionId: number;
    isActive: boolean;
-   deletedBy: number;
-   isDeleted: boolean;
-   deletedAt: string;
-   createdAt: string;
-   updatedAt: string;
-};
+} & TBaseTimestamps;

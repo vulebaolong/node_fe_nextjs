@@ -18,7 +18,7 @@ export default function Role() {
    const columnHelper = createColumnHelper<TRole>();
    const columns = useMemo(
       () => [
-         columnHelper.accessor("id", {
+         columnHelper.accessor("_id", {
             header: "ID",
             size: 50,
             cell: ({ cell }) => {
@@ -117,7 +117,7 @@ export default function Role() {
             // onCreate={useCreateUsers}
             onUpdate={useUpdateRoles}
             onDetail={(row) => {
-               router.push(`${ROUTER_ADMIN.ROLE}/${row.id}`);
+               router.push(`${ROUTER_ADMIN.ROLE}/${row._id}`);
             }}
             // onDelete={useDeleteUsers}
             filters={[

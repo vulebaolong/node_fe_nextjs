@@ -1,12 +1,11 @@
 "use client";
 
-import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
+import { NEXT_PUBLIC_BASE_DOMAIN_SOCKET } from "@/constant/app.constant";
 import { useAppSelector } from "@/redux/hooks";
 import { createContext, useEffect, useRef, useState } from "react";
 // import { io } from "socket.io-client";
 import io from "socket.io-client";
 
-const SOCKET_URL = NEXT_PUBLIC_BASE_DOMAIN_API;
 
 interface SocketContextType {
    socket: any | null;
@@ -21,10 +20,10 @@ export default function SocketProvider({ children }: { children: React.ReactNode
    const info = useAppSelector((state) => state.user.info);
 
    useEffect(() => {
-      if (!socketRef.current && info?.id) {
+      if (!socketRef.current && info?._id) {
          console.log("Initializing socket...");
-         socketRef.current = io(SOCKET_URL, {
-            query: { userId: info.id },
+         socketRef.current = io(NEXT_PUBLIC_BASE_DOMAIN_SOCKET, {
+            query: { userId: info._id },
             transports: ["websocket", "polling"],
             secure: false,
          });
@@ -47,7 +46,7 @@ export default function SocketProvider({ children }: { children: React.ReactNode
             socketRef.current = null;
          }
       };
-   }, [info?.id]);
+   }, [info?._id]);
 
    return <SocketContext.Provider value={{ socket: socketRef.current, isConnected }}>{children}</SocketContext.Provider>;
 }

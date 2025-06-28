@@ -77,8 +77,8 @@ export function removeEventListener(socket: any, eventName: string, callback?: (
    logWithColor.sln().mes("🔴 REMOVED - ", { color: "red" }).mes(eventName, { color: "cyan", fontWeight: "bold" }).eln();
 }
 
-export function emitToEvent(socket: any, eventName: string, payload: any) {
-   socket?.emit(eventName, payload);
+export function emitToEvent(socket: any, eventName: string, payload: any, cb?: (data: any) => void) {
+   socket?.emit(eventName, payload, cb);
    logWithColor
       .sln()
       .mes("🔵 EMIT - ", { color: "blue" })

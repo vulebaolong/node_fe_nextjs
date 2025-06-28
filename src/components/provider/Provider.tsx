@@ -20,6 +20,7 @@ import ProviderRedux from "./redux/ProviderRedux";
 import SocketProvider from "./socket/SocketProvider";
 import { RootStoreProvider } from "./stores/RootStoreProvider";
 import ToastProvider from "./toast/ToastProvider";
+import CheckGAProvider from "./check-ga/CheckGAProvider";
 
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
@@ -45,11 +46,11 @@ export default function Provider({ children }: { children: ReactNode }) {
       <QueryClientProvider client={queryClient}>
          <RootStoreProvider>
             <ProviderRedux>
-               <MantineProvider >
+               <MantineProvider>
                   <ToastProvider />
                   <SocketProvider>
                      <GoogleProvider>
-                        {children}
+                        <CheckGAProvider>{children}</CheckGAProvider>
                      </GoogleProvider>
                   </SocketProvider>
                </MantineProvider>

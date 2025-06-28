@@ -31,8 +31,7 @@ export type TLogin2FaReq = {
 export type TLoginRes = {
    accessToken: string | null;
    refreshToken: string | null;
-   isGoogleAuthenticator: boolean;
-   deviceId: string;
+   isTotp: true | null;
 };
 
 export interface ISessionUser {

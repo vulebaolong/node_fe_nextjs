@@ -31,6 +31,7 @@
       "General Settings": "General Settings",
       "Light": "Light",
       "Dark": "Dark",
-      "Google Authenticator (2FA)": "Google Authenticator (2FA)"
+      "Two-factor authentication (2FA)": "Two-factor authentication (2FA)",
+      "Google Authenticator": "Google Authenticator"
    }
 }

@@ -53,8 +53,8 @@ export async function loginGooleAction(payload: { code: string }) {
 export async function loginFormAction(payload: TLoginFormReq) {
    try {
       const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN, payload);
-      
-      if (!data?.isGoogleAuthenticator && data?.accessToken && data?.refreshToken) {
+ 
+      if (!data.isTotp&& data?.accessToken && data?.refreshToken) {
          await setAccessToken(data?.accessToken);
          await setRefreshToken(data?.refreshToken);
       }

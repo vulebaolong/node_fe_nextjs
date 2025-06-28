@@ -8,7 +8,7 @@ import { addChatOpened } from "@/helpers/chat.helper";
 import { animationList } from "@/helpers/function.helper";
 import { useAppSelector } from "@/redux/hooks";
 import { useFindAllChatGroup } from "@/tantask/user.tanstack";
-import { ChatGroup } from "@/types/chat-group.type";
+import { TChatGroup } from "@/types/chat.type";
 import { ActionIcon, Box, Group, LoadingOverlay, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconPlus, IconSearch } from "@tabler/icons-react";
@@ -22,22 +22,22 @@ type TProps = {
 
 export default function HomeRight({ onClose }: TProps) {
    const t = useTranslations(`home-right`);
-   const userId = useAppSelector((state) => state.user.info?.id);
+   const userId = useAppSelector((state) => state.user.info?._id);
    const findAllChatGroup = useFindAllChatGroup();
    const queryClient = useQueryClient();
    const [openedCreateChatGroup, handleModalCreateChatGroup] = useDisclosure(false);
 
-   const handleClickChatGroup = (chatGroup: ChatGroup) => {
+   const handleClickChatGroup = (chatGroup: TChatGroup) => {
       if (onClose) onClose();
       addChatOpened(
          {
-            chatGroupId: chatGroup.id,
-            chatGroupName: chatGroup.name,
+            chatGroupId: chatGroup._id,
+            chatGroupName: chatGroup.name || "",
             chatGroupMembers: chatGroup.ChatGroupMembers.map((member) => ({
                avatar: member.Users.avatar,
                fullName: member.Users.fullName,
                roleId: member.Users.roleId,
-               userId: member.Users.id,
+               userId: member.Users._id,
             })),
          },
          () => {
@@ -86,6 +86,7 @@ export default function HomeRight({ onClose }: TProps) {
                   />
                   {(findAllChatGroup.data?.items || []).map((chatGroup, i) => {
                      const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.userId !== userId);
+                     console.log(user);
                      if (!user) return <Fragment key={i}></Fragment>;
                      if (chatGroup.ChatGroupMembers.length === 2) {
                         return (
@@ -103,7 +104,7 @@ export default function HomeRight({ onClose }: TProps) {
                                  borderRadius: `10px`,
                               }}
                            >
-                              <TagUser fullName={user.Users.fullName} avatar={user.Users.avatar}  />
+                              <TagUser fullName={user.Users.fullName} avatar={user.Users.avatar} />
                            </Box>
                         );
                      }
@@ -139,7 +140,7 @@ export default function HomeRight({ onClose }: TProps) {
                      }
                   />
                   {(findAllChatGroup.data?.items || []).map((chatGroup, i) => {
-                     const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.userId !== userId);
+                     const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.Users._id !== userId);
                      if (!user) return <Fragment key={i}></Fragment>;
                      if (chatGroup.ChatGroupMembers.length > 2) {
                         return (
@@ -163,23 +164,13 @@ export default function HomeRight({ onClose }: TProps) {
                                        if (i === 0) {
                                           return (
                                              <Box key={i} sx={{ position: `absolute`, bottom: 0, left: 0, zIndex: 2 }}>
-                                                <Avatar
-                                                   size={`sm`}
-                                                   fullName={member.Users.fullName}
-                                                   avatar={member.Users.avatar}
-                                                   radius="xl"
-                                                />
+                                                <Avatar size={`sm`} fullName={member.Users.fullName} avatar={member.Users.avatar} radius="xl" />
                                              </Box>
                                           );
                                        } else {
                                           return (
                                              <Box key={i} sx={{ position: `absolute`, top: 0, right: 0, zIndex: 1 }}>
-                                                <Avatar
-                                                   size={`sm`}
-                                                   fullName={member.Users.fullName}
-                                                   avatar={member.Users.avatar}
-                                                   radius="xl"
-                                                />
+                                                <Avatar size={`sm`} fullName={member.Users.fullName} avatar={member.Users.avatar} radius="xl" />
                                              </Box>
                                           );
                                        }

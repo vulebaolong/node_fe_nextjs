@@ -3,13 +3,13 @@
 import TableCustom from "@/components/table-custom/TableCustom";
 import { ENDPOINT } from "@/constant/endpoint.constant";
 import { formatLocalTime } from "@/helpers/function.helper";
-import { useListRole } from "@/tantask/role.tanstack";
 import { ActionIcon, Container, Loader, rem, Stack, Text, TextInput } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { IconArrowRight, IconCircleCheckFilled, IconCircleX, IconEditCircle, IconSearch } from "@tabler/icons-react";
 import useRouter from "@/hooks/use-router-custom";
 import { useState } from "react";
 import classes from "./Role.module.css";
+import { useRoles } from "@/tantask/role.tanstack";
 
 export default function Role() {
    const [page, setPage] = useState(1);
@@ -21,11 +21,14 @@ export default function Role() {
       setSearch(query);
    }, 500);
 
-   const listRole = useListRole({
-      page: page,
-      pageSize: 10,
-      // pageSize: pagination.pageSize,
-      search,
+   const listRole = useRoles({
+      pagination: {
+         pageIndex: page,
+         pageSize: 10,
+      },
+      filters: {
+         name: search,
+      },
    });
 
    return (

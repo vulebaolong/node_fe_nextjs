@@ -8,6 +8,7 @@ import { Dispatch, Fragment, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import UserMenuItem from "./UserMenuItem";
 import Avatar from "../avatar/Avatar";
+import { USER_ADMIN } from "@/constant/app.constant";
 
 const listMenu = [
    {
@@ -69,7 +70,7 @@ export default function UserMenuLoginYes({ onClick }: TProps) {
 
          <Stack gap={2}>
             {listMenu.map((item, i) => {
-               if (item.label === "Admin" && info?.Roles?.id !== 0) return null;
+               if (item.label === "Admin" && info?.roleId !== USER_ADMIN) return null;
                return (
                   <Fragment key={i}>
                      <UserMenuItem

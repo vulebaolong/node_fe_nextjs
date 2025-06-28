@@ -7,7 +7,7 @@ export const ENDPOINT = {
       REFRESH_TOKEN_COOKIE: `auth/refresh-token-cookie`,
       GET_INFO: `auth/get-info`,
       FACEBOOK_LOGIN: `auth/facebook-login`,
-      GOOGLE_LOGIN: `auth/google-login`,
+      GOOGLE_LOGIN: `auth/login-google`,
       RESET_PASSWORD: `auth/reset-password`,
       SEND_EMAIL: `auth/send-email`,
    },
@@ -38,8 +38,9 @@ export const ENDPOINT = {
    UPLOAD_AVATAR_LOCAL: `user/avatar-local`,
    UPLOAD_AVATAR_CLOUD: `user/avatar-cloud`,
    ROLE: `role`,
-   TOGGLE_PERMISSION: `role/toggle-permission`,
-   PERMISSION_GROUP_BY_MODULE: `permission/group-by-module`,
+   TOGGLE_ROLE_PERMISSION: `role-permission/toggle`,
+   TOGGLE_ROLE: `role/toggle`,
+   LIST_PERMISSION_BY_ROLE: `permission/list-by-role`,
    PAYMENT_MOMO: `payment/momo-pay`,
    CAR: "car/cars-list",
    ARTICLE: {
@@ -53,4 +54,10 @@ export const ENDPOINT = {
       UPDATE: "reaction-article",
    },
    CHAT_MESSAGE: "chat-message",
+   TOTP: {
+      GENERATE: "totp/generate",
+      VERIFY: "totp/verify",
+      SAVE: "totp/save",
+      DISABLE: "totp/disable",
+   }
 };

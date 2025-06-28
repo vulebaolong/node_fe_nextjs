@@ -22,7 +22,7 @@ type TProps = {
 export default function ModalCreateChatGroup({ opened, close }: TProps) {
    const [search, setSearch] = useState("");
    const searchNameUser = useSearchNameUser();
-   const id = useAppSelector((state) => state.user.info?.id);
+   const id = useAppSelector((state) => state.user.info?._id);
    const [userSelected, setUserSelected] = useState<TUser[]>([]);
    const [chatGroupName, setChatGroupName] = useState<string>("");
    const { socket } = useSocket();
@@ -69,7 +69,7 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
    }, [socket]);
 
    const handleRemoveUser = (user: TUser) => {
-      setUserSelected(userSelected.filter((u) => u.id !== user.id));
+      setUserSelected(userSelected.filter((u) => u._id !== user._id));
    };
 
    const handleCreateChatGroup = () => {
@@ -78,9 +78,9 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
       if (chatGroupName.trim() === "") return toast.warning("Vui lòng nhập tên nhóm");
       if (userSelected.length < 2) return toast.warning("Vui lòng chọn ít nhất 2 người");
 
-      const targetUserIds = userSelected.map((u) => u.id);
+      const targetUserIds = userSelected.map((u) => u._id);
       setLoading(true);
-      emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, { ownerId: info?.id, targetUserIds: targetUserIds, name: chatGroupName });
+      emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, { ownerId: info?._id, targetUserIds: targetUserIds, name: chatGroupName });
    };
 
    return (
@@ -153,7 +153,7 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
                         }
                      />
                      {searchNameUser.data?.items?.map((user, i) => {
-                        if (user.id === id) return <Fragment key={i} />;
+                        if (user._id === id) return <Fragment key={i} />;
                         return (
                            <Box
                               key={i}
@@ -163,7 +163,7 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
                                        return [user];
                                     } else {
                                        if (prev.includes(user)) {
-                                          return prev.filter((item) => item.id !== user.id);
+                                          return prev.filter((item) => item._id !== user._id);
                                        } else {
                                           return [...prev, user];
                                        }

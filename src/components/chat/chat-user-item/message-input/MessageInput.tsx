@@ -1,4 +1,5 @@
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
+import { emitToEvent } from "@/helpers/chat.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { TStateChat } from "@/types/chat.type";
@@ -11,11 +12,11 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 type TProps = {
-   stateChat: TStateChat
+   stateChat: TStateChat;
 };
 
 export default function MessageInput({ stateChat }: TProps) {
-   const userId = useAppSelector((state) => state.user.info?.id);
+   const userId = useAppSelector((state) => state.user.info?._id);
    const email = useAppSelector((state) => state.user.info?.email);
    const { socket, isConnected } = useSocket();
    const [value, setValue] = useState("");
@@ -35,12 +36,12 @@ export default function MessageInput({ stateChat }: TProps) {
       if (!isConnected) return toast.warning(`Disconnected. Refresh to reconnect.`);
       if (!stateChat.chatGroupId) return toast.warning(`ChatGroupId: ${stateChat.chatGroupId}`);
 
-      console.log({ userId, message: value });
-      socket?.emit(SOCKET_CHAT_MES.SEND_MESSAGE, {
+      const payload = {
          message: value,
          userIdSender: userId,
          chatGroupId: stateChat.chatGroupId,
-      });
+      };
+      emitToEvent(socket, SOCKET_CHAT_MES.SEND_MESSAGE, payload, () => {});
       setValue(``);
    };
    return (

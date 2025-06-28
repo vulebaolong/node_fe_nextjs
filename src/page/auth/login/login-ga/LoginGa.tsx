@@ -1,5 +1,8 @@
+import { ROUTER_CLIENT } from "@/constant/router.constant";
+import useRouter from "@/hooks/use-router-custom";
+import { useLoginForm } from "@/tantask/auth.tanstack";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
-import { Anchor, Box, Button, Center, Group, PinInput, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Box, Center, Group, PinInput, Stack, Text, Title } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useFormik } from "formik";
 import { Dispatch, SetStateAction } from "react";
@@ -12,6 +15,9 @@ type TProps = {
 };
 
 export default function LoginGa({ setStep, payloadLogin }: TProps) {
+   const useloginForm = useLoginForm();
+   const router = useRouter();
+
    const loginGAForm = useFormik({
       initialValues: {
          token: "",
@@ -32,32 +38,31 @@ export default function LoginGa({ setStep, payloadLogin }: TProps) {
             token: valuesRaw.token,
          };
 
-         console.log({ payload });
+         useloginForm.mutate(payload, {
+            onSuccess: () => {
+               router.push(ROUTER_CLIENT.HOME);
+               toast.success(`Login successfully`);
+            },
+         });
       },
    });
    return (
-      <Box
-         component="form"
-         onSubmit={(e) => {
-            e.preventDefault();
-            loginGAForm.handleSubmit();
-         }}
-      >
-         <Stack h={200}>
-            <Group justify="space-between">
-               <Anchor
-                  onClick={() => {
-                     setStep(`login-form`);
-                  }}
-                  c="dimmed"
-                  size="sm"
-               >
-                  <Center inline>
-                     <IconArrowLeft style={{ width: "12px", height: "12px" }} stroke={1.5} />
-                     <Box ml={5}>Back to login</Box>
-                  </Center>
-               </Anchor>
-            </Group>
+      <Stack h={`100%`}>
+         <Group justify="space-between">
+            <Anchor
+               onClick={() => {
+                  setStep(`login-form`);
+               }}
+               c="dimmed"
+               size="sm"
+            >
+               <Center inline>
+                  <IconArrowLeft style={{ width: "12px", height: "12px" }} stroke={1.5} />
+                  <Box ml={5}>Back to login</Box>
+               </Center>
+            </Anchor>
+         </Group>
+         <Stack justify="center" h={`100%`}>
             <Title order={4} ta={`center`}>
                Google Authenticator
             </Title>
@@ -72,6 +77,9 @@ export default function LoginGa({ setStep, payloadLogin }: TProps) {
                      value={loginGAForm.values.token}
                      onChange={(e) => {
                         loginGAForm.setFieldValue(`token`, e);
+                     }}
+                     onComplete={(e) => {
+                        loginGAForm.handleSubmit();
                      }}
                      error={!!(loginGAForm.touched.token && loginGAForm.errors.token)}
                   />
@@ -88,9 +96,6 @@ export default function LoginGa({ setStep, payloadLogin }: TProps) {
                </Center>
             </Box>
          </Stack>
-         <Button mt={20} loading={false} type="submit" fullWidth style={{ flexShrink: `0` }}>
-            Verify
-         </Button>
-      </Box>
+      </Stack>
    );
 }

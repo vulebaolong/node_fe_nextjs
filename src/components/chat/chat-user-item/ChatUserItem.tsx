@@ -8,6 +8,7 @@ import MessageHeader from "./message-header/MessageHeader";
 import MessageInput from "./message-input/MessageInput";
 import MessageList from "./message-list/MessageList";
 import _ from "lodash";
+import { useAppSelector } from "@/redux/hooks";
 
 type TProps = {
    stateChat: TStateChat;
@@ -15,18 +16,19 @@ type TProps = {
    i: number;
 };
 
- function ChatUserItem({ i, stateChat, dataSendMessage }: TProps) {
+function ChatUserItem({ i, stateChat, dataSendMessage }: TProps) {
    const { socket } = useSocket();
+   const userId = useAppSelector((state) => state.user.info?._id);
 
    useEffect(() => {
-      if (!socket) return;
-      emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, { chatGroupId: stateChat.chatGroupId });
+      if (!socket || !userId) return;
+      emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, { chatGroupId: stateChat.chatGroupId, userId }, () => {});
 
       return () => {
-         if (!socket) return;
+         if (!socket || !userId) return;
          emitToEvent(socket, SOCKET_CHAT_MES.LEAVE_ROOM, { chatGroupId: stateChat.chatGroupId });
       };
-   }, [socket]);
+   }, [socket, userId]);
 
    return (
       <Stack
@@ -61,9 +63,5 @@ type TProps = {
 }
 
 export default React.memo(ChatUserItem, (prev, next) => {
-  return (
-    prev.stateChat.chatGroupId === next.stateChat.chatGroupId &&
-    prev.i === next.i &&
-    _.isEqual(prev.dataSendMessage, next.dataSendMessage)
-  );
+   return prev.stateChat.chatGroupId === next.stateChat.chatGroupId && prev.i === next.i && _.isEqual(prev.dataSendMessage, next.dataSendMessage);
 });

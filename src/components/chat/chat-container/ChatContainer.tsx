@@ -40,12 +40,17 @@ export default function ChatContainer() {
          {_.isArray(chatListUserItem.data) &&
             chatListUserItem.data.map((stateChat: TStateChat, i) => {
                return (
-                  <ChatUserItem key={stateChat.chatGroupId} stateChat={stateChat} i={i} dataSendMessage={dataSendMessages[stateChat.chatGroupId]} />
+                  <ChatUserItem
+                     key={`${stateChat.chatGroupId}`}
+                     stateChat={stateChat}
+                     i={i}
+                     dataSendMessage={dataSendMessages[stateChat.chatGroupId]}
+                  />
                );
             })}
          {_.isArray(chatListUserBubble.data) &&
             chatListUserBubble.data.map((stateChat: TStateChat, i) => {
-               return <ChatUserBubble key={stateChat.chatGroupId} stateChat={stateChat} i={i} />;
+               return <ChatUserBubble key={`${stateChat.chatGroupId}`} stateChat={stateChat} i={i} />;
             })}
       </>
    );

@@ -1,4 +1,3 @@
-import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
 import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { useLoginForm } from "@/tantask/auth.tanstack";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
@@ -8,6 +7,7 @@ import useRouter from "@/hooks/use-router-custom";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
 
 type TProps = {
    setStep: Dispatch<SetStateAction<TStepLogin>>;
@@ -17,12 +17,13 @@ type TProps = {
 export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
    const router = useRouter();
    const useloginForm = useLoginForm();
+
    const loginForm = useFormik({
       initialValues: {
-         // email: `vulebaolong@gmail.com`,
-         // password: `123aA@`,
-         email: ``,
-         password: ``,
+         email: `example@gmail.com`,
+         password: `Example@123`,
+         // email: ``,
+         // password: ``,
       },
       validationSchema: Yup.object().shape({
          email: Yup.string().trim().email().required(),
@@ -62,7 +63,7 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
          useloginForm.mutate(payload, {
             onSuccess: (data) => {
                console.log({ data });
-               if (data?.isGoogleAuthenticator) {
+               if (data.isTotp) {
                   setStep(`login-google-authentication`);
                } else {
                   router.push(ROUTER_CLIENT.HOME);
