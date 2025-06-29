@@ -1,19 +1,11 @@
-import { getQrGoogleAuthenticatorAction, onOffGoogleAuthenticatorAction } from "@/actions/google-authenticator.action";
+import { onOffGoogleAuthenticatorAction } from "@/actions/google-authenticator.action";
 import { useMutation } from "@tanstack/react-query";
-
-export const useGetQrGoogleAuthenticator = () => {
-   return useMutation({
-      mutationFn: async () => {
-         const data = await getQrGoogleAuthenticatorAction();
-         return data;
-      },
-   });
-};
 
 export const useOnOffGoogleAuthenticator = () => {
    return useMutation({
       mutationFn: async () => {
-         const data = await onOffGoogleAuthenticatorAction();
+         const { data, status, message } = await onOffGoogleAuthenticatorAction();
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });

@@ -1,16 +1,16 @@
-'use server'
+"use server";
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
 import api from "@/helpers/api.helper";
-import { TRes, TResPagination } from "@/types/app.type";
+import { TRes, TResAction, TResPagination } from "@/types/app.type";
 import { TAllmessage } from "@/types/chat.type";
 
-export async function getGetChatMessageAction(query:string) {
+export async function getGetChatMessageAction(query: string): Promise<TResAction<TResPagination<TAllmessage> | null>> {
    try {
-      const { data } = await api.get<TRes<TResPagination<TAllmessage>>>(`${ENDPOINT.CHAT_MESSAGE}?${query}`);
-      return data;
-   } catch (error) {
-      console.error("Get List User Failed", error);
-      throw error;
+      const result = await api.get<TRes<TResPagination<TAllmessage>>>(`${ENDPOINT.CHAT_MESSAGE}?${query}`);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }

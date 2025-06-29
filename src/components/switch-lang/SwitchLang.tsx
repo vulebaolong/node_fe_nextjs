@@ -2,11 +2,15 @@
 
 import { Locale } from "@/i18n/config";
 import { setUserLocale } from "@/services/locale";
-import { ActionIcon, Menu } from "@mantine/core";
+import { ActionIcon, ActionIconProps, Menu } from "@mantine/core";
 import { IconLanguage } from "@tabler/icons-react";
 import { useLocale, useTranslations } from "next-intl";
 
-export default function SwitchLang() {
+type TProps = {
+   size?: ActionIconProps["size"];
+}
+
+export default function SwitchLang( { size = "lg" }: TProps) {
    const t = useTranslations("localeSwitcher");
    const locale = useLocale();
 
@@ -18,9 +22,8 @@ export default function SwitchLang() {
    return (
       <Menu shadow="md" width={110}>
          <Menu.Target>
-            <ActionIcon variant="default" size="lg">
-               {/* <IconWorld stroke={2} size={20} /> */}
-               <IconLanguage stroke={2} />
+            <ActionIcon variant="default" size={size}>
+               <IconLanguage style={{ width: '70%', height: '70%' }} stroke={1.5} />
             </ActionIcon>
          </Menu.Target>
          <Menu.Dropdown>

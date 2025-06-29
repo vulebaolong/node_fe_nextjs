@@ -2,26 +2,25 @@
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
 import api from "@/helpers/api.helper";
-import { TRes, TResPagination } from "@/types/app.type";
+import { TRes, TResAction, TResPagination } from "@/types/app.type";
 import { TArticle } from "@/types/article.type";
 
-export async function getListArticleAction() {
+export async function getListArticleAction(): Promise<TResAction<TResPagination<TArticle> | null>> {
    try {
-      const { data } = await api.get<TRes<TResPagination<TArticle>>>(`${ENDPOINT.ARTICLE.LIST}`);
-      return data;
-   } catch (error) {
-      console.error("Get info failed:", error);
-      throw error;
+      const result = await api.get<TRes<TResPagination<TArticle>>>(`${ENDPOINT.ARTICLE.LIST}`);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function createArticleAction(payload: FormData) {
+export async function createArticleAction(payload: FormData): Promise<TResAction<any| null>> {
    try {
-      const { data } = await api.post<TRes<any>>(ENDPOINT.ARTICLE.CREATE, payload);
-      // revalidateTag(`article-list`)
-      return data;
-   } catch (error) {
-      console.error("Create Article Failed", error);
-      throw error;
+      const result = await api.post<TRes<any>>(ENDPOINT.ARTICLE.CREATE, payload);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }

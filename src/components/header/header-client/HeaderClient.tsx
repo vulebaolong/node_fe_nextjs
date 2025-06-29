@@ -6,7 +6,7 @@ import { Logo } from "@/components/logo/Logo";
 import ModalSearchUser from "@/components/modal/modal-search-user/ModalSearchUser";
 import UserControl from "@/components/user-control/UserControl";
 import { MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
-import { useQueryInfo } from "@/tantask/auth.tanstack";
+import { useGetInfoQuery } from "@/tantask/auth.tanstack";
 import { ActionIcon, Box, Burger, Button, Group, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBrandMessengerFilled, IconSearch } from "@tabler/icons-react";
@@ -17,7 +17,7 @@ export default function HeaderClient() {
    const [openedSearchUser, handleSearchUser] = useDisclosure(false);
    const [openedListChat, handleDrawerListChat] = useDisclosure(false);
    // const router = useRouter();
-   useQueryInfo();
+   useGetInfoQuery();
 
    return (
       <>

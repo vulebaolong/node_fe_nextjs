@@ -10,7 +10,7 @@ import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useDetailUser } from "@/tantask/user.tanstack";
 import { TSocketRes } from "@/types/base.type";
-import { TCreateRoomRes } from "@/types/chat.type";
+import { TCreateRoomReq, TCreateRoomRes } from "@/types/chat.type";
 import { Box, Button, Center, Container, Group, Stack, Text } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
@@ -30,7 +30,7 @@ export default function UserDetail() {
       if (!info?._id || !detailUser.data?._id || !socket) return;
       setLoading(true);
 
-      const payload = { ownerId: info?._id, targetUserIds: [detailUser.data?._id] };
+      const payload: TCreateRoomReq = { ownerId: info?._id, targetUserIds: [detailUser.data?._id] };
 
       emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, payload, (data: TSocketRes<TCreateRoomRes>) => {
          try {
@@ -41,7 +41,7 @@ export default function UserDetail() {
             addChatOpened(
                {
                   chatGroupId: data.data?.chatGroupId,
-                  chatGroupName: data.data?.chatGroupName || "",
+                  chatGroupName: "",
                   chatGroupMembers: [
                      {
                         avatar: detailUser.data?.avatar,

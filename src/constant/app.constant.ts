@@ -3,6 +3,7 @@ export const MOBILE_HIDDEN_DESKTOP_VISIBLE = `mantine-visible-from-md`;
 export const ACCESS_TOKEN = "accessToken";
 export const REFRESH_TOKEN = "refreshToken";
 export const NEXT_LOCALE = "NEXT_LOCALE";
+export const COLOR_KEYS = "user-color-theme";
 
 export const NEXT_PUBLIC_BASE_DOMAIN_API = process.env.NEXT_PUBLIC_BASE_DOMAIN_API || "http://localhost:3069/";
 export const NEXT_PUBLIC_BASE_DOMAIN_SOCKET = process.env.NEXT_PUBLIC_BASE_DOMAIN_SOCKET || "http://localhost:3069/";

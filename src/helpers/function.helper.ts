@@ -17,11 +17,11 @@ export const checkPathImage = (path: string | null | undefined) => {
 };
 
 export const resError = (error: any, defaultMes: string) => {
-   const mes = error.response?.data?.message;
+   const mes = error?.response?.data?.message;
 
    if (Array.isArray(mes)) return mes[0];
 
-   if (error.message) return error.message;
+   if (error?.message) return error?.message;
 
    return defaultMes;
 };

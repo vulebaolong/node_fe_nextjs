@@ -1,3 +1,5 @@
+"use client";
+
 import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { useLoginForm } from "@/tantask/auth.tanstack";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
@@ -76,7 +78,7 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
 
    return (
       <Box component="form" onSubmit={loginForm.handleSubmit}>
-         <Box h={200}>
+         <Box>
             <TextInput
                withAsterisk
                label="Email"
@@ -87,10 +89,12 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
                error={loginForm.touched.email && typeof loginForm.errors.email === "string" ? loginForm.errors.email : undefined}
                inputWrapperOrder={["label", "input", "error"]}
                style={{ height: `85px` }}
+               radius={`lg`}
             />
 
             <Box style={{ height: `85px` }}>
                <CustomPasswordInput
+                  radius={`lg`}
                   label="Password"
                   placeholder="Your password"
                   withAsterisk
@@ -115,7 +119,7 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
             </Group>
          </Box>
 
-         <Button mt={10} loading={false} type="submit" fullWidth style={{ flexShrink: `0` }}>
+         <Button radius={`xl`} mt={10} loading={false} type="submit" fullWidth style={{ flexShrink: `0` }}>
             Login
          </Button>
       </Box>

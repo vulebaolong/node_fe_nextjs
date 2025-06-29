@@ -1,5 +1,6 @@
 "use client";
 
+import ColorThemeSelector from "@/components/color-selector/ColorSchemeSelector";
 import Paper from "@/components/custom/paper/PaperCustom";
 import { Locale } from "@/i18n/config";
 import { setUserLocale } from "@/services/locale";
@@ -77,6 +78,23 @@ export default function SettingAppearance() {
                         { value: "en", label: t(`en`) },
                      ]}
                   />
+               </Group>
+
+               <Divider />
+
+               <Group sx={{ width: `100%`, justifyContent: `space-between` }}>
+                  <Title
+                     order={2}
+                     mt="sm"
+                     sx={{
+                        fontWeight: 900,
+                        fontSize: `clamp(14px, 2vw, 18px)`,
+                     }}
+                  >
+                     {t(`Color Themes`)}
+                  </Title>
+
+                  <ColorThemeSelector  />
                </Group>
             </Stack>
          </Paper>

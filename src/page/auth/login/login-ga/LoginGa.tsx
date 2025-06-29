@@ -1,3 +1,5 @@
+"use client";
+
 import { ROUTER_CLIENT } from "@/constant/router.constant";
 import useRouter from "@/hooks/use-router-custom";
 import { useLoginForm } from "@/tantask/auth.tanstack";
@@ -78,7 +80,7 @@ export default function LoginGa({ setStep, payloadLogin }: TProps) {
                      onChange={(e) => {
                         loginGAForm.setFieldValue(`token`, e);
                      }}
-                     onComplete={(e) => {
+                     onComplete={() => {
                         loginGAForm.handleSubmit();
                      }}
                      error={!!(loginGAForm.touched.token && loginGAForm.errors.token)}

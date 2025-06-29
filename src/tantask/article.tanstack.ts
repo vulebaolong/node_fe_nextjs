@@ -5,7 +5,8 @@ export const useGetListArticle = () => {
    return useQuery({
       queryKey: ["get-list-article"],
       queryFn: async () => {
-         const data = await getListArticleAction();
+         const { data, status, message } = await getListArticleAction();
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });
@@ -14,7 +15,8 @@ export const useGetListArticle = () => {
 export const useCreateArticle = () => {
    return useMutation({
       mutationFn: async (payload: FormData) => {
-         const data = await createArticleAction(payload);
+         const { data, status, message } = await createArticleAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });

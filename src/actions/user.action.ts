@@ -2,77 +2,77 @@
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
 import api from "@/helpers/api.helper";
-import { TRes, TResPagination } from "@/types/app.type";
+import { TRes, TResAction, TResPagination } from "@/types/app.type";
 import { TChatGroup } from "@/types/chat.type";
 import { TUploadAvatarLocalRes, TUser } from "@/types/user.type";
 
-export async function uploadAvatarLocalAction(payload: FormData) {
+export async function uploadAvatarLocalAction(payload: FormData): Promise<TResAction<TUploadAvatarLocalRes | null>> {
    try {
-      const { data } = await api.post<TRes<TUploadAvatarLocalRes>>(ENDPOINT.UPLOAD_AVATAR_LOCAL, payload);
-      return data;
-   } catch (error) {
-      console.error("Upload Avatar Local Failed:", error);
-      throw error;
+      const result = await api.post<TRes<TUploadAvatarLocalRes>>(ENDPOINT.UPLOAD_AVATAR_LOCAL, payload);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function uploadAvatarCloudAction(payload: FormData) {
+export async function uploadAvatarCloudAction(payload: FormData): Promise<TResAction<any | null>> {
    try {
-      const { data } = await api.post<TRes<any>>(ENDPOINT.UPLOAD_AVATAR_CLOUD, payload);
-      return data;
-   } catch (error) {
-      console.error("Upload Avatar Cloud Failed:", error);
-      throw error;
+      const result = await api.post<TRes<any>>(ENDPOINT.UPLOAD_AVATAR_CLOUD, payload);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function findAllUserAction() {
+export async function findAllUserAction(): Promise<TResAction<TResPagination<TUser> | null>> {
    try {
-      const { data } = await api.get<TRes<TResPagination<TUser>>>(`${ENDPOINT.USER}?pageSize=100`);
-      return data;
-   } catch (error) {
-      console.error("Get List User Failed", error);
-      throw error;
+      const result = await api.get<TRes<TResPagination<TUser>>>(`${ENDPOINT.USER}?pageSize=100`);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function findAllChatGroupAction() {
+export async function findAllChatGroupOneAction(): Promise<TResAction<TResPagination<TChatGroup> | null>> {
    try {
-      const { data } = await api.get<TRes<TResPagination<TChatGroup>>>(`${ENDPOINT.CHAT_GROUP}?pageSize=100`);
-      return data;
-   } catch (error) {
-      console.error("Get List User Failed", error);
-      throw error;
+      const result = await api.get<TRes<TResPagination<TChatGroup>>>(`${ENDPOINT.CHAT_GROUP}?pageSize=100&isOne=true`);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function findAllChatGroupByTokenAction() {
+export async function findAllChatGroupManyAction(): Promise<TResAction<TResPagination<TChatGroup> | null>> {
    try {
-      const { data } = await api.get<TRes<TResPagination<TChatGroup>>>(`${ENDPOINT.CHAT_GROUP}?pageSize=100`);
-      return data;
-   } catch (error) {
-      console.error("Get List User Failed", error);
-      throw error;
+      const result = await api.get<TRes<TResPagination<TChatGroup>>>(`${ENDPOINT.CHAT_GROUP}?pageSize=100&isOne=false`);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function getDetailUserAction(userId: string) {
+export async function getDetailUserAction(userId: string): Promise<TResAction<TUser | null>> {
    try {
-      const { data } = await api.get<TRes<TUser>>(`${ENDPOINT.USER}/${userId}`);
-      return data;
-   } catch (error) {
-      console.error("Get Detail User Failed", error);
-      throw error;
+      const result = await api.get<TRes<TUser>>(`${ENDPOINT.USER}/${userId}`);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function searchNameUserAction(filters: string) {
+export async function searchNameUserAction(filters: string): Promise<TResAction<TResPagination<TUser> | null>> {
    try {
       const queryFilters = { fullName: filters };
-      const { data } = await api.get<TRes<TResPagination<TUser>>>(`${ENDPOINT.USER}?pageSize=100&page=1&filters=${JSON.stringify(queryFilters)}`);
-      return data;
-   } catch (error) {
-      console.error("Get List User Failed", error);
-      throw error;
+      const result = await api.get<TRes<TResPagination<TUser>>>(`${ENDPOINT.USER}?pageSize=100&page=1&filters=${JSON.stringify(queryFilters)}`);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }

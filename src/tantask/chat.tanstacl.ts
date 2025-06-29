@@ -30,8 +30,10 @@ export const useGetChatMessage = ({ page, filters }: TMessageListChatAll) => {
       queryKey: ["get-message-list-chat", page, filters],
       queryFn: async () => {
          const query = `page=${page}&filters=${JSON.stringify(filters)}&pageSize=10`;
-         const data = await getGetChatMessageAction(query);
-         // await wait(500);
+
+         const { data, status, message } = await getGetChatMessageAction(query);
+         if (status === "error" || data === null) throw new Error(message);
+
          console.log({ useGetChatMessage: data });
          return data;
       },

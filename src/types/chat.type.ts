@@ -46,8 +46,25 @@ export type TChatGroupMember = {
    updatedAt: string;
 } & TBaseTimestamps;
 
-
 export type TCreateRoomRes = {
-    chatGroupId: string;
-    chatGroupName: string | null;
+   chatGroupId: string;
+};
+
+export type TCreateRoomReq = {
+   ownerId: string;
+   targetUserIds: string[];
+   name?: string;
+};
+
+export type TJoinRoomReq = {
+   chatGroupId: string;
+   userId: string;
+};
+
+export type TJoinRoomRes = {
+   chatGroupId: string;
+};
+
+export type TLeaveRoomReq = {
+   chatGroupId: string;
 };

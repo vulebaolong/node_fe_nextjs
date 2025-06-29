@@ -1,9 +1,9 @@
+import { motion } from 'framer-motion';
 import ImageCustom from "@/components/custom/image-custom/ImageCustom";
 import Paper from "@/components/custom/paper/PaperCustom";
 import { Logo } from "@/components/logo/Logo";
 import QRImage from "@/components/qr-image/QRImage";
 import { resError } from "@/helpers/function.helper";
-import { useIsMobile } from "@/hooks/is-mobile.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useGetInfoMutation } from "@/tantask/auth.tanstack";
 import { useTotpDisable, useTotpGenerate, useTotpSave } from "@/tantask/totp.tanstack";
@@ -33,7 +33,6 @@ import { toast } from "react-toastify";
 
 export default function SettingTwoFactor() {
    const t = useTranslations("setting");
-   const isMobile = useIsMobile();
    const isTotp = useAppSelector((state) => state.user.info?.isTotp);
    const [active, setActive] = useState(-1);
 
@@ -46,6 +45,11 @@ export default function SettingTwoFactor() {
    const getInfo = useGetInfoMutation();
 
    const handleOnOffGoogleAuthenticator = async () => {
+      if (totpGenerate.isPending || totpSave.isPending || totpDisable.isPending || active > -1) {
+         setActive(-1);
+         return;
+      }
+
       if (!isTotp) {
          totpGenerate.mutate(undefined, {
             onSuccess: () => {
@@ -102,11 +106,10 @@ export default function SettingTwoFactor() {
          </Title>
 
          <Paper shadow="sm">
-            <Stack>
+            <Stack gap={0}>
                <Group sx={{ width: `100%`, justifyContent: `space-between` }}>
                   <Title
                      order={2}
-                     mt="sm"
                      sx={{
                         fontWeight: 900,
                         fontSize: `clamp(14px, 2vw, 18px)`,
@@ -118,7 +121,7 @@ export default function SettingTwoFactor() {
                   <Switch
                      checked={isTotp}
                      onChange={handleOnOffGoogleAuthenticator}
-                     size={isMobile ? `md` : `lg`}
+                     size={`md`}
                      thumbIcon={
                         active > -1 ? (
                            <Loader size={12} />
@@ -128,154 +131,161 @@ export default function SettingTwoFactor() {
                            <IconX size={12} color="var(--mantine-color-red-6)" stroke={3} />
                         )
                      }
+                     styles={{
+                        track: {
+                           cursor: `pointer`,
+                        },
+                     }}
                   />
                </Group>
 
-               <Collapse in={active > -1} transitionDuration={500} transitionTimingFunction="linear">
-                  <Box>
-                     <Stepper size="xs" active={active} onStepClick={setActive}>
-                        <Stepper.Step allowStepSelect={false}></Stepper.Step>
-                        <Stepper.Step allowStepSelect={false}></Stepper.Step>
-                        <Stepper.Step allowStepSelect={false}></Stepper.Step>
-                     </Stepper>
-                  </Box>
+               <motion.div animate={{ marginTop: active > -1 ? 20 : 0 }} transition={{ duration: 0.3, ease: "easeInOut" }}>
+                  <Collapse in={active > -1} transitionDuration={500} transitionTimingFunction="linear">
+                     <Box>
+                        <Stepper size="xs" active={active} onStepClick={setActive}>
+                           <Stepper.Step allowStepSelect={false}></Stepper.Step>
+                           <Stepper.Step allowStepSelect={false}></Stepper.Step>
+                           <Stepper.Step allowStepSelect={false}></Stepper.Step>
+                        </Stepper>
+                     </Box>
 
-                  <Stack justify="center" h={450}>
-                     <Transition enterDelay={400} mounted={active === 0} transition="slide-right" duration={400} timingFunction="ease">
-                        {(styles) => (
-                           <div style={{ ...styles }}>
-                              <Stack>
-                                 <Center>
-                                    <Logo width={60} />
-                                 </Center>
-                                 <Center>
-                                    {totpGenerate.data?.qrCode && (
-                                       <QRImage
-                                          width="200px"
-                                          height="200px"
-                                          paddingImageCenter={`5px`}
-                                          isPending={totpGenerate.isPending}
-                                          qr={totpGenerate.data.qrCode}
-                                          srcImageCenter={`/images/logo/logo-512x512.png`}
-                                       />
-                                    )}
-                                 </Center>
-                                 <Box>
+                     <Stack justify="center" h={450}>
+                        <Transition enterDelay={400} mounted={active === 0} transition="slide-right" duration={400} timingFunction="ease">
+                           {(styles) => (
+                              <div style={{ ...styles }}>
+                                 <Stack>
                                     <Center>
-                                       <Text>Generate QR Code</Text>
+                                       <Logo width={60} />
                                     </Center>
                                     <Center>
-                                       <Group
-                                          style={{
-                                             gap: `2px`,
-                                             borderRadius: `10px`,
-                                             border: `1px solid gray`,
-                                             alignItems: `center`,
-                                             justifyContent: `center`,
-                                          }}
-                                          p={5}
-                                       >
-                                          <Text>{totpGenerate.data?.secret}</Text>
-                                          <CopyButton value={totpGenerate.data?.secret || ``} timeout={2000}>
-                                             {({ copied, copy }) => (
-                                                <Tooltip label={copied ? "Copied" : "Copy"} withArrow position="right">
-                                                   <ActionIcon
-                                                      color={copied ? "teal" : "gray"}
-                                                      variant="subtle"
-                                                      onClick={(e) => {
-                                                         e.stopPropagation();
-                                                         copy();
-                                                      }}
-                                                   >
-                                                      {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
-                                                   </ActionIcon>
-                                                </Tooltip>
-                                             )}
-                                          </CopyButton>
-                                       </Group>
-                                    </Center>
-                                 </Box>
-                              </Stack>
-                           </div>
-                        )}
-                     </Transition>
-
-                     <Transition enterDelay={400} mounted={active === 1} transition="slide-right" duration={400} timingFunction="ease">
-                        {(styles) => (
-                           <div style={{ ...styles }}>
-                              <Stack>
-                                 <Center>
-                                    <Text fz={20} fw={`bold`}>
-                                       Verify Code
-                                    </Text>
-                                 </Center>
-                                 <Center>
-                                    <Text>Enter the 6-digit code from your Google Authenticator app</Text>
-                                 </Center>
-                                 <Center>
-                                    <Box pos={`relative`}>
-                                       <PinInput length={6} disabled={totpGenerate.isPending} onComplete={handleComplete} />
-                                       {totpGenerate.isPending && (
-                                          <Center style={{ position: `absolute`, top: `50%`, left: `50%`, transform: `translate(-50%,-50%)` }}>
-                                             <Loader size={20} />
-                                          </Center>
+                                       {totpGenerate.data?.qrCode && (
+                                          <QRImage
+                                             width="200px"
+                                             height="200px"
+                                             paddingImageCenter={`5px`}
+                                             isPending={totpGenerate.isPending}
+                                             qr={totpGenerate.data.qrCode}
+                                             srcImageCenter={`/images/logo/logo-512x512.png`}
+                                          />
                                        )}
+                                    </Center>
+                                    <Box>
+                                       <Center>
+                                          <Text>Generate QR Code</Text>
+                                       </Center>
+                                       <Center>
+                                          <Group
+                                             style={{
+                                                gap: `2px`,
+                                                borderRadius: `10px`,
+                                                border: `1px solid gray`,
+                                                alignItems: `center`,
+                                                justifyContent: `center`,
+                                             }}
+                                             p={5}
+                                          >
+                                             <Text>{totpGenerate.data?.secret}</Text>
+                                             <CopyButton value={totpGenerate.data?.secret || ``} timeout={2000}>
+                                                {({ copied, copy }) => (
+                                                   <Tooltip label={copied ? "Copied" : "Copy"} withArrow position="right">
+                                                      <ActionIcon
+                                                         color={copied ? "teal" : "gray"}
+                                                         variant="subtle"
+                                                         onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            copy();
+                                                         }}
+                                                      >
+                                                         {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
+                                                      </ActionIcon>
+                                                   </Tooltip>
+                                                )}
+                                             </CopyButton>
+                                          </Group>
+                                       </Center>
                                     </Box>
-                                 </Center>
-                              </Stack>
-                           </div>
-                        )}
-                     </Transition>
+                                 </Stack>
+                              </div>
+                           )}
+                        </Transition>
 
-                     <Transition
-                        enterDelay={400}
-                        mounted={active === 2 || active === 3}
-                        transition="slide-right"
-                        duration={400}
-                        timingFunction="ease"
-                     >
-                        {(styles) => (
-                           <div style={{ ...styles }}>
-                              <Stack>
-                                 <Center>
-                                    <Box w={150}>
-                                       <ImageCustom src={`/images/auth/${!!totpSave.data}.webp`} alt="" />
-                                    </Box>
-                                 </Center>
-                                 <Text ta={`center`} fz={20} fw={`bold`}>
-                                    Success Confirmation
-                                 </Text>
-                                 <Text ta={`center`} c={`gray`}>
-                                    Google Authenticator Setup Successfully
-                                 </Text>
-                              </Stack>
-                           </div>
-                        )}
-                     </Transition>
-                  </Stack>
+                        <Transition enterDelay={400} mounted={active === 1} transition="slide-right" duration={400} timingFunction="ease">
+                           {(styles) => (
+                              <div style={{ ...styles }}>
+                                 <Stack>
+                                    <Center>
+                                       <Text fz={20} fw={`bold`}>
+                                          Verify Code
+                                       </Text>
+                                    </Center>
+                                    <Center>
+                                       <Text>Enter the 6-digit code from your Google Authenticator app</Text>
+                                    </Center>
+                                    <Center>
+                                       <Box pos={`relative`}>
+                                          <PinInput length={6} disabled={totpGenerate.isPending} onComplete={handleComplete} />
+                                          {totpGenerate.isPending && (
+                                             <Center style={{ position: `absolute`, top: `50%`, left: `50%`, transform: `translate(-50%,-50%)` }}>
+                                                <Loader size={20} />
+                                             </Center>
+                                          )}
+                                       </Box>
+                                    </Center>
+                                 </Stack>
+                              </div>
+                           )}
+                        </Transition>
 
-                  <Center>
-                     {active === 0 && (
-                        <Button w="120px" onClick={nextStep} variant="filled">
-                           Next
-                        </Button>
-                     )}
+                        <Transition
+                           enterDelay={400}
+                           mounted={active === 2 || active === 3}
+                           transition="slide-right"
+                           duration={400}
+                           timingFunction="ease"
+                        >
+                           {(styles) => (
+                              <div style={{ ...styles }}>
+                                 <Stack>
+                                    <Center>
+                                       <Box w={150}>
+                                          <ImageCustom src={`/images/auth/${!!totpSave.data}.webp`} alt="" />
+                                       </Box>
+                                    </Center>
+                                    <Text ta={`center`} fz={20} fw={`bold`}>
+                                       Success Confirmation
+                                    </Text>
+                                    <Text ta={`center`} c={`gray`}>
+                                       Google Authenticator Setup Successfully
+                                    </Text>
+                                 </Stack>
+                              </div>
+                           )}
+                        </Transition>
+                     </Stack>
 
-                     {active === 1 && (
-                        <Group>
-                           <Button onClick={prevStep} w="120px" variant="default">
-                              Back
+                     <Center>
+                        {active === 0 && (
+                           <Button w="120px" onClick={nextStep} variant="filled">
+                              Next
                            </Button>
-                        </Group>
-                     )}
+                        )}
 
-                     {active === 2 && (
-                        <Button w="120px" onClick={handleFinish} variant="filled">
-                           {!!totpSave.data ? `Finish` : `Try Again`}
-                        </Button>
-                     )}
-                  </Center>
-               </Collapse>
+                        {active === 1 && (
+                           <Group>
+                              <Button onClick={prevStep} w="120px" variant="default">
+                                 Back
+                              </Button>
+                           </Group>
+                        )}
+
+                        {active === 2 && (
+                           <Button w="120px" onClick={handleFinish} variant="filled">
+                              {!!totpSave.data ? `Finish` : `Try Again`}
+                           </Button>
+                        )}
+                     </Center>
+                  </Collapse>
+               </motion.div>
             </Stack>
          </Paper>
       </>

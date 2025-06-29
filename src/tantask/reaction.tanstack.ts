@@ -5,7 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 export const useCreateReactionArticle = () => {
    return useMutation({
       mutationFn: async (payload: TCreateReactionArticleReq) => {
-         const data = await createReactionArticleAction(payload);
+         const { data, status, message } = await createReactionArticleAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });

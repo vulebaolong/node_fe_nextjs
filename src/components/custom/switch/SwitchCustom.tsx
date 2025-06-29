@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 type SwitchCustomProps = {
    initialChecked?: boolean;
    onToggle: (nextValue: boolean) => Promise<any>;
-   disabled?: boolean;
 } & Omit<SwitchProps, "checked" | "onChange" | "value">;
 
-export const SwitchCustom = ({ initialChecked = false, onToggle, disabled = false, ...rest }: SwitchCustomProps) => {
+export const SwitchCustom = ({ initialChecked = false, onToggle, ...rest }: SwitchCustomProps) => {
    const [checked, setChecked] = useState<boolean>(initialChecked);
-   const [isPending, setIsPending] = useState(false);
+   // const [isPending, setIsPending] = useState(false);
 
    useEffect(() => {
       setChecked(initialChecked);
@@ -18,7 +17,7 @@ export const SwitchCustom = ({ initialChecked = false, onToggle, disabled = fals
    const handleClick = async () => {
       const next = !checked;
       setChecked(next);
-      setIsPending(true);
+      // setIsPending(true);
 
       try {
          await onToggle(next);
@@ -26,7 +25,7 @@ export const SwitchCustom = ({ initialChecked = false, onToggle, disabled = fals
          setChecked(!next);
          console.error("Failed to update switch:", err);
       } finally {
-         setIsPending(false);
+         // setIsPending(false);
       }
    };
 

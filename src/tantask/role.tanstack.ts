@@ -9,13 +9,14 @@ export const useRoles = (payload: TPayloadTable) => {
    return useQuery({
       queryKey: ["roles", payload],
       queryFn: async () => {
-         const result = await getRolesAction(
+         const { data, status, message } = await getRolesAction(
             `page=${payload.pagination.pageIndex}&pageSize=${payload.pagination.pageSize}&filters=${JSON.stringify(payload.filters)}&sortBy=${
                payload.sort?.sortBy
             }&isDesc=${payload.sort?.isDesc}`
          );
-         console.log({ useRoles: result });
-         return result;
+         if (status === "error" || data === null) throw new Error(message);
+         console.log({ useRoles: data });
+         return data;
       },
    });
 };
@@ -25,8 +26,8 @@ export const useUpdateRoles = () => {
 
    return useMutation({
       mutationFn: async (payload: any) => {
-         console.log({ payload });
-         const data = await updateRolesAction(payload);
+         const { data, status, message } = await updateRolesAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
       onSuccess: () => {
@@ -43,7 +44,8 @@ export const useDetailRole = (id: string) => {
    return useQuery({
       queryKey: [`detail-role`, id],
       queryFn: async () => {
-         const data = await getDetailRoleAction(id);
+         const { data, status, message } = await getDetailRoleAction(id);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });
@@ -52,7 +54,8 @@ export const useDetailRole = (id: string) => {
 export const useToggleRolePermission = () => {
    return useMutation({
       mutationFn: async (payload: TToggleRolePermissionReq) => {
-         const data = await toggleRolePermissionAction(payload);
+         const { data, status, message } = await toggleRolePermissionAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });
@@ -61,7 +64,8 @@ export const useToggleRolePermission = () => {
 export const useToggleRole = () => {
    return useMutation({
       mutationFn: async (payload: TToggleRoleReq) => {
-         const data = await getToggleRoleAction(payload);
+         const { data, status, message } = await getToggleRoleAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });

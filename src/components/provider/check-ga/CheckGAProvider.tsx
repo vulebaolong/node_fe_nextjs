@@ -10,7 +10,7 @@ type TProps = {
 };
 
 let resolveGA: ((value: TPayloadTotpVerify) => void) | null = null;
-let rejectGA: ((reason?: any) => void) | null = null;
+let rejectGA: ((reason?: Error) => void) | null = null;
 
 export function waitForCheckGA(dispatch: any): Promise<TPayloadTotpVerify> {
    return new Promise<any>((resolve, reject) => {
@@ -26,7 +26,7 @@ export default function CheckGAProvider({ children }: TProps) {
 
    const handleCloseModalGA = () => {
       if (rejectGA) {
-         rejectGA(CLOSE_MODAL_CHECK_GA);
+         rejectGA(new Error(CLOSE_MODAL_CHECK_GA));
          rejectGA = null;
       }
       dispatch(SET_MODAL_VERIFY_GA(false));

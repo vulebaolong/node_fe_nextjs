@@ -3,126 +3,123 @@
 import { ENDPOINT } from "@/constant/endpoint.constant";
 import api from "@/helpers/api.helper";
 import { clearTokens, setAccessToken, setRefreshToken } from "@/helpers/cookies.helper";
-import { TRes } from "@/types/app.type";
+import { TRes, TResAction } from "@/types/app.type";
 import { TLoginFormGaReq, TLoginFormReq, TLoginGoogleGaReq, TLoginRes, TRegisterReq, TRegisterRes } from "@/types/auth.type";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import { TUser } from "@/types/user.type";
 
-export async function registerAction(payload: TRegisterReq) {
+export async function registerAction(payload: TRegisterReq): Promise<TResAction<TRegisterRes | null>> {
    try {
-      const { data } = await api.post<TRes<TRegisterRes>>(ENDPOINT.AUTH.REGISTER, payload);
-      return data;
-   } catch (error) {
-      console.error("Register failed:", error);
-      throw error;
+      const result = await api.post<TRes<TRegisterRes>>(ENDPOINT.AUTH.REGISTER, payload);
+      const { data } = result;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function loginFacebookction(payload: TLoginFacebookReq) {
+export async function loginFacebookction(payload: TLoginFacebookReq): Promise<TResAction<TLoginRes | null>> {
    try {
-      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.FACEBOOK_LOGIN, payload);
-      
+      const result = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.FACEBOOK_LOGIN, payload);
+      const { data } = result;
+
       if (data?.accessToken && data?.refreshToken) {
          await setAccessToken(data?.accessToken);
          await setRefreshToken(data?.refreshToken);
       }
 
-      return data;
-   } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function loginGooleAction(payload: { code: string }) {
+export async function loginGooleAction(payload: { code: string }): Promise<TResAction<TLoginRes | null>> {
    try {
-      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
-      
+      const result = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
+      const { data } = result;
+
       if (data?.accessToken && data?.refreshToken) {
          await setAccessToken(data?.accessToken);
          await setRefreshToken(data?.refreshToken);
       }
 
-      return data;
-   } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function loginFormAction(payload: TLoginFormReq) {
+export async function loginFormAction(payload: TLoginFormReq): Promise<TResAction<TLoginRes | null>> {
    try {
-      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN, payload);
- 
-      if (!data.isTotp&& data?.accessToken && data?.refreshToken) {
+      const result = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN, payload);
+      const { data } = result;
+      if (!data.isTotp && data?.accessToken && data?.refreshToken) {
          await setAccessToken(data?.accessToken);
          await setRefreshToken(data?.refreshToken);
       }
-
-      return data;
-   } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function loginGooleGaAction(payload: TLoginGoogleGaReq) {
+export async function loginGooleGaAction(payload: TLoginGoogleGaReq): Promise<TResAction<TLoginRes | null>> {
    try {
-      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
-      
+      const result = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
+      const { data } = result;
+
       if (data?.accessToken && data?.refreshToken) {
          await setAccessToken(data?.accessToken);
          await setRefreshToken(data?.refreshToken);
       }
 
-      return data;
-   } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function loginFormGaAction(payload: TLoginFormGaReq) {
+export async function loginFormGaAction(payload: TLoginFormGaReq): Promise<TResAction<TLoginRes | null>> {
    try {
-      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
-      
+      const result = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.GOOGLE_LOGIN, payload);
+      const { data } = result;
+
       if (data?.accessToken && data?.refreshToken) {
          await setAccessToken(data?.accessToken);
          await setRefreshToken(data?.refreshToken);
       }
 
-      return data;
-   } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-export async function loginGoogleAuthenticatorAction(payload: TLoginFormReq) {
+export async function loginGoogleAuthenticatorAction(payload: TLoginFormReq): Promise<TResAction<TLoginRes | null>> {
    try {
-      const { data } = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN_GOOGLE_AUTHENTICATOR, payload);
-      
+      const result = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN_GOOGLE_AUTHENTICATOR, payload);
+      const { data } = result;
+
       if (data?.accessToken && data?.refreshToken) {
          await setAccessToken(data?.accessToken);
          await setRefreshToken(data?.refreshToken);
       }
 
-      return data;
-   } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 
-
-
-export async function getInfoAction() {
+export async function getInfoAction(): Promise<TResAction<TUser | null>> {
    try {
-      const { data } = await api.get<TRes<TUser>>(ENDPOINT.AUTH.GET_INFO);
-      return data;
-   } catch (error) {
-      console.error("Get info failed:", error);
-      throw error;
+      const result = await api.get<TRes<TUser>>(ENDPOINT.AUTH.GET_INFO);
+      const { data } = result;
+
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
    }
 }
 

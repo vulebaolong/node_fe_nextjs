@@ -1,6 +1,6 @@
 import {
-   findAllChatGroupAction,
-   findAllChatGroupByTokenAction,
+   findAllChatGroupManyAction,
+   findAllChatGroupOneAction,
    findAllUserAction,
    getDetailUserAction,
    searchNameUserAction,
@@ -12,7 +12,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 export const useUploadAvatarLocal = () => {
    return useMutation({
       mutationFn: async (payload: FormData) => {
-         const data = await uploadAvatarLocalAction(payload);
+         const { data, status, message } = await uploadAvatarLocalAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });
@@ -21,7 +22,8 @@ export const useUploadAvatarLocal = () => {
 export const useUploadAvatarCloud = () => {
    return useMutation({
       mutationFn: async (payload: FormData) => {
-         const data = await uploadAvatarCloudAction(payload);
+         const { data, status, message } = await uploadAvatarCloudAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });
@@ -31,28 +33,32 @@ export const useFindAllUser = () => {
    return useQuery({
       queryKey: ["user-list"],
       queryFn: async () => {
-         const data = await findAllUserAction();
+         const { data, status, message } = await findAllUserAction();
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });
 };
 
-export const useFindAllChatGroup = () => {
+export const useFindAllChatGroupOne = () => {
    return useQuery({
-      queryKey: ["chat-group-list"],
+      queryKey: ["chat-group-list-one"],
       queryFn: async () => {
-         const data = await findAllChatGroupAction();
-         console.log({ findAllChatGroup: data });
+         const { data, status, message } = await findAllChatGroupOneAction();
+         if (status === "error" || data === null) throw new Error(message);
+         console.log({ useFindAllChatGroupOne: data });
          return data;
       },
    });
 };
 
-export const useFindAllChatGroupByToken = () => {
+export const useFindAllChatGroupMany = () => {
    return useQuery({
-      queryKey: ["chat-group-by-token-list"],
+      queryKey: ["chat-group-list-many"],
       queryFn: async () => {
-         const data = await findAllChatGroupByTokenAction();
+         const { data, status, message } = await findAllChatGroupManyAction();
+         if (status === "error" || data === null) throw new Error(message);
+         console.log({ useFindAllChatGroupMany: data });
          return data;
       },
    });
@@ -61,7 +67,8 @@ export const useFindAllChatGroupByToken = () => {
 export const useSearchNameUser = () => {
    return useMutation({
       mutationFn: async (payload: string) => {
-         const data = await searchNameUserAction(payload);
+         const { data, status, message } = await searchNameUserAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });
@@ -71,7 +78,8 @@ export const useDetailUser = (id: string) => {
    return useQuery({
       queryKey: [`detail-user`, id],
       queryFn: async () => {
-         const data = await getDetailUserAction(id);
+         const { data, status, message } = await getDetailUserAction(id);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });

@@ -1,11 +1,13 @@
 import NodataOverlay from "@/components/no-data/NodataOverlay";
 import TagUser from "@/components/tag-user/TagUser";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
-import { emitToEvent, listenToEvent, removeEventListener } from "@/helpers/chat.helper";
-import { animationList } from "@/helpers/function.helper";
+import { emitToEvent } from "@/helpers/chat.helper";
+import { animationList, resError } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { useSearchNameUser } from "@/tantask/user.tanstack";
+import { TSocketRes } from "@/types/base.type";
+import { TCreateRoomReq, TCreateRoomRes } from "@/types/chat.type";
 import { TUser } from "@/types/user.type";
 import { ActionIcon, Box, Button, Divider, Group, Input, LoadingOverlay, Modal, Stack, Text } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
@@ -51,36 +53,38 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
       if (!opened) setSearch("");
    }, [opened]);
 
-   useEffect(() => {
-      if (!socket) return;
-      listenToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, (data: { chatGroupId: number }) => {
-         console.log({ [`REPLY - ${SOCKET_CHAT_MES.CREATE_ROOM}`]: data });
-         setLoading(false);
-         close();
-         setChatGroupName("");
-         setUserSelected([]);
-         queryClient.invalidateQueries({ queryKey: [`chat-group-list`] });
-      });
-
-      return () => {
-         if (!socket) return;
-         removeEventListener(socket, SOCKET_CHAT_MES.CREATE_ROOM);
-      };
-   }, [socket]);
-
    const handleRemoveUser = (user: TUser) => {
       setUserSelected(userSelected.filter((u) => u._id !== user._id));
    };
 
    const handleCreateChatGroup = () => {
-      if (!socket) return;
+      if (!socket || !info) return;
 
       if (chatGroupName.trim() === "") return toast.warning("Vui lòng nhập tên nhóm");
       if (userSelected.length < 2) return toast.warning("Vui lòng chọn ít nhất 2 người");
 
       const targetUserIds = userSelected.map((u) => u._id);
       setLoading(true);
-      emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, { ownerId: info?._id, targetUserIds: targetUserIds, name: chatGroupName });
+
+      const payload: TCreateRoomReq = { ownerId: info?._id, targetUserIds: targetUserIds, name: chatGroupName };
+      emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, payload, (data: TSocketRes<TCreateRoomRes>) => {
+         try {
+            console.log({ CREATE_ROOM: { data } });
+            if (data.status === "error") throw new Error(data.message);
+            if (!data.data.chatGroupId) throw new Error("Be not response chatGroupId");
+            toast.success(data.message);
+
+            close();
+            setChatGroupName("");
+            setUserSelected([]);
+            queryClient.invalidateQueries({ queryKey: [`chat-group-list-many`] });
+         } catch (error) {
+            console.log({ CREATE_ROOM: { error } });
+            toast.error(resError(error, "Create Room Failed"));
+         } finally {
+            setLoading(false);
+         }
+      });
    };
 
    return (
@@ -109,7 +113,7 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
                      return (
                         <Group key={i} sx={{ ...animationList(i), flexWrap: `nowrap`, gap: 5 }}>
                            <Box maw={`380px`}>
-                              <TagUser sizeAvatar={`sm`} fullName={user.fullName} avatar={user.avatar}  />
+                              <TagUser sizeAvatar={`sm`} fullName={user.fullName} avatar={user.avatar} />
                            </Box>
                            <ActionIcon
                               variant="default"
@@ -181,7 +185,7 @@ export default function ModalCreateChatGroup({ opened, close }: TProps) {
                                  },
                               }}
                            >
-                              <TagUser sizeAvatar={`sm`} fullName={user.fullName} avatar={user.avatar}  />
+                              <TagUser sizeAvatar={`sm`} fullName={user.fullName} avatar={user.avatar} />
                            </Box>
                         );
                      })}

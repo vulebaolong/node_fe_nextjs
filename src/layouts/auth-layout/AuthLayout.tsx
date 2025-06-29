@@ -1,11 +1,23 @@
+import ThreeBackgroundParticle from "@/components/three-background/ThreeBackgroundParticle";
 import { Stack } from "@mantine/core";
 import { ReactNode } from "react";
-import classes from "./AuthLayout.module.css";
 
 type TProps = {
    children: ReactNode;
 };
 
 export default function AuthLayout({ children }: TProps) {
-   return <Stack className={`${classes[`box-1`]}`}>{children}</Stack>;
+   return (
+      <Stack
+         sx={{
+            height: "100vh",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+         }}
+      >
+         <ThreeBackgroundParticle />
+         {children}
+      </Stack>
+   );
 }

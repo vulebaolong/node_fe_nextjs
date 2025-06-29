@@ -2,13 +2,13 @@
 import { Logo } from "@/components/logo/Logo";
 import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
 import CustomRePasswordInput from "@/components/password-input/CustomRePasswordInput";
+import useRouter from "@/hooks/use-router-custom";
 import { useRegister } from "@/tantask/auth.tanstack";
-import { Anchor, Box, Button, Center, Paper, Stack, Text, TextInput, Title } from "@mantine/core";
+import { Box, Button, Center, Paper, Stack, TextInput, Title } from "@mantine/core";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
-import classes from "./../Auth.module.css";
-import useRouter from "@/hooks/use-router-custom";
+import FooterAuth from "../footer/FooterAuth";
 
 export default function Register() {
    const router = useRouter();
@@ -79,7 +79,20 @@ export default function Register() {
    });
 
    return (
-      <Stack className={`${classes.wrapForm}`} style={{ animation: "fadeInUp 0.5s" }} px={`md`}>
+      <Stack
+         sx={(_, u) => {
+            return {
+               [u.smallerThan("md")]: {
+                  width: "360px",
+               },
+               [u.largerThan("md")]: {
+                  width: "400px",
+               },
+            };
+         }}
+         style={{ animation: "fadeInUp 0.5s" }}
+         px={`md`}
+      >
          <Center>
             <Logo />
          </Center>
@@ -91,12 +104,15 @@ export default function Register() {
          <Paper
             withBorder
             shadow="md"
-            p={30}
-            radius="md"
-            style={{
+            p={"xl"}
+            radius="xl"
+            sx={{
                display: `flex`,
                flexDirection: `column`,
                justifyContent: `space-between`,
+               overflow: `hidden`,
+               backgroundColor: `transparent`,
+               backdropFilter: `blur(5px)`,
             }}
             component="form"
             onSubmit={(e) => {
@@ -155,7 +171,6 @@ export default function Register() {
                      onChange={registerForm.handleChange}
                      inputWrapperOrder={["label", "input", "error"]}
                      error={registerForm.touched.rePassword && registerForm.errors.rePassword}
-                     className={classes.input}
                   />
                </Box>
             </Box>
@@ -164,19 +179,9 @@ export default function Register() {
             </Button>
          </Paper>
 
-         <Text ta="center">
-            Don&apos;t have an account?{" "}
-            <Anchor<"a">
-               href="#"
-               fw={700}
-               onClick={(event) => {
-                  event.preventDefault();
-                  router.push("/login");
-               }}
-            >
-               Login
-            </Anchor>
-         </Text>
+         <Box>
+            <FooterAuth text="Don't have an account?" href="/login" textAnchor="Login" />
+         </Box>
       </Stack>
    );
 }
