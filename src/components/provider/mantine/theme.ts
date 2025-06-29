@@ -29,7 +29,12 @@ export const getTheme = ({ primaryColor }: TGetTheme) => {
       components: {
          Button: {
             defaultProps: {
-               radius: "md",
+               radius: "lg",
+            },
+         },
+         Modal: {
+            defaultProps: {
+               radius: "lg",
             },
          },
       },

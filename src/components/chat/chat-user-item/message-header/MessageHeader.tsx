@@ -25,7 +25,7 @@ export default function MessageHeader({ stateChat }: TProps) {
       <Group sx={{ padding: `10px`, justifyContent: `space-between`, flexWrap: `nowrap` }}>
          <AvatarChatGroup stateChat={stateChat} isTextName={true} />
 
-         <ActionIcon onClick={handleDeleteListChat} variant="subtle" color="indigo" radius="xl" aria-label="Settings">
+         <ActionIcon onClick={handleDeleteListChat} variant="subtle" radius="xl" aria-label="Settings">
             <IconX style={{ width: "70%", height: "70%" }} stroke={1.5} />
          </ActionIcon>
       </Group>

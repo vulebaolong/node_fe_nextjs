@@ -184,3 +184,13 @@ export function multiRAF(callback: () => void, count = 3) {
    };
    raf();
 }
+
+export function hexToRgba(hex: string, alpha: number) {
+   const sanitized = hex.replace("#", "");
+   const bigint = parseInt(sanitized, 16);
+   const r = (bigint >> 16) & 255;
+   const g = (bigint >> 8) & 255;
+   const b = bigint & 255;
+
+   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}

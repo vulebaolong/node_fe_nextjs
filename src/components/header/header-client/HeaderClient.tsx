@@ -1,15 +1,18 @@
 "use client";
 
+import GlowCard from "@/components/card/GlowCard";
 import DrawerListChat from "@/components/drawer/drawer-list-chat/DrawerListChat";
 import DrawerNavbar from "@/components/drawer/drawer-navbar/DrawerNavbar";
 import { Logo } from "@/components/logo/Logo";
 import ModalSearchUser from "@/components/modal/modal-search-user/ModalSearchUser";
 import UserControl from "@/components/user-control/UserControl";
 import { MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
+import { hexToRgba } from "@/helpers/function.helper";
 import { useGetInfoQuery } from "@/tantask/auth.tanstack";
-import { ActionIcon, Box, Burger, Button, Group, Text } from "@mantine/core";
+import { ActionIcon, Box, Burger, Button, Group, Text, useMantineColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBrandMessengerFilled, IconSearch } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
 
 export default function HeaderClient() {
    // const t = useTranslations(`header`);
@@ -34,7 +37,13 @@ export default function HeaderClient() {
                padding: `0px 20px`,
             }}
          >
-            <Group justify="space-between" h={`100%`} wrap="nowrap">
+            <Group
+               sx={{
+                  justifyContent: `space-between`,
+                  height: `100%`,
+                  flexWrap: `nowrap`,
+               }}
+            >
                {/* left */}
                <Group gap={2} wrap="nowrap">
                   <Box className={` ${MOBILE_VISIBLE_DESKTOP_HIDDEN}`}>

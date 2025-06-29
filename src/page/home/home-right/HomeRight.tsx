@@ -3,15 +3,16 @@
 import Avatar from "@/components/avatar/Avatar";
 import ModalCreateChatGroup from "@/components/modal/modal-create-chat-group/ModalCreateChatGroup";
 import NodataOverlay from "@/components/no-data/NodataOverlay";
+import ChatGroupSkeleton from "@/components/skeletons/ChatGroupSkeleton";
 import TagUser from "@/components/tag-user/TagUser";
 import { addChatOpened } from "@/helpers/chat.helper";
 import { animationList } from "@/helpers/function.helper";
 import { useAppSelector } from "@/redux/hooks";
 import { useFindAllChatGroupMany, useFindAllChatGroupOne } from "@/tantask/user.tanstack";
 import { TChatGroup } from "@/types/chat.type";
-import { ActionIcon, Box, Group, LoadingOverlay, Stack, Text } from "@mantine/core";
+import { Box, Group, LoadingOverlay, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
+import { IconPlus } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { Fragment } from "react";
@@ -57,14 +58,9 @@ export default function HomeRight({ onClose }: TProps) {
          <Stack style={{ height: `100%` }}>
             {/* chat 1-1 */}
             <Stack gap={10} mih={`50%`}>
-               <Group justify="space-between">
-                  <Text opacity={0.7} fw={`bold`} fz={`md`}>
-                     {t(`Contact person`)}
-                  </Text>
-                  <ActionIcon variant="subtle" radius="xl">
-                     <IconSearch style={{ width: "70%", height: "70%" }} stroke={1.5} />
-                  </ActionIcon>
-               </Group>
+               <Text opacity={0.7} fw={`bold`} fz={`md`}>
+                  {t(`Contact person`)}
+               </Text>
                <Stack
                   sx={{
                      overflow: "auto",
@@ -77,7 +73,7 @@ export default function HomeRight({ onClose }: TProps) {
                      gap: 5,
                   }}
                >
-                  <LoadingOverlay visible={findAllChatGroupOne.isLoading} zIndex={1000} overlayProps={{ radius: "sm", bg: `transparent` }} />
+                  {findAllChatGroupOne.isPending && <ChatGroupSkeleton />}
                   <NodataOverlay
                      width={50}
                      visible={
@@ -113,11 +109,9 @@ export default function HomeRight({ onClose }: TProps) {
 
             {/* chat nhóm */}
             <Stack gap={10} mih={`50%`}>
-               <Group justify="space-between">
-                  <Text opacity={0.7} fw={`bold`} fz={`md`}>
-                     Nhóm chát
-                  </Text>
-               </Group>
+               <Text opacity={0.7} fw={`bold`} fz={`md`}>
+                  Nhóm chát
+               </Text>
                <Stack
                   sx={{
                      overflow: "auto",
@@ -130,7 +124,7 @@ export default function HomeRight({ onClose }: TProps) {
                      position: `relative`,
                   }}
                >
-                  <LoadingOverlay visible={findAllChatGroupMany.isLoading} zIndex={1000} overlayProps={{ radius: "sm", bg: `transparent` }} />
+                  {findAllChatGroupOne.isPending && <ChatGroupSkeleton mt={"48px"} />}
                   <NodataOverlay
                      width={50}
                      visible={
