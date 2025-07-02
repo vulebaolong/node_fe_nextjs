@@ -6,7 +6,7 @@ import {
    searchNameUserAction,
    uploadAvatarCloudAction,
    uploadAvatarLocalAction,
-} from "@/actions/user.action";
+} from "@/api/actions/user.action";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useUploadAvatarLocal = () => {

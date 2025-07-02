@@ -8,7 +8,7 @@ import TagUser from "@/components/tag-user/TagUser";
 import { addChatOpened } from "@/helpers/chat.helper";
 import { animationList } from "@/helpers/function.helper";
 import { useAppSelector } from "@/redux/hooks";
-import { useFindAllChatGroupMany, useFindAllChatGroupOne } from "@/tantask/user.tanstack";
+import { useFindAllChatGroupMany, useFindAllChatGroupOne } from "@/api/tantask/user.tanstack";
 import { TChatGroup } from "@/types/chat.type";
 import { Box, Group, LoadingOverlay, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";

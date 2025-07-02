@@ -6,7 +6,7 @@ import {
    loginGooleAction,
    loginGooleGaAction,
    registerAction,
-} from "@/actions/auth.action";
+} from "@/api/actions/auth.action";
 import { resError } from "@/helpers/function.helper";
 import useRouter from "@/hooks/use-router-custom";
 import { useAppDispatch } from "@/redux/hooks";

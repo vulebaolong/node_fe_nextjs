@@ -9,7 +9,7 @@ import { IconArrowRight, IconCircleCheckFilled, IconCircleX, IconEditCircle, Ico
 import useRouter from "@/hooks/use-router-custom";
 import { useState } from "react";
 import classes from "./Role.module.css";
-import { useRoles } from "@/tantask/role.tanstack";
+import { useRoles } from "@/api/tantask/role.tanstack";
 
 export default function Role() {
    const [page, setPage] = useState(1);

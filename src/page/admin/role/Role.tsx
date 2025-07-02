@@ -5,7 +5,7 @@ import Paper from "@/components/custom/paper/PaperCustom";
 import TooltipCustom from "@/components/custom/tooltip/TooltipCustom";
 import { ROUTER_ADMIN } from "@/constant/router.constant";
 import { formatLocalTime } from "@/helpers/function.helper";
-import { useRoles, useUpdateRoles } from "@/tantask/role.tanstack";
+import { useRoles, useUpdateRoles } from "@/api/tantask/role.tanstack";
 import { TRole } from "@/types/role.type";
 import { ActionIcon, Badge, CopyButton, Group, Text } from "@mantine/core";
 import { IconCheck, IconCopy } from "@tabler/icons-react";

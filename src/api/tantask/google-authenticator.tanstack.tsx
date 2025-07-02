@@ -1,4 +1,4 @@
-import { onOffGoogleAuthenticatorAction } from "@/actions/google-authenticator.action";
+import { onOffGoogleAuthenticatorAction } from "@/api/actions/google-authenticator.action";
 import { useMutation } from "@tanstack/react-query";
 
 export const useOnOffGoogleAuthenticator = () => {

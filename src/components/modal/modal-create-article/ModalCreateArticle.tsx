@@ -1,7 +1,7 @@
 import TagUser from "@/components/tag-user/TagUser";
 import { resError } from "@/helpers/function.helper";
 import { useAppSelector } from "@/redux/hooks";
-import { useCreateArticle } from "@/tantask/article.tanstack";
+import { useCreateArticle } from "@/api/tantask/article.tanstack";
 import { ActionIcon, Box, Button, Group, Modal, rem, Stack, Text, Textarea } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";

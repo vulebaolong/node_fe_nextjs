@@ -3,7 +3,7 @@ import { Logo } from "@/components/logo/Logo";
 import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
 import CustomRePasswordInput from "@/components/password-input/CustomRePasswordInput";
 import useRouter from "@/hooks/use-router-custom";
-import { useRegister } from "@/tantask/auth.tanstack";
+import { useRegister } from "@/api/tantask/auth.tanstack";
 import { Box, Button, Center, Paper, Stack, TextInput, Title } from "@mantine/core";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";

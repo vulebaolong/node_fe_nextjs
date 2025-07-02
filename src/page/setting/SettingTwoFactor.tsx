@@ -5,8 +5,8 @@ import { Logo } from "@/components/logo/Logo";
 import QRImage from "@/components/qr-image/QRImage";
 import { resError } from "@/helpers/function.helper";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetInfoMutation } from "@/tantask/auth.tanstack";
-import { useTotpDisable, useTotpGenerate, useTotpSave } from "@/tantask/totp.tanstack";
+import { useGetInfoMutation } from "@/api/tantask/auth.tanstack";
+import { useTotpDisable, useTotpGenerate, useTotpSave } from "@/api/tantask/totp.tanstack";
 import { TPayloadTotpSave } from "@/types/totp.type";
 import {
    ActionIcon,

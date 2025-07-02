@@ -1,4 +1,4 @@
-import { getGetChatMessageAction } from "@/actions/chat.action";
+import { getGetChatMessageAction } from "@/api/actions/chat.action";
 import { CHAT_BUBBLE, CHAT_OPENED } from "@/constant/chat.constant";
 import { getChatOpened } from "@/helpers/chat.helper";
 import { useQuery } from "@tanstack/react-query";

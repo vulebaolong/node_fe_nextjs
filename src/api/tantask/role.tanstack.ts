@@ -1,4 +1,4 @@
-import { getDetailRoleAction, getRolesAction, toggleRolePermissionAction, getToggleRoleAction, updateRolesAction } from "@/actions/role.action";
+import { getDetailRoleAction, getRolesAction, toggleRolePermissionAction, getToggleRoleAction, updateRolesAction } from "@/api/actions/role.action";
 import { TPayloadTable } from "@/components/custom/table/TableCustom";
 import { resError } from "@/helpers/function.helper";
 import { TToggleRolePermissionReq, TToggleRoleReq } from "@/types/role.type";

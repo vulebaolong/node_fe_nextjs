@@ -1,7 +1,7 @@
 "use server";
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
-import api from "@/helpers/api.helper";
+import api from "../core.api";
 import { TRes, TResAction, TResPagination } from "@/types/app.type";
 import { TChatGroup } from "@/types/chat.type";
 import { TUploadAvatarLocalRes, TUser } from "@/types/user.type";

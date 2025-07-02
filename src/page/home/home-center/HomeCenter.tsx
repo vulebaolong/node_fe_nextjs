@@ -5,7 +5,7 @@ import Avatar from "@/components/avatar/Avatar";
 import ModalCreateArticle from "@/components/modal/modal-create-article/ModalCreateArticle";
 import Nodata from "@/components/no-data/Nodata";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetListArticle } from "@/tantask/article.tanstack";
+import { useGetListArticle } from "@/api/tantask/article.tanstack";
 import { TArticle } from "@/types/article.type";
 import { Box, Button, Center, Group, Loader, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";

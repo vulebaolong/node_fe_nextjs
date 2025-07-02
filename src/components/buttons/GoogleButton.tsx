@@ -1,5 +1,5 @@
 import { ROUTER_CLIENT } from "@/constant/router.constant";
-import { useLoginGoogle } from "@/tantask/auth.tanstack";
+import { useLoginGoogle } from "@/api/tantask/auth.tanstack";
 import { Button, ButtonProps } from "@mantine/core";
 import { useGoogleLogin } from "@react-oauth/google";
 import useRouter from "@/hooks/use-router-custom";

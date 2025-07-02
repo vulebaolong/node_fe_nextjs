@@ -1,5 +1,4 @@
 import { ROUTER_ADMIN, ROUTER_CLIENT } from "@/constant/router.constant";
-import { logout } from "@/helpers/api.helper";
 import useRouter from "@/hooks/use-router-custom";
 import { useAppSelector } from "@/redux/hooks";
 import {  Divider, Group, Stack, Text } from "@mantine/core";
@@ -9,6 +8,7 @@ import { toast } from "react-toastify";
 import UserMenuItem from "./UserMenuItem";
 import Avatar from "../avatar/Avatar";
 import { USER_ADMIN } from "@/constant/app.constant";
+import { logout } from "@/api/core.api";
 
 const listMenu = [
    {

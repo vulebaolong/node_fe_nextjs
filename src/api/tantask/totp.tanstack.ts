@@ -1,4 +1,4 @@
-import { totpDisableAction, totpGenerateAction, totpSaveAction } from "@/actions/totp.action";
+import { totpDisableAction, totpGenerateAction, totpSaveAction } from "@/api/actions/totp.action";
 import { waitForCheckGA } from "@/components/provider/check-ga/CheckGAProvider";
 import { CLOSE_MODAL_CHECK_GA } from "@/constant/ga.constant";
 import { resError } from "@/helpers/function.helper";

@@ -5,7 +5,7 @@ import { emitToEvent } from "@/helpers/chat.helper";
 import { animationList, resError } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
-import { useSearchNameUser } from "@/tantask/user.tanstack";
+import { useSearchNameUser } from "@/api/tantask/user.tanstack";
 import { TSocketRes } from "@/types/base.type";
 import { TCreateRoomReq, TCreateRoomRes } from "@/types/chat.type";
 import { TUser } from "@/types/user.type";

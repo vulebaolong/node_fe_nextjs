@@ -8,7 +8,7 @@ import ModalSearchUser from "@/components/modal/modal-search-user/ModalSearchUse
 import UserControl from "@/components/user-control/UserControl";
 import { MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
 import { hexToRgba } from "@/helpers/function.helper";
-import { useGetInfoQuery } from "@/tantask/auth.tanstack";
+import { useGetInfoQuery } from "@/api/tantask/auth.tanstack";
 import { ActionIcon, Box, Burger, Button, Group, Text, useMantineColorScheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconBrandMessengerFilled, IconSearch } from "@tabler/icons-react";

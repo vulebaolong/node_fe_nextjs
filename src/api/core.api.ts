@@ -1,6 +1,6 @@
-import { clearTokensAction } from "@/actions/auth.action";
+import { clearTokensAction } from "@/api/actions/auth.action";
 import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
-import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from "./cookies.helper";
+import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from "@/helpers/cookies.helper";
 import { CHAT_BUBBLE, CHAT_OPENED } from "@/constant/chat.constant";
 
 let isRefreshing = false;

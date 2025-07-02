@@ -1,5 +1,5 @@
 import { checkPathImage, formatLocalTime, resError } from "@/helpers/function.helper";
-import { useCreateReactionArticle } from "@/tantask/reaction.tanstack";
+import { useCreateReactionArticle } from "@/api/tantask/reaction.tanstack";
 import { TArticle } from "@/types/article.type";
 import { EReactionArticle } from "@/types/enum/reaction.enum";
 import { ActionIcon, Box, Button, Group, Stack, Text } from "@mantine/core";

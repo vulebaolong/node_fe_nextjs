@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppSelector } from "@/redux/hooks";
-import { useGetInfoQuery } from "@/tantask/auth.tanstack";
+import { useGetInfoQuery } from "@/api/tantask/auth.tanstack";
 import { Group, Menu, Text } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
 import { useState } from "react";

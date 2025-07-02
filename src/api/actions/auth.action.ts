@@ -1,12 +1,12 @@
 "use server";
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
-import api from "@/helpers/api.helper";
 import { clearTokens, setAccessToken, setRefreshToken } from "@/helpers/cookies.helper";
 import { TRes, TResAction } from "@/types/app.type";
 import { TLoginFormGaReq, TLoginFormReq, TLoginGoogleGaReq, TLoginRes, TRegisterReq, TRegisterRes } from "@/types/auth.type";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import { TUser } from "@/types/user.type";
+import api from "../core.api";
 
 export async function registerAction(payload: TRegisterReq): Promise<TResAction<TRegisterRes | null>> {
    try {

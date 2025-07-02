@@ -1,4 +1,4 @@
-import { createReactionArticleAction } from "@/actions/reaction.action";
+import { createReactionArticleAction } from "@/api/actions/reaction.action";
 import { TCreateReactionArticleReq } from "@/types/reactioin.type";
 import { useMutation } from "@tanstack/react-query";
 

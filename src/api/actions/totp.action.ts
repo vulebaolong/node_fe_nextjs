@@ -1,6 +1,6 @@
 "use server";
 import { ENDPOINT } from "@/constant/endpoint.constant";
-import api from "@/helpers/api.helper";
+import api from "../core.api";
 import { TRes, TResAction } from "@/types/app.type";
 import { TPayloadTotpDisable, TPayloadTotpSave } from "@/types/totp.type";
 

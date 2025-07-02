@@ -1,9 +1,9 @@
 "use server";
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
-import api from "@/helpers/api.helper";
 import { TRes, TResAction, TResPagination } from "@/types/app.type";
 import { TArticle } from "@/types/article.type";
+import api from "../core.api";
 
 export async function getListArticleAction(): Promise<TResAction<TResPagination<TArticle> | null>> {
    try {

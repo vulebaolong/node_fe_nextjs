@@ -1,4 +1,4 @@
-import { getListPermissionByRoleAction } from "@/actions/permission.action";
+import { getListPermissionByRoleAction } from "@/api/actions/permission.action";
 import { useQuery } from "@tanstack/react-query";
 import _ from "lodash";
 

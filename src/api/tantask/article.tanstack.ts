@@ -1,4 +1,4 @@
-import { createArticleAction, getListArticleAction } from "@/actions/article.action";
+import { createArticleAction, getListArticleAction } from "@/api/actions/article.action";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetListArticle = () => {

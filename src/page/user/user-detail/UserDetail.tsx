@@ -8,7 +8,7 @@ import { addChatOpened, emitToEvent } from "@/helpers/chat.helper";
 import { resError } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
-import { useDetailUser } from "@/tantask/user.tanstack";
+import { useDetailUser } from "@/api/tantask/user.tanstack";
 import { TSocketRes } from "@/types/base.type";
 import { TCreateRoomReq, TCreateRoomRes } from "@/types/chat.type";
 import { Box, Button, Center, Container, Group, Stack, Text } from "@mantine/core";

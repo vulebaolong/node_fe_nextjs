@@ -1,7 +1,7 @@
 "use server";
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
-import api from "@/helpers/api.helper";
+import api from "../core.api";
 import { TRes, TResAction, TResPagination } from "@/types/app.type";
 import { TRole, TToggleRolePermissionReq, TToggleRolePermissionRes, TToggleRoleReq } from "@/types/role.type";
 

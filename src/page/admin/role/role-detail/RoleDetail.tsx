@@ -3,8 +3,8 @@
 import Paper from "@/components/custom/paper/PaperCustom";
 import { SwitchCustom } from "@/components/custom/switch/SwitchCustom";
 import useRouter from "@/hooks/use-router-custom";
-import { useListPermissionByRole } from "@/tantask/permission.tanstack";
-import { useDetailRole, useToggleRole, useToggleRolePermission } from "@/tantask/role.tanstack";
+import { useListPermissionByRole } from "@/api/tantask/permission.tanstack";
+import { useDetailRole, useToggleRole, useToggleRolePermission } from "@/api/tantask/role.tanstack";
 import { Accordion, ActionIcon, Badge, Box, Group, Stack, Text, Title } from "@mantine/core";
 import { IconArrowBack } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";

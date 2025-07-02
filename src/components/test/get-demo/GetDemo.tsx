@@ -1,7 +1,7 @@
 "use client";
 
 import Nodata from "@/components/no-data/Nodata";
-import { useGetDemo } from "@/tantask/get-demo.tanstack";
+import { useGetDemo } from "@/api/tantask/get-demo.tanstack";
 import { Box, Center, Container, Group, Loader, Pagination, Paper, Stack, Text } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import Filter from "./Filter";

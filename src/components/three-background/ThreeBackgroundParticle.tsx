@@ -20,31 +20,26 @@ export default function ThreeBackgroundParticle() {
       const particleSize = 0.1; // Kích thước của hạt
       const mouseInfluence = 10.0; // Độ tác động khi rê chuột
       const mouseSmoothing = 0.02; // 💡 Càng thấp → càng trễ, càng mượt
-      const positionCam = {
-         x: 0,
-         y: 10,
-         z: 60,
-      }; // vị trí của camera
+      const positionCam = { x: 0, y: 10, z: 60 }; // vị trí của camera
       // ====== CONFIG TÙY CHỈNH KẾT THÚC =======
 
+      // ====== Khởi tạo scene, camera, renderer ======
       const container = mountRef.current!;
       const scene = new THREE.Scene();
-
-      // background color of three particle
-      scene.background = new THREE.Color(mantineColorBody);
+      scene.background = new THREE.Color(mantineColorBody); // Màu nền
 
       const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.1, 1000);
-      const originalCamPos = new THREE.Vector3(positionCam.x, positionCam.y, positionCam.z);
-      camera.position.copy(originalCamPos);
-      camera.lookAt(0, 0, 0);
+      camera.position.set(0, 0, 0);
 
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(container.clientWidth, container.clientHeight);
       container.appendChild(renderer.domElement);
 
+      // ====== Tạo group chứa các hạt ======
       const group = new THREE.Group();
       scene.add(group);
 
+      // ====== Khởi tạo geometry, material cho hạt ======
       const sphereGeometry = new THREE.SphereGeometry(particleSize, 12, 12);
       const sphereMaterial = new THREE.ShaderMaterial({
          uniforms: {
@@ -71,12 +66,15 @@ export default function ThreeBackgroundParticle() {
          `,
       });
 
-      // Đèn dịu nền
+      // ====== Thêm ánh sáng nền và điểm ======
       const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+      const light = new THREE.PointLight(0xffffff, 1);
+      light.position.set(0, 50, 0);
       scene.add(ambient);
+      scene.add(light);
 
+      // ====== Sinh mảng hạt phân bố trên mặt phẳng tròn ======
       const particles: { mesh: THREE.Mesh; basePos: THREE.Vector3 }[] = [];
-
       for (let x = -radius; x < radius; x++) {
          for (let z = -radius; z < radius; z++) {
             const dist = Math.sqrt(x * x + z * z);
@@ -90,23 +88,32 @@ export default function ThreeBackgroundParticle() {
          }
       }
 
-      // Ánh sáng
-      const light = new THREE.PointLight(0xffffff, 1);
-      light.position.set(0, 50, 0);
-      scene.add(light);
-
-      // Mouse tracking mượt (với smoothing)
+      // ====== Mouse tracking mượt ======
       const mouse = { x: 0, y: 0 };
       const targetMouse = { x: 0, y: 0 };
 
-      window.addEventListener("mousemove", (e) => {
+      // Cleanup chuẩn listener
+      const handleMouseMove = (e: MouseEvent) => {
          targetMouse.x = (e.clientX / window.innerWidth) * 2 - 1;
          targetMouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-      });
+      };
+      window.addEventListener("mousemove", handleMouseMove);
+
+      // ====== Camera cinematic setup ======
 
       const clock = new THREE.Clock();
 
-      const animate = () => {
+      const initialCamPos = new THREE.Vector3(0, 10, 0); // Ở tâm
+      const targetCamPos = new THREE.Vector3(positionCam.x, positionCam.y, positionCam.z); // Mục tiêu
+
+      const initialLookAt = new THREE.Vector3(3, 5 , 5); // cinematic: nhìn lên cao về phía xa
+      const targetLookAt = new THREE.Vector3(0, 0, 0); // Sau đó nhìn về tâm
+
+      // ====== Animation logic ======
+      let animStartTime: any = null;
+      const transitionDuration = 2;
+
+      const animate = (now: any) => {
          const time = clock.getElapsedTime();
 
          // Gợn sóng radial chậm
@@ -120,18 +127,34 @@ export default function ThreeBackgroundParticle() {
          mouse.x += (targetMouse.x - mouse.x) * mouseSmoothing;
          mouse.y += (targetMouse.y - mouse.y) * mouseSmoothing;
 
+         // Camera animation
+         if (animStartTime === null) animStartTime = now;
+         const elapsed = (now - animStartTime) / 1000; // milliseconds → seconds
+         let t = Math.min(elapsed / transitionDuration, 1);
+         t = t * t * (3 - 2 * t);
+
+         let camPos = new THREE.Vector3();
+         camPos.lerpVectors(initialCamPos, targetCamPos, t);
+
+         // Khi hoạt ảnh chuyển động, mouse influence = 0
+         // Khi xong hoạt ảnh, mới áp dụng mouse influence (mượt mà, không bị giật)
+         // let currentMouseInfluence = t < 1 ? 0 : mouseInfluence;
          const camOffsetX = mouse.x * mouseInfluence;
          const camOffsetY = mouse.y * mouseInfluence;
 
-         camera.position.x = originalCamPos.x + camOffsetX;
-         camera.position.y = originalCamPos.y + camOffsetY;
-         camera.lookAt(0, 0, 0);
+         camera.position.x = camPos.x + camOffsetX;
+         camera.position.y = camPos.y + camOffsetY;
+         camera.position.z = camPos.z;
+
+         let lookAtPos = new THREE.Vector3();
+         lookAtPos.lerpVectors(initialLookAt, targetLookAt, t);
+         camera.lookAt(lookAtPos);
 
          renderer.render(scene, camera);
          requestAnimationFrame(animate);
       };
 
-      animate();
+      requestAnimationFrame(animate);
 
       return () => {
          mountRef.current?.removeChild(renderer.domElement);

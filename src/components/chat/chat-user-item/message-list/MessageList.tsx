@@ -1,7 +1,7 @@
 import NodataOverlay from "@/components/no-data/NodataOverlay";
 import { multiRAF } from "@/helpers/function.helper";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetChatMessage } from "@/tantask/chat.tanstacl";
+import { useGetChatMessage } from "@/api/tantask/chat.tanstacl";
 import { TAllmessage, TStateChat } from "@/types/chat.type";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Virtuoso, VirtuosoHandle } from "react-virtuoso";

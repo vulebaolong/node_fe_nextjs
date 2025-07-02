@@ -4,7 +4,7 @@ import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { animationList } from "@/helpers/function.helper";
 import useRouter from "@/hooks/use-router-custom";
 import { useAppSelector } from "@/redux/hooks";
-import { useSearchNameUser } from "@/tantask/user.tanstack";
+import { useSearchNameUser } from "@/api/tantask/user.tanstack";
 import { Box, Divider, Input, LoadingOverlay, Modal, Stack } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
