@@ -43,6 +43,10 @@ export const getTheme = ({ primaryColor }: TGetTheme) => {
 
 export const resolver: CSSVariablesResolver = () => ({
    variables: {},
-   light: {},
-   dark: {},
+   light: {
+      "--mantine-color-body": "#F2F4F7",
+   },
+   dark: {
+
+   },
 });

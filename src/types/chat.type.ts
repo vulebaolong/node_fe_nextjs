@@ -51,14 +51,20 @@ export type TCreateRoomRes = {
 };
 
 export type TCreateRoomReq = {
-   ownerId: string;
+   accessToken: string;
    targetUserIds: string[];
    name?: string;
 };
 
+export type TSendMessageReq = {
+   message: string;
+   accessToken: string;
+   chatGroupId: string;
+};
+
 export type TJoinRoomReq = {
    chatGroupId: string;
-   userId: string;
+   accessToken: string;
 };
 
 export type TJoinRoomRes = {

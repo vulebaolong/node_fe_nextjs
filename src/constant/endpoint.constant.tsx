@@ -1,6 +1,7 @@
 export const ENDPOINT = {
    AUTH: {
       LOGIN: `auth/login`,
+      LOGIN_GOOGLE_WITH_TOTP: `auth/google-with-totp`,
       LOGIN_GOOGLE_AUTHENTICATOR: `auth/login-google-authenticator`,
       REGISTER: `auth/register`,
       REFRESH_TOKEN: `auth/refresh-token`,
@@ -38,6 +39,7 @@ export const ENDPOINT = {
    UPLOAD_AVATAR_LOCAL: `user/avatar-local`,
    UPLOAD_AVATAR_CLOUD: `user/avatar-cloud`,
    ROLE: `role`,
+   PERMISSION: `permission`,
    TOGGLE_ROLE_PERMISSION: `role-permission/toggle`,
    TOGGLE_ROLE: `role/toggle`,
    LIST_PERMISSION_BY_ROLE: `permission/list-by-role`,
@@ -53,7 +55,11 @@ export const ENDPOINT = {
       DELETE: "reaction-article",
       UPDATE: "reaction-article",
    },
+   REACTION:"reaction",
    CHAT_MESSAGE: "chat-message",
+   FRIEND_STATUS: "friend-ship/action",
+   FIND_ONE_FRIEND: "friend-ship",
+   COMMENT: "comment",
    TOTP: {
       GENERATE: "totp/generate",
       VERIFY: "totp/verify",

@@ -61,6 +61,7 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
          setPayloadLogin({
             ...payload,
             token: null,
+            type: "email/pass",
          });
          useloginForm.mutate(payload, {
             onSuccess: (data) => {

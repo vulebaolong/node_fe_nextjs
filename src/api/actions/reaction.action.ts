@@ -1,13 +1,13 @@
 "use server";
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
-import api from "../core.api";
 import { TRes, TResAction } from "@/types/app.type";
-import { TCreateReactionArticleReq, TReactionArticle } from "@/types/reactioin.type";
+import { TCreateReactionArticleReq, TReaction } from "@/types/reactioin.type";
+import api from "../core.api";
 
-export async function createReactionArticleAction(payload: TCreateReactionArticleReq): Promise<TResAction<TReactionArticle | null>> {
+export async function createReactionArticleAction(payload: TCreateReactionArticleReq): Promise<TResAction<TReaction | null>> {
    try {
-      const result = await api.post<TRes<TReactionArticle>>(ENDPOINT.REACTION_ARTICLE.CREATE, payload);
+      const result = await api.post<TRes<TReaction>>(ENDPOINT.REACTION, payload);
       const { data } = result;
       return { status: "success", message: result.message, data: data };
    } catch (error: any) {

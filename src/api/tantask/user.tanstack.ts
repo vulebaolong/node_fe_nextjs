@@ -80,6 +80,7 @@ export const useDetailUser = (id: string) => {
       queryFn: async () => {
          const { data, status, message } = await getDetailUserAction(id);
          if (status === "error" || data === null) throw new Error(message);
+         console.log({ useDetailUser: data });
          return data;
       },
    });

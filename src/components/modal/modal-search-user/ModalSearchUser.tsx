@@ -58,7 +58,7 @@ export default function ModalSearchUser({ opened, close }: TProps) {
          }}
          withCloseButton={false}
       >
-         <Input value={search} onChange={handleChange} leftSection={<IconSearch size={16} />} variant="unstyled" placeholder="Tìm kiếm người dùng" />
+         <Input  value={search} onChange={handleChange} leftSection={<IconSearch size={16} />} variant="unstyled" placeholder="Tìm kiếm người dùng" />
          <Divider />
          <Stack
             sx={{

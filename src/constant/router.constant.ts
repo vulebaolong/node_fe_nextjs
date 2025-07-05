@@ -6,11 +6,11 @@ export const ROUTER_CLIENT = {
    EXPLORE: `/explore`,
    PROFILE: `/profile`,
    SETTING: `/setting`,
-   ROLE: `/role`,
    USER: `/user`,
 };
 
 export const ROUTER_ADMIN = {
    DASHBOARD: `/admin/dashboard`,
    ROLE: `/admin/role`,
+   PERMISSION: `/admin/permission`,
 };

@@ -7,6 +7,7 @@ export const useGetListArticle = () => {
       queryFn: async () => {
          const { data, status, message } = await getListArticleAction();
          if (status === "error" || data === null) throw new Error(message);
+         console.log({ useGetListArticle: data });
          return data;
       },
    });

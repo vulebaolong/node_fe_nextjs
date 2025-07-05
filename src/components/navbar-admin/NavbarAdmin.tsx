@@ -1,7 +1,7 @@
 import { MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
 import { ROUTER_ADMIN } from "@/constant/router.constant";
 import { Box, Divider, NavLink, ScrollArea, Stack } from "@mantine/core";
-import { IconFingerprint, IconGauge } from "@tabler/icons-react";
+import { IconFingerprint, IconGauge, IconLicense } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserAction from "../user-action/UserAction";
@@ -17,6 +17,11 @@ const navLinks = [
       label: "Role",
       href: ROUTER_ADMIN.ROLE,
       icon: <IconFingerprint size={16} stroke={1.5} />,
+   },
+   {
+      label: "Permission",
+      href: ROUTER_ADMIN.PERMISSION,
+      icon: <IconLicense size={16} stroke={1.5} />,
    },
 ];
 

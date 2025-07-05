@@ -4,14 +4,29 @@ import { GoogleButton } from "@/components/buttons/GoogleButton";
 import { Logo } from "@/components/logo/Logo";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
 import { Box, Center, Divider, Group, Paper, Stack, Title, Transition } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FooterAuth from "../footer/FooterAuth";
 import LoginForm from "./login-form/LoginForm";
 import LoginGoogleAuthenticator from "./login-ga/LoginGa";
+import { useAppSelector } from "@/redux/hooks";
 
 export default function Login() {
    const [step, setStep] = useState<TStepLogin>("login-form");
    const [payloadLogin, setPayloadLogin] = useState<TPayloadLoginGoogleAuthenticator | null>(null);
+   const emailGa = useAppSelector((state) => state.ga.email);
+
+   useEffect(() => {
+     if(!emailGa) return
+     setStep("login-google-authentication");
+     setPayloadLogin({
+        email: emailGa,
+        password: null,
+        token: null,
+        type: "totp",
+     });
+   
+   }, [emailGa])
+   
 
    return (
       <Stack

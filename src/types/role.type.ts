@@ -24,3 +24,5 @@ export type TToggleRolePermissionRes = {
 export type TToggleRoleReq = {
    roleId: string;
 };
+
+

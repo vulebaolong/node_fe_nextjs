@@ -3,7 +3,7 @@
 import { ENDPOINT } from "@/constant/endpoint.constant";
 import { clearTokens, setAccessToken, setRefreshToken } from "@/helpers/cookies.helper";
 import { TRes, TResAction } from "@/types/app.type";
-import { TLoginFormGaReq, TLoginFormReq, TLoginGoogleGaReq, TLoginRes, TRegisterReq, TRegisterRes } from "@/types/auth.type";
+import { TLoginFormGaReq, TLoginFormReq, TLoginGoogleGaReq, TLoginGoogleWithTotpReq, TLoginRes, TRegisterReq, TRegisterRes } from "@/types/auth.type";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import { TUser } from "@/types/user.type";
 import api from "../core.api";
@@ -53,6 +53,20 @@ export async function loginGooleAction(payload: { code: string }): Promise<TResA
 export async function loginFormAction(payload: TLoginFormReq): Promise<TResAction<TLoginRes | null>> {
    try {
       const result = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN, payload);
+      const { data } = result;
+      if (!data.isTotp && data?.accessToken && data?.refreshToken) {
+         await setAccessToken(data?.accessToken);
+         await setRefreshToken(data?.refreshToken);
+      }
+      return { status: "success", message: result.message, data: data };
+   } catch (error: any) {
+      return { status: "error", message: error?.message, data: null };
+   }
+}
+
+export async function loginGoogleWithTotpAction(payload: TLoginGoogleWithTotpReq): Promise<TResAction<TLoginRes | null>> {
+   try {
+      const result = await api.post<TRes<TLoginRes>>(ENDPOINT.AUTH.LOGIN_GOOGLE_WITH_TOTP, payload);
       const { data } = result;
       if (!data.isTotp && data?.accessToken && data?.refreshToken) {
          await setAccessToken(data?.accessToken);

@@ -3,6 +3,7 @@ import {
    loginFacebookction,
    loginFormAction,
    loginFormGaAction,
+   loginGoogleWithTotpAction,
    loginGooleAction,
    loginGooleGaAction,
    registerAction,
@@ -11,7 +12,7 @@ import { resError } from "@/helpers/function.helper";
 import useRouter from "@/hooks/use-router-custom";
 import { useAppDispatch } from "@/redux/hooks";
 import { SET_INFO } from "@/redux/slices/user.slice";
-import { TLoginFormGaReq, TLoginFormReq, TLoginGoogleGaReq, TRegisterReq } from "@/types/auth.type";
+import { TLoginFormGaReq, TLoginFormReq, TLoginGoogleGaReq, TLoginGoogleWithTotpReq, TRegisterReq } from "@/types/auth.type";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
@@ -74,6 +75,19 @@ export const useLoginForm = () => {
    return useMutation({
       mutationFn: async (payload: TLoginFormReq) => {
          const { data, status, message } = await loginFormAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
+         return data;
+      },
+      onError: (error) => {
+         toast.error(resError(error, `Login failed`));
+      },
+   });
+};
+
+export const useLoginGoogleWithTotp = () => {
+   return useMutation({
+      mutationFn: async (payload: TLoginGoogleWithTotpReq) => {
+         const { data, status, message } = await loginGoogleWithTotpAction(payload);
          if (status === "error" || data === null) throw new Error(message);
          return data;
       },
