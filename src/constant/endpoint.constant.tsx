@@ -45,10 +45,7 @@ export const ENDPOINT = {
    LIST_PERMISSION_BY_ROLE: `permission/list-by-role`,
    PAYMENT_MOMO: `payment/momo-pay`,
    CAR: "car/cars-list",
-   ARTICLE: {
-      LIST: "article",
-      CREATE: "article",
-   },
+   ARTICLE: "article",
    REACTION_ARTICLE: {
       CREATE: "reaction-article",
       GET_LIST: "reaction-article",

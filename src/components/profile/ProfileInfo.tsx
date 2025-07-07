@@ -1,0 +1,69 @@
+import { Box, Button, Group, Paper, Stack, Text } from "@mantine/core";
+import Avatar from "../avatar/Avatar";
+import Badge from "../badge/Badge";
+import ModalEditAvatar from "../modal/modal-edit-avatar/ModalEditAvatar";
+import { useAppSelector } from "@/redux/hooks";
+import { useDisclosure } from "@mantine/hooks";
+import { TUser } from "@/types/user.type";
+import ModalEditProfile from "../modal/modal-edit-profile/ModalEditProfile";
+
+type TProps = {
+    info: TUser | null;
+};
+
+export default function ProfileInfo({ info }: TProps) {
+    const [openedModalEditAvatar, handleModalEditAvatar] = useDisclosure(false);
+    const [openedModalEditProfile, handleModalEditProfile] = useDisclosure(false);
+
+    return (
+        <>
+            <Paper shadow="lg" radius="lg" withBorder p={20} bg="var(--mantine-color-body)">
+                <Box
+                    sx={(_, u) => {
+                        return {
+                            display: `flex`,
+                            gap: `20px`,
+                            [u.smallerThan("md")]: {
+                                flexDirection: `column`,
+                                alignItems: `center`,
+                            },
+                            [u.largerThan("md")]: {
+                                flexDirection: `row`,
+                                alignItems: `center`,
+                                justifyContent: `start`,
+                            },
+                        };
+                    }}
+                >
+                    <Avatar
+                        onClick={handleModalEditAvatar.open}
+                        avatar={info?.avatar}
+                        fullName={info?.fullName}
+                        size={120}
+                        radius={120}
+                        sx={{ cursor: `pointer` }}
+                    />
+
+                    <Stack sx={{ flex: 1, gap: `10px` }}>
+                        <Group>
+                            <Text truncate maw={300} fz="h3" fw={"bold"}>
+                                {info?.fullName}
+                            </Text>
+                            <Badge user={info} />
+                        </Group>
+
+                        <Text c="dimmed" fz="md">
+                            {info?.email}
+                        </Text>
+                    </Stack>
+
+                    <Button onClick={handleModalEditProfile.open} variant="default" size="xs" radius="xl">
+                        Chỉnh sửa
+                    </Button>
+                </Box>
+            </Paper>
+            <ModalEditAvatar opened={openedModalEditAvatar} close={handleModalEditAvatar.close} />
+            <ModalEditProfile opened={openedModalEditProfile} close={handleModalEditProfile.close} />
+        </>
+    );
+}

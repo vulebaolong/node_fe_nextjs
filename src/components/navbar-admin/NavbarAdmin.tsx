@@ -4,62 +4,59 @@ import { Box, Divider, NavLink, ScrollArea, Stack } from "@mantine/core";
 import { IconFingerprint, IconGauge, IconLicense } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import UserAction from "../user-action/UserAction";
 import UserMenuLoginYes from "../user-menu/UserMenuLoginYes";
+import UserControl from "../user-control/UserControl";
 
 const navLinks = [
-   {
-      label: "Dashboard",
-      href: ROUTER_ADMIN.DASHBOARD,
-      icon: <IconGauge size={16} stroke={1.5} />,
-   },
-   {
-      label: "Role",
-      href: ROUTER_ADMIN.ROLE,
-      icon: <IconFingerprint size={16} stroke={1.5} />,
-   },
-   {
-      label: "Permission",
-      href: ROUTER_ADMIN.PERMISSION,
-      icon: <IconLicense size={16} stroke={1.5} />,
-   },
+    {
+        label: "Dashboard",
+        href: ROUTER_ADMIN.DASHBOARD,
+        icon: <IconGauge size={16} stroke={1.5} />,
+    },
+    {
+        label: "Role",
+        href: ROUTER_ADMIN.ROLE,
+        icon: <IconFingerprint size={16} stroke={1.5} />,
+    },
+    {
+        label: "Permission",
+        href: ROUTER_ADMIN.PERMISSION,
+        icon: <IconLicense size={16} stroke={1.5} />,
+    },
 ];
 
 type TProps = {
-   closeMobile: () => void;
+    closeMobile: () => void;
 };
 
 export default function NavbarAdmin({ closeMobile }: TProps) {
-   const pathname = usePathname();
-   return (
-      <Stack h={`100%`}>
-         <Box className={` ${MOBILE_VISIBLE_DESKTOP_HIDDEN}`}>
-            <UserMenuLoginYes onClick={closeMobile} />
-         </Box>
+    const pathname = usePathname();
+    return (
+        <Stack h={`100%`}>
+            <ScrollArea flex={1}>
+                {navLinks.map((link) => {
+                    return (
+                        <NavLink
+                            style={{ borderRadius: `var(--mantine-radius-md)` }}
+                            key={link.href}
+                            label={link.label}
+                            component={Link}
+                            href={link.href}
+                            active={pathname.includes(link.href)}
+                            leftSection={link.icon}
+                            onClick={() => {
+                                closeMobile();
+                            }}
+                        >
+                            {undefined}
+                        </NavLink>
+                    );
+                })}
+            </ScrollArea>
 
-         <Divider className={` ${MOBILE_VISIBLE_DESKTOP_HIDDEN}`} />
-
-         <ScrollArea flex={1}>
-            {navLinks.map((link) => {
-               return (
-                  <NavLink
-                     style={{ borderRadius: `var(--mantine-radius-md)` }}
-                     key={link.href}
-                     label={link.label}
-                     component={Link}
-                     href={link.href}
-                     active={pathname.includes(link.href)}
-                     leftSection={link.icon}
-                     onClick={() => {
-                        closeMobile();
-                     }}
-                  >
-                     {undefined}
-                  </NavLink>
-               );
-            })}
-         </ScrollArea>
-         <UserAction className={` ${MOBILE_VISIBLE_DESKTOP_HIDDEN}`} />
-      </Stack>
-   );
+            <Box>
+                <UserControl type="admin"/>
+            </Box>
+        </Stack>
+    );
 }

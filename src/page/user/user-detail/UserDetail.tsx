@@ -107,11 +107,7 @@ export default function UserDetail() {
     const detailUser = useDetailUser(id);
     const friendStatus = useFriendStatus();
     const findOneFriend = useFindOneFriend(id);
-    console.log({
-        isLoading: findOneFriend.isLoading,
-        isPending: findOneFriend.isPending,
-        isFetching: findOneFriend.isFetching,
-    });
+ 
     useEffect(() => {
         listenToEvent(socket, SOCKET_CHAT_MES.RELOAD_STATUS_FRIEND_SHIP, () => {
             queryClient.invalidateQueries({ queryKey: [`find-one-friend`] });

@@ -17,3 +17,8 @@ export type TUploadAvatarLocalRes = {
    filename: string;
    imgUrl: string;
 };
+
+export type TEditProfileReq = {
+   id: string;
+   fullName: string;
+};

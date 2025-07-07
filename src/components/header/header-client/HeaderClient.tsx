@@ -75,7 +75,7 @@ export default function HeaderClient() {
                     {/* right */}
                     <Group>
                         <Box className={`${MOBILE_HIDDEN_DESKTOP_VISIBLE}`}>
-                            <UserControl />
+                            <UserControl type="client" />
                         </Box>
                         <ActionIcon
                             sx={{ cursor: "pointer" }}

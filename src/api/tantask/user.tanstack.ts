@@ -1,4 +1,5 @@
 import {
+   editProfileAction,
    findAllChatGroupManyAction,
    findAllChatGroupOneAction,
    findAllUserAction,
@@ -7,6 +8,7 @@ import {
    uploadAvatarCloudAction,
    uploadAvatarLocalAction,
 } from "@/api/actions/user.action";
+import { TEditProfileReq } from "@/types/user.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useUploadAvatarLocal = () => {
@@ -81,6 +83,16 @@ export const useDetailUser = (id: string) => {
          const { data, status, message } = await getDetailUserAction(id);
          if (status === "error" || data === null) throw new Error(message);
          console.log({ useDetailUser: data });
+         return data;
+      },
+   });
+};
+
+export const useEditProfile = () => {
+   return useMutation({
+      mutationFn: async (payload: TEditProfileReq) => {
+         const { data, status, message } = await editProfileAction(payload);
+         if (status === "error" || data === null) throw new Error(message);
          return data;
       },
    });

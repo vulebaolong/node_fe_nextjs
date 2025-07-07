@@ -1,41 +1,40 @@
 import { getGetChatMessageAction } from "@/api/actions/chat.action";
+import { TPayloadTable } from "@/components/custom/table/TableCustom";
 import { CHAT_BUBBLE, CHAT_OPENED } from "@/constant/chat.constant";
 import { getChatOpened } from "@/helpers/chat.helper";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetChatListUserItem = () => {
-   return useQuery({
-      queryKey: ["chat-list-user-item"],
-      queryFn: async () => {
-         return getChatOpened(CHAT_OPENED).slice(0, 2);
-      },
-   });
+    return useQuery({
+        queryKey: ["chat-list-user-item"],
+        queryFn: async () => {
+            return getChatOpened(CHAT_OPENED).slice(0, 2);
+        },
+    });
 };
 
 export const useGetChatListUserBubble = () => {
-   return useQuery({
-      queryKey: ["chat-list-user-bubble"],
-      queryFn: async () => {
-         return getChatOpened(CHAT_BUBBLE);
-      },
-   });
+    return useQuery({
+        queryKey: ["chat-list-user-bubble"],
+        queryFn: async () => {
+            return getChatOpened(CHAT_BUBBLE);
+        },
+    });
 };
 
-type TMessageListChatAll = {
-   page: number;
-   filters: any;
-};
-export const useGetChatMessage = ({ page, filters }: TMessageListChatAll) => {
-   return useQuery({
-      queryKey: ["get-message-list-chat", page, filters],
-      queryFn: async () => {
-         const query = `page=${page}&filters=${JSON.stringify(filters)}&pageSize=10`;
+export const useGetChatMessage = (payload: TPayloadTable) => {
+    return useQuery({
+        queryKey: ["get-message-list-chat", payload],
+        queryFn: async () => {
+            const { pagination, filters, sort } = payload;
+            const { pageIndex, pageSize } = pagination;
+            const query = `page=${pageIndex}&pageSize=${pageSize}&filters=${JSON.stringify(filters)}&sortBy=${sort?.sortBy}&isDesc=${sort?.isDesc}`;
 
-         const { data, status, message } = await getGetChatMessageAction(query);
-         if (status === "error" || data === null) throw new Error(message);
+            const { data, status, message } = await getGetChatMessageAction(query);
+            if (status === "error" || data === null) throw new Error(message);
 
-         console.log({ useGetChatMessage: data });
-         return data;
-      },
-   });
+            console.log({ useGetChatMessage: data });
+            return data;
+        },
+    });
 };

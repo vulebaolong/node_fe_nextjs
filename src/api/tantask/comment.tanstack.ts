@@ -18,12 +18,13 @@ export const useGetCommentByArticle = (payload: TPayloadTable) => {
     return useQuery({
         queryKey: ["get-comment-by-article", payload],
         queryFn: async () => {
-            const { data, status, message } = await getCommentByArticleAction(
-                `page=${payload.pagination.pageIndex}&pageSize=${payload.pagination.pageSize}&filters=${JSON.stringify(payload.filters)}&sortBy=${
-                    payload.sort?.sortBy
-                }&isDesc=${payload.sort?.isDesc}`
-            );
+            const { pagination, filters, sort } = payload;
+            const { pageIndex, pageSize } = pagination;
+            const query = `page=${pageIndex}&pageSize=${pageSize}&filters=${JSON.stringify(filters)}&sortBy=${sort?.sortBy}&isDesc=${sort?.isDesc}`;
+
+            const { data, status, message } = await getCommentByArticleAction(query);
             if (status === "error" || data === null) throw new Error(message);
+            
             console.log({ useGetCommentByArticle: data });
             return data;
         },

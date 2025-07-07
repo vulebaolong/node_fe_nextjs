@@ -2,6 +2,7 @@
 
 import { useGetListArticle } from "@/api/tantask/article.tanstack";
 import Article from "@/components/article/Article";
+import ArticleList from "@/components/article/ArticleList";
 import Avatar from "@/components/avatar/Avatar";
 import { DataStateWrapper } from "@/components/data-state-wrapper/DataStateWrapper";
 import ModalArticleDetail from "@/components/modal/modal-article-detail/ModalArticleDetail";
@@ -16,7 +17,6 @@ export default function HomeCenter() {
     const info = useAppSelector((state) => state.user.info);
     const [openedModalCreateAticle, handleModalCreateArticle] = useDisclosure(false);
     const [openedModalAticleDetail, handleModalArticleDetail] = useDisclosure(false);
-    const getListArticle = useGetListArticle();
 
     return (
         <>
@@ -47,7 +47,8 @@ export default function HomeCenter() {
                     </Group>
                 </Box>
                 <Stack>
-                    <DataStateWrapper
+                    <ArticleList />
+                    {/* <DataStateWrapper
                         isLoading={getListArticle.isLoading || getListArticle.isFetching}
                         isError={getListArticle.isError}
                         isEmpty={!getListArticle.data || getListArticle.data.items?.length === 0}
@@ -55,7 +56,7 @@ export default function HomeCenter() {
                         {(getListArticle.data?.items || []).map((article: TArticle, i) => {
                             return <Article key={i} article={article} handleModalArticleDetail={handleModalArticleDetail} />;
                         })}
-                    </DataStateWrapper>
+                    </DataStateWrapper> */}
                 </Stack>
             </Stack>
             <ModalCreateArticle opened={openedModalCreateAticle} close={handleModalCreateArticle.close} />

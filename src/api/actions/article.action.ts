@@ -5,9 +5,9 @@ import { TRes, TResAction, TResPagination } from "@/types/app.type";
 import { TArticle } from "@/types/article.type";
 import api from "../core.api";
 
-export async function getListArticleAction(): Promise<TResAction<TResPagination<TArticle> | null>> {
+export async function getListArticleAction(query: string): Promise<TResAction<TResPagination<TArticle> | null>> {
    try {
-      const result = await api.get<TRes<TResPagination<TArticle>>>(`${ENDPOINT.ARTICLE.LIST}`);
+      const result = await api.get<TRes<TResPagination<TArticle>>>(`${ENDPOINT.ARTICLE}?${query}`);
       const { data } = result;
       return { status: "success", message: result.message, data: data };
    } catch (error: any) {
@@ -17,7 +17,7 @@ export async function getListArticleAction(): Promise<TResAction<TResPagination<
 
 export async function createArticleAction(payload: FormData): Promise<TResAction<any| null>> {
    try {
-      const result = await api.post<TRes<any>>(ENDPOINT.ARTICLE.CREATE, payload);
+      const result = await api.post<TRes<any>>(ENDPOINT.ARTICLE, payload);
       const { data } = result;
       return { status: "success", message: result.message, data: data };
    } catch (error: any) {
