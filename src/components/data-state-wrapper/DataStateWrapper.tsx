@@ -14,7 +14,7 @@ export function DataStateWrapper({ isLoading, isError, isEmpty, loadingComponent
     if (isLoading)
         return (
             loadingComponent || (
-                <Center>
+                <Center sx={{ width: "100%", height: "100%", flex: 1 }}>
                     <Loader />
                 </Center>
             )
@@ -23,7 +23,7 @@ export function DataStateWrapper({ isLoading, isError, isEmpty, loadingComponent
     if (isError || isEmpty)
         return (
             noDataComponent || (
-                <Center>
+                <Center sx={{ width: "100%", height: "100%", flex: 1 }}>
                     <Nodata />
                 </Center>
             )

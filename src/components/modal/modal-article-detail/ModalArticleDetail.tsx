@@ -46,7 +46,7 @@ export default function ModalArticleDetail({ opened, close }: TProps) {
                     flexGrow: 1,
                 }}
             >
-                {articleDetail && <Article article={articleDetail} />}
+                {articleDetail && <Article article={articleDetail} type="other" />}
                 {articleDetail && <CommentList article={articleDetail} listComment={listComment} setListComment={setListComment} />}
             </Box>
             {articleDetail && <CommentInput article={articleDetail} setListComment={setListComment} />}

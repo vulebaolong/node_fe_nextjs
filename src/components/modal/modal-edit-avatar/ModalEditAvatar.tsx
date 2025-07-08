@@ -1,9 +1,9 @@
-import { useGetInfoMutation } from "@/api/tantask/auth.tanstack";
 import { useUploadAvatarCloud, useUploadAvatarLocal } from "@/api/tantask/user.tanstack";
 import { resError } from "@/helpers/function.helper";
 import { Avatar as AvatarMantine, Button, Center, Group, Modal, Stack } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -17,7 +17,7 @@ export default function ModalEditAvatar({ opened, close }: TProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const uploadAvatarLocal = useUploadAvatarLocal();
     const uploadAvatarCloud = useUploadAvatarCloud();
-    const getInfo = useGetInfoMutation();
+    const queryClient = useQueryClient();
 
     const handleUploadLocal = async () => {
         if (file === null) return;
@@ -31,9 +31,10 @@ export default function ModalEditAvatar({ opened, close }: TProps) {
         uploadAvatarLocal.mutate(fromData, {
             onSuccess: () => {
                 toast.success(`Upload avatar to local successfully`);
-                getInfo.mutate();
+                queryClient.invalidateQueries({ queryKey: [`query-info`] });
                 setPreview(null);
                 setFile(null);
+                close();
             },
             onError: (error) => {
                 console.log(error);
@@ -54,9 +55,10 @@ export default function ModalEditAvatar({ opened, close }: TProps) {
         uploadAvatarCloud.mutate(fromData, {
             onSuccess: () => {
                 toast.success(`Upload avatar to cloud successfully`);
-                getInfo.mutate();
+                queryClient.invalidateQueries({ queryKey: [`query-info`] });
                 setPreview(null);
                 setFile(null);
+                close();
             },
             onError: (error) => {
                 console.log(error);

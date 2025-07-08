@@ -1,13 +1,13 @@
 "use client";
 
-import { useAppSelector } from "@/redux/hooks";
 import { useGetInfoQuery } from "@/api/tantask/auth.tanstack";
+import { useAppSelector } from "@/redux/hooks";
 import { Box, Group, Menu, Stack, Text } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
-import { Fragment, useState } from "react";
+import { useState } from "react";
+import Avatar from "../avatar/Avatar";
 import UserMenuLoginNo from "../user-menu/UserMenuLoginNo";
 import UserMenuLoginYes from "../user-menu/UserMenuLoginYes";
-import Avatar from "../avatar/Avatar";
 
 type TProps = {
     colorText?: string;

@@ -33,7 +33,7 @@ export default function ModalCreateArticle({ opened, close }: TProps) {
         console.log(fromData.getAll(`imageArticle`));
         createArticle.mutate(fromData, {
             onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: [`get-list-article`] });
+                queryClient.invalidateQueries({ queryKey: [`get-all-article`] });
                 toast.success(`Create Article successfully`);
                 setPreview(null);
                 setFile(null);

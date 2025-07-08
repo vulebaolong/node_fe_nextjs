@@ -1,14 +1,14 @@
 "use server";
 
 import { ENDPOINT } from "@/constant/endpoint.constant";
-import api from "../core.api";
 import { TRes, TResAction, TResPagination } from "@/types/app.type";
 import { TChatGroup } from "@/types/chat.type";
-import { TEditProfileReq, TUploadAvatarLocalRes, TUser } from "@/types/user.type";
+import { TEditProfileReq, TUser } from "@/types/user.type";
+import api from "../core.api";
 
-export async function uploadAvatarLocalAction(payload: FormData): Promise<TResAction<TUploadAvatarLocalRes | null>> {
+export async function uploadAvatarLocalAction(payload: FormData): Promise<TResAction<boolean | null>> {
     try {
-        const result = await api.post<TRes<TUploadAvatarLocalRes>>(ENDPOINT.UPLOAD_AVATAR_LOCAL, payload);
+        const result = await api.post<TRes<boolean>>(ENDPOINT.UPLOAD_AVATAR_LOCAL, payload);
         const { data } = result;
         return { status: "success", message: result.message, data: data };
     } catch (error: any) {
@@ -16,9 +16,9 @@ export async function uploadAvatarLocalAction(payload: FormData): Promise<TResAc
     }
 }
 
-export async function uploadAvatarCloudAction(payload: FormData): Promise<TResAction<any | null>> {
+export async function uploadAvatarCloudAction(payload: FormData): Promise<TResAction<boolean | null>> {
     try {
-        const result = await api.post<TRes<any>>(ENDPOINT.UPLOAD_AVATAR_CLOUD, payload);
+        const result = await api.post<TRes<boolean>>(ENDPOINT.UPLOAD_AVATAR_CLOUD, payload);
         const { data } = result;
         return { status: "success", message: result.message, data: data };
     } catch (error: any) {

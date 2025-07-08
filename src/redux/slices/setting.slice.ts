@@ -1,5 +1,4 @@
 import { colors } from "@/components/provider/mantine/theme";
-import { getColorTheme } from "@/helpers/color-theme.helper";
 import { createSlice } from "@reduxjs/toolkit";
 
 type TInitialState = {
@@ -9,7 +8,7 @@ type TInitialState = {
 
 const initialState: TInitialState = {
    loadingPage: false,
-   selectedColorTheme: getColorTheme(),
+   selectedColorTheme: "Aurora",
 };
 
 const settingSlice = createSlice({

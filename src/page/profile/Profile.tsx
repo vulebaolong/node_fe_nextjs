@@ -1,8 +1,9 @@
 "use client";
 
-import ProfileArticle from "@/components/profile/ProfileArticle";
-import ProfileCoverPhoto from "@/components/profile/ProfileCoverPhoto";
-import ProfileFriend from "@/components/profile/ProfileFriend";
+// import ArticleList from "@/components/article/ArticleList";
+// import FriendList from "@/components/friend/FriendList";
+// import ProfileFriend from "@/components/profile/ProfileFriend";
+// import ProfileCoverPhoto from "@/components/profile/ProfileCoverPhoto";
 import ProfileInfo from "@/components/profile/ProfileInfo";
 import { useAppSelector } from "@/redux/hooks";
 import { Box, Container, Stack } from "@mantine/core";
@@ -13,21 +14,21 @@ export function Profile() {
     return (
         <>
             <Box pb={100} pt={50}>
-                <Container size={`xl`}>
+                {/* <Container size={`xl`}>
                     <Box>
                         <ProfileCoverPhoto />
                     </Box>
-                </Container>
+                </Container> */}
                 <Container mt={10}>
                     <Stack>
-                        <ProfileInfo info={info} />
-                        <Box
+                        <ProfileInfo info={info} type="my" />
+                        {/* <Box
                             sx={(theme, u) => {
                                 return {
                                     display: `grid`,
-                                    gap: theme.spacing.md,
+                                    gap: theme.spacing.lg,
                                     [u.largerThan("md")]: {
-                                        gridTemplateColumns: `0.4fr 0.6fr`,
+                                        gridTemplateColumns: `0.35fr 0.65fr`,
                                     },
                                     [u.smallerThan("md")]: {
                                         gridTemplateColumns: `1fr`,
@@ -36,12 +37,12 @@ export function Profile() {
                             }}
                         >
                             <Box>
-                                <ProfileFriend />
+                                <FriendList height="calc(100vh - (82px + 20px + 20px + var(--height-header))" type="my" />
                             </Box>
                             <Box>
-                                <ProfileArticle />
+                                <ArticleList height="calc(100vh - (82px + 20px + 20px + var(--height-header))" type="my" />
                             </Box>
-                        </Box>
+                        </Box> */}
                     </Stack>
                 </Container>
             </Box>

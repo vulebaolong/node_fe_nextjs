@@ -1,13 +1,14 @@
-import { Box, Button, Modal, Stack, TextInput } from "@mantine/core";
-import { useFormik } from "formik";
-import { useState } from "react";
-import * as Yup from "yup";
-import { useEditProfile, useUploadAvatarCloud, useUploadAvatarLocal } from "@/api/tantask/user.tanstack";
-import { toast } from "react-toastify";
-import { useQueryClient } from "@tanstack/react-query";
+"use client";
+
+import { useEditProfile } from "@/api/tantask/user.tanstack";
 import { resError } from "@/helpers/function.helper";
-import { TEditProfileReq } from "@/types/user.type";
 import { useAppSelector } from "@/redux/hooks";
+import { TEditProfileReq } from "@/types/user.type";
+import { Box, Button, Modal, Stack, TextInput } from "@mantine/core";
+import { useQueryClient } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 
 type TProps = {
     opened: boolean;
@@ -36,8 +37,7 @@ export default function ModalEditProfile({ opened, close }: TProps) {
             console.log({ payload });
 
             editProfile.mutate(payload, {
-                onSuccess: (data) => {
-                    console.log({ data });
+                onSuccess: () => {
                     updateProfileForm.resetForm();
                     queryClient.invalidateQueries({ queryKey: [`query-info`] });
                     toast.success("Chỉnh sửa thông tin cá nhân thành công");

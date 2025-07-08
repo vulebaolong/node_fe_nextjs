@@ -1,22 +1,16 @@
 "use client";
 
-import { useGetListArticle } from "@/api/tantask/article.tanstack";
-import Article from "@/components/article/Article";
 import ArticleList from "@/components/article/ArticleList";
 import Avatar from "@/components/avatar/Avatar";
-import { DataStateWrapper } from "@/components/data-state-wrapper/DataStateWrapper";
-import ModalArticleDetail from "@/components/modal/modal-article-detail/ModalArticleDetail";
 import ModalCreateArticle from "@/components/modal/modal-create-article/ModalCreateArticle";
 import { background1 } from "@/components/provider/mantine/sx/background.sx";
 import { useAppSelector } from "@/redux/hooks";
-import { TArticle } from "@/types/article.type";
 import { Box, Button, Group, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function HomeCenter() {
     const info = useAppSelector((state) => state.user.info);
     const [openedModalCreateAticle, handleModalCreateArticle] = useDisclosure(false);
-    const [openedModalAticleDetail, handleModalArticleDetail] = useDisclosure(false);
 
     return (
         <>
@@ -46,21 +40,19 @@ export default function HomeCenter() {
                         </Button>
                     </Group>
                 </Box>
-                <Stack>
-                    <ArticleList />
-                    {/* <DataStateWrapper
-                        isLoading={getListArticle.isLoading || getListArticle.isFetching}
-                        isError={getListArticle.isError}
-                        isEmpty={!getListArticle.data || getListArticle.data.items?.length === 0}
+                {/* <ArticleList height="calc(100vh - (82px + 20px + var(--height-header))" type="all" /> */}
+                <ArticleList height="calc(100vh - (82px + 20px + 20px + var(--height-header))" type="all" />
+                {/* <DataStateWrapper
+                        isLoading={getAllArticle.isLoading || getAllArticle.isFetching}
+                        isError={getAllArticle.isError}
+                        isEmpty={!getAllArticle.data || getAllArticle.data.items?.length === 0}
                     >
-                        {(getListArticle.data?.items || []).map((article: TArticle, i) => {
+                        {(getAllArticle.data?.items || []).map((article: TArticle, i) => {
                             return <Article key={i} article={article} handleModalArticleDetail={handleModalArticleDetail} />;
                         })}
                     </DataStateWrapper> */}
-                </Stack>
             </Stack>
             <ModalCreateArticle opened={openedModalCreateAticle} close={handleModalCreateArticle.close} />
-            <ModalArticleDetail opened={openedModalAticleDetail} close={handleModalArticleDetail.close} />
         </>
     );
 }

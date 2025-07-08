@@ -1,3 +1,5 @@
+"use client";
+
 import NodataOverlay from "@/components/no-data/NodataOverlay";
 import { multiRAF } from "@/helpers/function.helper";
 import { useAppSelector } from "@/redux/hooks";
@@ -32,6 +34,7 @@ export default function MessageList({ stateChat, dataSendMessage }: TProps) {
 
     const chatMessage = useGetChatMessage({
         pagination: { pageIndex: page, pageSize: 10 },
+        filters: { chatGroupId: stateChat.chatGroupId },
         sort: { sortBy: `createdAt`, isDesc: true },
     });
 

@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { NEXT_PUBLIC_BASE_DOMAIN_API, NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY, FOLDER_IMAGE_BE } from "@/constant/app.constant";
+import { NEXT_PUBLIC_BASE_DOMAIN, NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY, FOLDER_IMAGE_BE } from "@/constant/app.constant";
 import dayjs from "dayjs";
 import { TFieldCreate } from "@/components/content-admin/ContentAdmin";
 
@@ -10,7 +10,7 @@ export const checkPathImage = (path: string | null | undefined) => {
     }
 
     if (path.includes(`local`)) {
-        return `${NEXT_PUBLIC_BASE_DOMAIN_API}${FOLDER_IMAGE_BE}${path}`;
+        return `${NEXT_PUBLIC_BASE_DOMAIN}${FOLDER_IMAGE_BE}${path}`;
     } else {
         return `${NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY}${path}`;
     }

@@ -1,5 +1,7 @@
+"use client";
+
 import { checkPathImage, formatLocalTime } from "@/helpers/function.helper";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { SET_ARTICLE_DETAIL } from "@/redux/slices/article.slice";
 import { TArticle } from "@/types/article.type";
 import { Box, Button, Group, Image as ImageMantine, Stack, Text } from "@mantine/core";
@@ -16,13 +18,15 @@ type TProps = {
         readonly close: () => void;
         readonly toggle: () => void;
     };
+    type: "all" | "my" | "other";
 };
 
-export default function Article({ article, handleModalArticleDetail }: TProps) {
+export default function Article({ article, handleModalArticleDetail, type }: TProps) {
+    const info = useAppSelector((state) => state.user.info);
     const dispatch = useAppDispatch();
     const handleClickComment = () => {
         dispatch(SET_ARTICLE_DETAIL(article));
-        if (handleModalArticleDetail) handleModalArticleDetail.close();
+        if (handleModalArticleDetail) handleModalArticleDetail.open();
     };
     return (
         <Box
@@ -33,14 +37,18 @@ export default function Article({ article, handleModalArticleDetail }: TProps) {
                     boxShadow: handleModalArticleDetail ? `0 1px 2px rgba(0, 0, 0, .2)` : `unset`,
                 };
             }}
+            mb={"lg"}
         >
             {/* info */}
             <Group justify="space-between" wrap="nowrap" px={10} py={15}>
                 <Box style={{ flexShrink: 0 }}>
-                    <Avatar fullName={article.Users?.fullName} avatar={article.Users?.avatar} />
+                    <Avatar
+                        fullName={type === "my" ? info?.fullName : article.Users?.fullName}
+                        avatar={type === "my" ? info?.avatar : article.Users?.avatar}
+                    />
                 </Box>
                 <Stack gap={0} flex={1}>
-                    <Text fw={`bold`}>{article.Users?.fullName}</Text>
+                    <Text fw={`bold`}>{type === "my" ? info?.fullName : article.Users?.fullName}</Text>
                     <Text c={`dimmed`}>{formatLocalTime(article.createdAt, `ago`)}</Text>
                 </Stack>
 

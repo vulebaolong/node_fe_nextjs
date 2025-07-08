@@ -1,17 +1,20 @@
+"use client";
+
+import { TUser } from "@/types/user.type";
 import { Box, Button, Group, Paper, Stack, Text } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import Avatar from "../avatar/Avatar";
 import Badge from "../badge/Badge";
 import ModalEditAvatar from "../modal/modal-edit-avatar/ModalEditAvatar";
-import { useAppSelector } from "@/redux/hooks";
-import { useDisclosure } from "@mantine/hooks";
-import { TUser } from "@/types/user.type";
 import ModalEditProfile from "../modal/modal-edit-profile/ModalEditProfile";
+import ButtonsFriend from "../buttons/ButtonsFriend";
 
 type TProps = {
     info: TUser | null;
+    type: "my" | "other";
 };
 
-export default function ProfileInfo({ info }: TProps) {
+export default function ProfileInfo({ info, type }: TProps) {
     const [openedModalEditAvatar, handleModalEditAvatar] = useDisclosure(false);
     const [openedModalEditProfile, handleModalEditProfile] = useDisclosure(false);
 
@@ -36,12 +39,12 @@ export default function ProfileInfo({ info }: TProps) {
                     }}
                 >
                     <Avatar
-                        onClick={handleModalEditAvatar.open}
+                        onClick={type === "my" ? handleModalEditAvatar.open : undefined}
                         avatar={info?.avatar}
                         fullName={info?.fullName}
                         size={120}
                         radius={120}
-                        sx={{ cursor: `pointer` }}
+                        sx={{ cursor: type === "my" ? `pointer` : `unset` }}
                     />
 
                     <Stack sx={{ flex: 1, gap: `10px` }}>
@@ -57,9 +60,13 @@ export default function ProfileInfo({ info }: TProps) {
                         </Text>
                     </Stack>
 
-                    <Button onClick={handleModalEditProfile.open} variant="default" size="xs" radius="xl">
-                        Chỉnh sửa
-                    </Button>
+                    {type === "my" ? (
+                        <Button onClick={handleModalEditProfile.open} variant="default" size="xs" radius="xl">
+                            Chỉnh sửa
+                        </Button>
+                    ) : (
+                        <>{info && <ButtonsFriend detailUser={info} />}</>
+                    )}
                 </Box>
             </Paper>
             <ModalEditAvatar opened={openedModalEditAvatar} close={handleModalEditAvatar.close} />

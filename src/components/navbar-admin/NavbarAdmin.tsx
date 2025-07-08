@@ -1,10 +1,10 @@
-import { MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
+"use client";
+
 import { ROUTER_ADMIN } from "@/constant/router.constant";
-import { Box, Divider, NavLink, ScrollArea, Stack } from "@mantine/core";
+import { Box, NavLink, ScrollArea, Stack } from "@mantine/core";
 import { IconFingerprint, IconGauge, IconLicense } from "@tabler/icons-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import UserMenuLoginYes from "../user-menu/UserMenuLoginYes";
 import UserControl from "../user-control/UserControl";
 
 const navLinks = [
