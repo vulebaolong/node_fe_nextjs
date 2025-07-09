@@ -25,7 +25,7 @@ jobs:
                   -t img-fe_main:latest .
 
             - name: Save Docker image as tar
-              run: docker save img-fe_main:latest -o img-fe_main.tar
+              run: docker save img-fe_main:latest -o img.tar
 
             - name: Debug Info
               run: |
