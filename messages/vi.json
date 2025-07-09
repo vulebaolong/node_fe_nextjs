@@ -31,6 +31,8 @@
       "General Settings": "Cài đặt chung",
       "Light": "Sáng",
       "Dark": "Tối",
-      "Google Authenticator (2FA)": "Xác thực Google (2FA)"
+      "Two-factor authentication (2FA)": "Bảo mật 2 lớp",
+      "Google Authenticator": "Google Authenticator",
+      "Color Themes": "Chủ đề màu sắc"
    }
 }

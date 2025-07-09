@@ -18,6 +18,7 @@ export default function ClientLayout({ children }: TProps) {
                   zIndex: 1,
                   boxShadow: `var(--mantine-shadow-md)`,
                   backgroundColor: `var(--mantine-color-body)`,
+                  height: `auto`,
                   minHeight: `100vh`,
                }}
             >

@@ -1,41 +1,29 @@
-import { EReactionArticle } from "@/types/enum/reaction.enum";
+import { TArticle } from "@/types/article.type";
 import { Box, Transition } from "@mantine/core";
-import { IconThumbUp, IconThumbUpFilled } from "@tabler/icons-react";
+import { IconThumbUp } from "@tabler/icons-react";
+import { iconsReaction } from "../button-like/ButtonLike";
 
 type TProps = {
-   reactionType: number;
+    reactionType: TArticle["reaction"];
 };
 
 export default function IconReaction({ reactionType }: TProps) {
-   return (
-      <Box w={15} h={15}>
-         <Transition
-            enterDelay={400}
-            mounted={reactionType === EReactionArticle[`None`]}
-            transition="slide-left"
-            duration={400}
-            timingFunction="ease"
-         >
-            {(styles) => (
-               <div style={styles}>
-                  <IconThumbUp size={14} />
-               </div>
-            )}
-         </Transition>
+    return (
+        <Box>
+            <Transition enterDelay={400} mounted={reactionType === null} transition="slide-left" duration={400} timingFunction="ease">
+                {(styles) => (
+                    <div style={styles}>
+                        <IconThumbUp size={20} />
+                    </div>
+                )}
+            </Transition>
 
-         <Transition
-            enterDelay={400}
-            mounted={reactionType === EReactionArticle[`Like`]}
-            transition="slide-left"
-            duration={400}
-            timingFunction="ease"
-         >
-            {(styles) => (
-               <div style={styles}>
-                  <IconThumbUpFilled style={{ color: `var(--mantine-color-indigo-light-color)` }} size={14} />
-               </div>
-            )}
-         </Transition>
-      </Box>
-   );
+            {Object.entries(iconsReaction).map(([key, IconComp]) => (
+                <Transition enterDelay={400} mounted={reactionType === key} key={key} transition="slide-left" duration={400} timingFunction="ease">
+                    {(styles) => <div style={styles}>{IconComp(20)}</div>}
+                </Transition>
+            ))}
+
+        </Box>
+    );
 }

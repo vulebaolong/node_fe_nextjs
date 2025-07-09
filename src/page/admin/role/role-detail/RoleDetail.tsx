@@ -1,10 +1,11 @@
 "use client";
 
 import Paper from "@/components/custom/paper/PaperCustom";
+import { SwitchCustom } from "@/components/custom/switch/SwitchCustom";
 import useRouter from "@/hooks/use-router-custom";
-import { usePermissionGroupByModule } from "@/tantask/permission.tanstack";
-import { useDetailRole, useTogglePermission } from "@/tantask/role.tanstack";
-import { Accordion, ActionIcon, Badge, Box, Group, Stack, Switch, Text, Title } from "@mantine/core";
+import { useListPermissionByRole } from "@/api/tantask/permission.tanstack";
+import { useDetailRole, useToggleRole, useToggleRolePermission } from "@/api/tantask/role.tanstack";
+import { Accordion, ActionIcon, Badge, Box, Group, Stack, Text, Title } from "@mantine/core";
 import { IconArrowBack } from "@tabler/icons-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
@@ -18,28 +19,58 @@ export default function RoleDetail() {
    const queryClient = useQueryClient();
 
    const detailRole = useDetailRole(id || `0`);
-   const permissionGroupByModule = usePermissionGroupByModule(id || `0`);
-   const togglePermission = useTogglePermission();
+   const permissionGroupByModule = useListPermissionByRole(id || `0`);
+   const toggleRolePermission = useToggleRolePermission();
+   const toggleRole = useToggleRole();
 
-   const handleClickSwitch = (permissionId: number) => {
+   const handleToggleRolePermission = async (permissionId: string) => {
       if (!id) return;
-      togglePermission.mutate(
-         {
-            permissionId: permissionId,
-            roleId: Number(id),
-         },
-         {
-            onSuccess: (data) => {
-               console.log({ data });
-               queryClient.invalidateQueries({ queryKey: [`permission-by-module`] });
-               toast.success(`${data?.isActive ? `On` : `Off`} Permission Successfully`);
+
+      return new Promise((resolve, reject) => {
+         toggleRolePermission.mutate(
+            {
+               permissionId: permissionId,
+               roleId: id,
             },
-            onError: (error: any) => {
-               console.log(error);
-               toast.error(resError(error, `Toggle permission failed`));
+            {
+               onSuccess: (data) => {
+                  queryClient.invalidateQueries({ queryKey: [`list-permission-by-role`] });
+                  toast.success(`${data?.isActive ? `On` : `Off`} Permission Successfully`);
+                  resolve(data);
+               },
+               onError: (error: any) => {
+                  console.log(error);
+                  toast.error(resError(error, `Toggle permission failed`));
+                  reject(error);
+               },
+            }
+         );
+      });
+   };
+
+   const handleToggleRole = async (id: string) => {
+      if (!id) return;
+
+      return new Promise((resolve, reject) => {
+         toggleRole.mutate(
+            {
+               roleId: id,
             },
-         }
-      );
+            {
+               onSuccess: (data) => {
+                  console.log({ data });
+                  queryClient.invalidateQueries({ queryKey: ["detail-role"] });
+                  toast.success(`${data?.isActive ? "On" : "Off"} Role Successfully`);
+                  resolve(data);
+               },
+               onError: (error: any) => {
+                  console.log(error);
+                  toast.error(resError(error, "Toggle Role Failed"));
+                  reject(error);
+               },
+            }
+         );
+      });
    };
 
    return (
@@ -58,21 +89,23 @@ export default function RoleDetail() {
             <Stack>
                <Group align="center">
                   <Title>{detailRole.data?.name}</Title>
-                  <Switch
-                     checked={detailRole.data?.isActive}
-                     onLabel={`ON`}
-                     offLabel={`OFF`}
+                  <SwitchCustom
+                     initialChecked={detailRole.data?.isActive}
+                     onToggle={() => handleToggleRole(id)}
+                     onLabel="ON"
+                     offLabel="OFF"
                      styles={{
                         track: {
                            cursor: `pointer`,
                         },
                      }}
                   />
+                  {/* {toggleRole.isPending && <Loader size={`xs`} />} */}
                </Group>
                <Text c="dimmed">{detailRole.data?.description}</Text>
 
                <Accordion multiple variant="contained" radius="md">
-                  {Object.entries(permissionGroupByModule.data || {}).map(([key, permissions], i1) => (
+                  {Object.entries(permissionGroupByModule.data?.items || {}).map(([key, permissions], i1) => (
                      <Accordion.Item key={i1} value={key}>
                         <Accordion.Control>{key}</Accordion.Control>
                         <Accordion.Panel>
@@ -135,18 +168,11 @@ export default function RoleDetail() {
                                              </Text>
                                           </Stack>
 
-                                          <Switch
-                                             // dis   abled={togglePermission.isPending}
-                                             onClick={() => {
-                                                handleClickSwitch(permission.id);
-                                             }}
-                                             onLabel={`ON`}
-                                             offLabel={`OFF`}
-                                             checked={
-                                                togglePermission.isPending
-                                                   ? undefined // Giữ trạng thái hiện tại, không làm gì
-                                                   : !!permission.isActive // Chỉ cập nhật khi không đang gọi API
-                                             }
+                                          <SwitchCustom
+                                             initialChecked={permission.isActive}
+                                             onToggle={() => handleToggleRolePermission(permission._id)}
+                                             onLabel="ON"
+                                             offLabel="OFF"
                                              styles={{
                                                 track: {
                                                    cursor: `pointer`,

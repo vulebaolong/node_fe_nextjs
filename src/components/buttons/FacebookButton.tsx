@@ -1,5 +1,5 @@
 import { ROUTER_CLIENT } from "@/constant/router.constant";
-import { useLoginFacebook } from "@/tantask/auth.tanstack";
+import { useLoginFacebook } from "@/api/tantask/auth.tanstack";
 import { TLoginFacebookReq } from "@/types/facebook.type";
 import FacebookLogin, { FacebookLoginClient } from "@greatsumini/react-facebook-login";
 import { Button, ButtonProps } from "@mantine/core";

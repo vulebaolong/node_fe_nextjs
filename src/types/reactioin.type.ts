@@ -1,13 +1,17 @@
-export type TCreateReactionArticleReq = { reactionType: number; articleId: number };
+import { TBaseTimestamps } from "./base.type";
 
-export type TReactionArticle = {
-   id: number;
-   reactionType: number;
-   userId: number;
-   articleId: number;
-   deletedBy: number;
-   isDeleted: boolean;
-   deletedAt: string;
-   createdAt: string;
-   updatedAt: string;
+export type TReactionType = "like" | "love" | "care" | "haha" | "wow" | "sad" | "angry";
+export type TReactiontargetType = "article" | "comment"
+
+export type TCreateReactionArticleReq = {
+    targetType: TReactiontargetType;
+    targetId: string;
+    type: TReactionType;
 };
+
+export type TReaction = {
+    _id: string;
+    targetType: TReactiontargetType;
+    targetId: string;
+    type: TReactionType;
+} & TBaseTimestamps;

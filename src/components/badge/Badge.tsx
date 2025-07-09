@@ -1,3 +1,4 @@
+import { USER_ADMIN } from "@/constant/app.constant";
 import { effectText } from "@/helpers/motion.helper";
 import { TUser } from "@/types/user.type";
 import { Badge as BadgeMantine, BadgeProps } from "@mantine/core";
@@ -9,8 +10,8 @@ type TProps = {
 
 const Badge = forwardRef<HTMLDivElement, TProps & React.ComponentPropsWithoutRef<"div">>(({ user, ...props }, ref) => {
    return (
-      <BadgeMantine {...props} ref={ref} variant="outline" color={user?.roleId === 1 ? `red` : `blue`}>
-         {effectText(user?.Roles?.name || ``)}
+      <BadgeMantine {...props} ref={ref} variant="outline" color={user?.roleId === USER_ADMIN ? `red` : `blue`}>
+         {effectText(user?.Roles.name || ``)}
       </BadgeMantine>
    );
 });

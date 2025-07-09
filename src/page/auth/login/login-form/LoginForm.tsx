@@ -1,6 +1,7 @@
-import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
+"use client";
+
 import { ROUTER_CLIENT } from "@/constant/router.constant";
-import { useLoginForm } from "@/tantask/auth.tanstack";
+import { useLoginForm } from "@/api/tantask/auth.tanstack";
 import { TPayloadLoginGoogleAuthenticator, TStepLogin } from "@/types/auth.type";
 import { Anchor, Box, Button, Group, TextInput } from "@mantine/core";
 import { useFormik } from "formik";
@@ -8,6 +9,7 @@ import useRouter from "@/hooks/use-router-custom";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import * as Yup from "yup";
+import CustomPasswordInput, { validatePassword } from "@/components/password-input/CustomPasswordInput";
 
 type TProps = {
    setStep: Dispatch<SetStateAction<TStepLogin>>;
@@ -17,12 +19,13 @@ type TProps = {
 export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
    const router = useRouter();
    const useloginForm = useLoginForm();
+
    const loginForm = useFormik({
       initialValues: {
-         // email: `vulebaolong@gmail.com`,
-         // password: `123aA@`,
-         email: ``,
-         password: ``,
+         email: `example@gmail.com`,
+         password: `Example@123`,
+         // email: ``,
+         // password: ``,
       },
       validationSchema: Yup.object().shape({
          email: Yup.string().trim().email().required(),
@@ -58,11 +61,12 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
          setPayloadLogin({
             ...payload,
             token: null,
+            type: "email/pass",
          });
          useloginForm.mutate(payload, {
             onSuccess: (data) => {
                console.log({ data });
-               if (data?.isGoogleAuthenticator) {
+               if (data.isTotp) {
                   setStep(`login-google-authentication`);
                } else {
                   router.push(ROUTER_CLIENT.HOME);
@@ -75,7 +79,7 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
 
    return (
       <Box component="form" onSubmit={loginForm.handleSubmit}>
-         <Box h={200}>
+         <Box>
             <TextInput
                withAsterisk
                label="Email"
@@ -86,10 +90,12 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
                error={loginForm.touched.email && typeof loginForm.errors.email === "string" ? loginForm.errors.email : undefined}
                inputWrapperOrder={["label", "input", "error"]}
                style={{ height: `85px` }}
+               radius={`lg`}
             />
 
             <Box style={{ height: `85px` }}>
                <CustomPasswordInput
+                  radius={`lg`}
                   label="Password"
                   placeholder="Your password"
                   withAsterisk
@@ -114,7 +120,7 @@ export default function LoginForm({ setStep, setPayloadLogin }: TProps) {
             </Group>
          </Box>
 
-         <Button mt={10} loading={false} type="submit" fullWidth style={{ flexShrink: `0` }}>
+         <Button radius={`xl`} mt={10} loading={false} type="submit" fullWidth style={{ flexShrink: `0` }}>
             Login
          </Button>
       </Box>

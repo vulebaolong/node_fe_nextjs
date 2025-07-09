@@ -2,7 +2,7 @@
 
 import useRouter from "@/hooks/use-router-custom";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetInfoMutation } from "@/tantask/auth.tanstack";
+import { useGetInfoMutation } from "@/api/tantask/auth.tanstack";
 import { Loader } from "@mantine/core";
 import { useEffect, useState } from "react";
 

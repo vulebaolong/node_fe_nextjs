@@ -16,7 +16,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
          header={{ height: `var(--height-header)` }}
          footer={{ height: 40 }}
          navbar={{
-            width: 200,
+            width: 230,
             breakpoint: breakpoint,
             collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
          }}
@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
          <AppShell.Header>
             <HeaderAdmin mobileOpened={mobileOpened} desktopOpened={desktopOpened} toggleMobile={toggleMobile} toggleDesktop={toggleDesktop} />
          </AppShell.Header>
-         <AppShell.Navbar p="sm">
+         <AppShell.Navbar p="xs">
             <NavbarAdmin closeMobile={closeMobile} />
          </AppShell.Navbar>
          <AppShell.Main>{children}</AppShell.Main>

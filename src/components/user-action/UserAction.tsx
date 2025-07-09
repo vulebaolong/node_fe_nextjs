@@ -1,8 +1,8 @@
-import { logout } from "@/helpers/api.helper";
 import { Button, Center, Group, Stack } from "@mantine/core";
 import SwitchLang from "../switch-lang/SwitchLang";
 import ButtonToggleTheme from "../toggle-theme/button/ButtonToggleTheme";
 import { IconLogout } from "@tabler/icons-react";
+import { logout } from "@/api/core.api";
 
 type TProps = {
    className?: string | undefined;

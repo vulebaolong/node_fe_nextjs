@@ -60,7 +60,7 @@ export default function ChatUserBubble({ stateChat, i }: TProps) {
             <Transition mounted={hovered} transition="scale-y" duration={300} timingFunction="ease">
                {(styles) => (
                   <div style={styles}>
-                     <ActionIcon onClick={handleDeleteListChat} variant="filled" color="indigo" radius="xl" aria-label="Settings">
+                     <ActionIcon onClick={handleDeleteListChat} variant="filled" radius="xl" aria-label="Settings">
                         <IconX style={{ width: "70%", height: "70%" }} stroke={1.5} />
                      </ActionIcon>
                   </div>

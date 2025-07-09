@@ -12,3 +12,10 @@ export type TResPagination<T> = {
    totalItem: number;
    items: T[];
 };
+
+export type TResAction<T> = {
+   status: "success" | "error";
+   message: string;
+   data: T;
+};
+

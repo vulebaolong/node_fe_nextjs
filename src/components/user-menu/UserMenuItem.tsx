@@ -7,11 +7,13 @@ type TProps = {
            label: string;
            icon: JSX.Element;
            href: string;
+           onClick?: () => void;
         }
       | {
            label: string;
            icon: JSX.Element;
            href: null;
+           onClick?: () => void;
         };
    onClick?: () => void;
 };

@@ -48,11 +48,6 @@ function ModalVerifyGA({ opened, close, onComplete }: TProps) {
                   <ActionIcon
                      onClick={() => window.open("#", "_blank")}
                      size="lg"
-                     sx={(theme) => {
-                        return {
-                           color: theme.colors.spaTheme[5],
-                        };
-                     }}
                      variant="subtle"
                      radius="xl"
                   >

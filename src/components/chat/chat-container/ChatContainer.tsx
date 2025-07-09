@@ -3,7 +3,7 @@
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { listenToEvent, removeEventListener } from "@/helpers/chat.helper";
 import { useSocket } from "@/hooks/socket.hook";
-import { useGetChatListUserBubble, useGetChatListUserItem } from "@/tantask/chat.tanstacl";
+import { useGetChatListUserBubble, useGetChatListUserItem } from "@/api/tantask/chat.tanstacl";
 import { TAllmessage, TStateChat } from "@/types/chat.type";
 import _ from "lodash";
 import { useEffect, useState } from "react";
@@ -40,12 +40,17 @@ export default function ChatContainer() {
          {_.isArray(chatListUserItem.data) &&
             chatListUserItem.data.map((stateChat: TStateChat, i) => {
                return (
-                  <ChatUserItem key={stateChat.chatGroupId} stateChat={stateChat} i={i} dataSendMessage={dataSendMessages[stateChat.chatGroupId]} />
+                  <ChatUserItem
+                     key={`${stateChat.chatGroupId}`}
+                     stateChat={stateChat}
+                     i={i}
+                     dataSendMessage={dataSendMessages[stateChat.chatGroupId]}
+                  />
                );
             })}
          {_.isArray(chatListUserBubble.data) &&
             chatListUserBubble.data.map((stateChat: TStateChat, i) => {
-               return <ChatUserBubble key={stateChat.chatGroupId} stateChat={stateChat} i={i} />;
+               return <ChatUserBubble key={`${stateChat.chatGroupId}`} stateChat={stateChat} i={i} />;
             })}
       </>
    );

@@ -1,18 +1,22 @@
 "use client";
 
-import { ActionIcon, useMantineColorScheme } from "@mantine/core";
+import { ActionIcon, ActionIconProps, useMantineColorScheme } from "@mantine/core";
 import { IconMoon, IconSun } from "@tabler/icons-react";
 
-export default function ButtonToggleTheme() {
+type TProps = {
+   size?: ActionIconProps["size"];
+}
+
+export default function ButtonToggleTheme({ size = "lg" }: TProps) {
    const { toggleColorScheme } = useMantineColorScheme();
 
    return (
       <>
-         <ActionIcon onClick={toggleColorScheme} variant="default" size="lg" lightHidden>
-            <IconSun stroke={1.5} size={20} />
+         <ActionIcon onClick={toggleColorScheme} variant="default" size={size} lightHidden>
+            <IconSun style={{ width: '70%', height: '70%' }} stroke={1.5} />
          </ActionIcon>
-         <ActionIcon onClick={toggleColorScheme} variant="default" size="lg" darkHidden>
-            <IconMoon stroke={1.5} size={20} />
+         <ActionIcon onClick={toggleColorScheme} variant="default" size={size} darkHidden>
+            <IconMoon style={{ width: '70%', height: '70%' }} stroke={1.5} />
          </ActionIcon>
       </>
    );

@@ -1,0 +1,9 @@
+services:
+  BE:
+    image: vulebaolong/img-fe_main:latest
+    container_name: con-fe_main
+    ports:
+      - 3001:3000
+    env_file:
+      - .env
+

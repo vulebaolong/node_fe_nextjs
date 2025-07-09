@@ -1,16 +1,16 @@
 "use client";
 
+import { useCreateRoles, useDeleteRoles, useRoles, useUpdateRoles } from "@/api/tantask/role.tanstack";
 import ContentAdmin, { TFieldCreate } from "@/components/content-admin/ContentAdmin";
 import Paper from "@/components/custom/paper/PaperCustom";
 import TooltipCustom from "@/components/custom/tooltip/TooltipCustom";
 import { ROUTER_ADMIN } from "@/constant/router.constant";
 import { formatLocalTime } from "@/helpers/function.helper";
-import { useRoles, useUpdateRoles } from "@/tantask/role.tanstack";
+import useRouter from "@/hooks/use-router-custom";
 import { TRole } from "@/types/role.type";
 import { ActionIcon, Badge, CopyButton, Group, Text } from "@mantine/core";
 import { IconCheck, IconCopy } from "@tabler/icons-react";
 import { createColumnHelper } from "@tanstack/react-table";
-import useRouter from "@/hooks/use-router-custom";
 import { useMemo } from "react";
 
 export default function Role() {
@@ -18,7 +18,7 @@ export default function Role() {
    const columnHelper = createColumnHelper<TRole>();
    const columns = useMemo(
       () => [
-         columnHelper.accessor("id", {
+         columnHelper.accessor("_id", {
             header: "ID",
             size: 50,
             cell: ({ cell }) => {
@@ -114,18 +114,19 @@ export default function Role() {
             updates={fields}
             sort={{ sortBy: "createdAt", isDesc: true }}
             fetchData={useRoles}
-            // onCreate={useCreateUsers}
+            onCreate={useCreateRoles}
             onUpdate={useUpdateRoles}
             onDetail={(row) => {
-               router.push(`${ROUTER_ADMIN.ROLE}/${row.id}`);
+               router.push(`${ROUTER_ADMIN.ROLE}/${row._id}`);
             }}
-            // onDelete={useDeleteUsers}
+            onDelete={useDeleteRoles}
             filters={[
                { field: "id", label: "Id", type: "text" },
                { field: "name", label: "Tên", type: "text" },
                { field: "description", label: "Mô tả", type: "text" },
                // { field: "created_by.username", label: "Tạo Bởi", type: "text" },
                { field: "createdAt", label: "Ngày", type: "date" },
+               { field: "isDeleted", label: "Xóa", type: "select", data: ["true", "false"] },
             ]}
          />
       </Paper>
