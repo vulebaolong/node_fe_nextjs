@@ -24,6 +24,7 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: img
+                  run-id: ${{ github.event.workflow_run.id }}
                   path: .
 
             - name: Create .env
