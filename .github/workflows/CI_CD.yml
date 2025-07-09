@@ -1,0 +1,11 @@
+name: CI artifact
+
+on:
+    push:
+        branches: ["fe-main"]
+
+jobs:
+    build:
+        runs-on: uubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
