@@ -27,6 +27,13 @@ jobs:
             - name: Save Docker image as tar
               run: docker save img-fe_main:latest -o img-fe_main.tar
 
+            - name: Debug Info
+              run: |
+                echo "GITHUB_WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}"
+                echo "GITHUB_SHA: ${{ github.sha }}"
+                echo "GITHUB_REF: ${{ github.ref }}"
+                echo "RUNNER_NAME: $RUNNER_NAME"
+
             - name: Upload docker image artifact
               uses: actions/upload-artifact@v4
               with:
