@@ -1,4 +1,4 @@
-name: CD docker
+name: CD artifact
 
 on:
     workflow_run:
