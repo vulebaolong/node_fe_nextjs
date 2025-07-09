@@ -27,7 +27,7 @@ jobs:
 
             - name: Build the Docker image
               run: |
-                docker build \
+                sudo docker build \
                 --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID}} \
                 --build-arg NEXT_PUBLIC_BASE_DOMAIN_API=${{secrets.NEXT_PUBLIC_BASE_DOMAIN_API}} \
                 --build-arg NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY=${{secrets.NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY}} \
