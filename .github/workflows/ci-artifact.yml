@@ -2,7 +2,7 @@ name: CI docker
 
 on:
     push:
-        branches: ["main"]
+        branches: ["fe-main"]
 
 jobs:
     build:
