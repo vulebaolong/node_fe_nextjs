@@ -22,13 +22,13 @@ jobs:
                   --build-arg NEXT_PUBLIC_BASE_DOMAIN=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN }} \
                   --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }} \
                   --build-arg NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY }} \
-                  -t img-node_fe_nextjs:latest .
+                  -t img-fe_main:latest .
 
             - name: Save Docker image as tar
-              run: docker save img-node_fe_nextjs:latest -o img-node_fe_nextjs.tar
+              run: docker save img-fe_main:latest -o img-fe_main.tar
 
             - name: Upload docker image artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: img-node_fe_nextjs
-                  path: img-node_fe_nextjs.tar
+                  name: img-fe_main
+                  path: img-fe_main.tar
