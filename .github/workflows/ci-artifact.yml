@@ -37,5 +37,5 @@ jobs:
             - name: Upload docker image artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: img-fe_main
-                  path: img-fe_main.tar
+                  name: img
+                  path: img.tar

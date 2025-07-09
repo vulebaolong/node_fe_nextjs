@@ -23,7 +23,7 @@ jobs:
             - name: Download docker image artifact
               uses: actions/download-artifact@v4
               with:
-                  name: img-fe_main
+                  name: img
                   path: .
 
             - name: Create .env
@@ -42,7 +42,7 @@ jobs:
               run: sudo docker rmi img-fe_main:latest || true
 
             - name: Load new docker image from tar
-              run: sudo docker load -i img-fe_main.tar
+              run: sudo docker load -i img.tar
 
             - name: Run Docker container
               run: |
