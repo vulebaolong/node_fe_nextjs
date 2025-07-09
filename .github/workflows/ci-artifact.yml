@@ -2,7 +2,7 @@ name: CI artifact
 
 on:
     push:
-        branches: ["fe-main"]
+        branches: ["main"]
 
 jobs:
     build:
