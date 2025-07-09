@@ -1,0 +1,31 @@
+name: CI docker
+
+on:
+    push:
+        branches: ["main"]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Remove old build files
+              run: rm -rf .next node_modules
+
+            - name: Build the Docker image
+              run: |
+                  docker build \
+                  --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }} \
+                  --build-arg NEXT_PUBLIC_BASE_DOMAIN_API=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN_API }} \
+                  --build-arg NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY }} \
+                  -t img-node_fe_nextjs:latest .
+
+            - name: Save Docker image as tar
+              run: docker save img-node_fe_nextjs:latest -o img-node_fe_nextjs.tar
+
+            - name: Upload docker image artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: img-node_fe_nextjs
+                  path: img-node_fe_nextjs.tar
