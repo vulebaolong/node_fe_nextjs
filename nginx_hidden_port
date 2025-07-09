@@ -1,7 +1,7 @@
 server {
     listen 80;
     server_name 54.169.88.113;
-    # server_name be-node.vulebaolong.com;
+    # server_name fe-node.vulebaolong.com;
 
     location / {
         proxy_pass http://localhost:3001;
