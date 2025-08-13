@@ -3,7 +3,7 @@ import { TReactionType } from "./reactioin.type";
 import { TUser } from "./user.type";
 
 export type TArticle = {
-    _id: string;
+    id: string;
     content: string;
     imageUrl: string;
     viewCount: number;

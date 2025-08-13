@@ -2,7 +2,7 @@ import { TBaseTimestamps } from "./base.type";
 import { TUser } from "./user.type";
 
 export type TFriendShip = {
-    _id: string;
+    id: string;
     userId: string;
     friendId: string;
     status: TStatusFriend;

@@ -31,7 +31,7 @@ export default function ModalEditProfile({ opened, close }: TProps) {
             if (!info) return;
 
             const payload: TEditProfileReq = {
-                id: info._id,
+                id: info.id,
                 fullName: valuesRaw.fullName.trim(),
             };
             console.log({ payload });

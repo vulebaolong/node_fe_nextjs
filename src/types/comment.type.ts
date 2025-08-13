@@ -2,7 +2,7 @@ import { TBaseTimestamps } from "./base.type";
 import { TUser } from "./user.type";
 
 export type TComment = {
-    _id: string;
+    id: string;
     articleId: string;
     content: string;
     level: number;
@@ -19,7 +19,7 @@ export type TCreateCommentReq = {
 };
 
 export type TListComment = {
-    _id?: string;
+    id?: string;
     articleId: string;
     content: string;
     level: number;
@@ -30,7 +30,7 @@ export type TListComment = {
     updatedAt?: string;
     isDeleted?: boolean;
     Users: {
-        _id?: string;
+        id?: string;
         email?: string;
         fullName: string;
         avatar?: string | undefined;

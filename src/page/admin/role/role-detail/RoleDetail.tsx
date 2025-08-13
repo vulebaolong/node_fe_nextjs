@@ -170,7 +170,7 @@ export default function RoleDetail() {
 
                                           <SwitchCustom
                                              initialChecked={permission.isActive}
-                                             onToggle={() => handleToggleRolePermission(permission._id)}
+                                             onToggle={() => handleToggleRolePermission(permission.id)}
                                              onLabel="ON"
                                              offLabel="OFF"
                                              styles={{

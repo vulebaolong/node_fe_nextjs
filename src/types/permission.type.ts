@@ -1,7 +1,7 @@
 import { TBaseTimestamps } from "./base.type";
 
 export type TPermission = {
-   _id: string;
+   id: string;
    name: string;
    endpoint: string;
    method: string;
@@ -14,7 +14,7 @@ export type TListPermissionByRole = TPermission & {
 };
 
 export type TRolePermission = {
-   _id: string;
+   id: string;
    roleId: number;
    permissionId: number;
    isActive: boolean;

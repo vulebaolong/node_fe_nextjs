@@ -18,7 +18,7 @@ export default function Role() {
    const columnHelper = createColumnHelper<TRole>();
    const columns = useMemo(
       () => [
-         columnHelper.accessor("_id", {
+         columnHelper.accessor("id", {
             header: "ID",
             size: 50,
             cell: ({ cell }) => {
@@ -117,15 +117,15 @@ export default function Role() {
             onCreate={useCreateRoles}
             onUpdate={useUpdateRoles}
             onDetail={(row) => {
-               router.push(`${ROUTER_ADMIN.ROLE}/${row._id}`);
+               router.push(`${ROUTER_ADMIN.ROLE}/${row.id}`);
             }}
             onDelete={useDeleteRoles}
             filters={[
-               { field: "id", label: "Id", type: "text" },
+               { field: "id", label: "Id", type: "number" },
                { field: "name", label: "Tên", type: "text" },
                { field: "description", label: "Mô tả", type: "text" },
                // { field: "created_by.username", label: "Tạo Bởi", type: "text" },
-               { field: "createdAt", label: "Ngày", type: "date" },
+               // { field: "createdAt", label: "Ngày", type: "date" },
                { field: "isDeleted", label: "Xóa", type: "select", data: ["true", "false"] },
             ]}
          />

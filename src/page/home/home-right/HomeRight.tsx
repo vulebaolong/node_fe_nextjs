@@ -23,7 +23,7 @@ type TProps = {
 
 export default function HomeRight({ onClose }: TProps) {
     const t = useTranslations(`home-right`);
-    const userId = useAppSelector((state) => state.user.info?._id);
+    const userId = useAppSelector((state) => state.user.info?.id);
     const findAllChatGroupOne = useFindAllChatGroupOne();
     const findAllChatGroupMany = useFindAllChatGroupMany();
     const queryClient = useQueryClient();
@@ -33,13 +33,13 @@ export default function HomeRight({ onClose }: TProps) {
         if (onClose) onClose();
         addChatOpened(
             {
-                chatGroupId: chatGroup._id,
+                chatGroupId: chatGroup.id,
                 chatGroupName: chatGroup.name || "",
                 chatGroupMembers: chatGroup.ChatGroupMembers.map((member) => ({
                     avatar: member.Users.avatar,
                     fullName: member.Users.fullName,
                     roleId: member.Users.roleId,
-                    userId: member.Users._id,
+                    userId: member.Users.id,
                 })),
             },
             () => {
@@ -133,7 +133,7 @@ export default function HomeRight({ onClose }: TProps) {
                             }
                         />
                         {(findAllChatGroupMany.data?.items || []).map((chatGroup, i) => {
-                            const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.Users._id !== userId);
+                            const user = (chatGroup?.ChatGroupMembers || []).find((user) => user.Users.id !== userId);
                             if (!user) return <Fragment key={i}></Fragment>;
                             return (
                                 <Box

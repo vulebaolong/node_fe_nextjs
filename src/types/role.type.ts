@@ -2,7 +2,7 @@ import { TBaseTimestamps } from "./base.type";
 import { TPermission } from "./permission.type";
 
 export type TRole = {
-   _id: string;
+   id: string;
    name: string;
    description?: string;
    isActive: boolean;

@@ -15,7 +15,7 @@ export default function Permission() {
     const columnHelper = createColumnHelper<TPermission>();
     const columns = useMemo(
         () => [
-            columnHelper.accessor("_id", {
+            columnHelper.accessor("id", {
                 header: "ID",
                 size: 50,
                 cell: ({ cell }) => {
@@ -144,7 +144,7 @@ export default function Permission() {
                 onCreate={useCreatePermissions}
                 onUpdate={useUpdatePermissions}
                 //  onDetail={(row) => {
-                //      router.push(`${ROUTER_ADMIN.ROLE}/${row._id}`);
+                //      router.push(`${ROUTER_ADMIN.ROLE}/${row.id}`);
                 //  }}
                 onDelete={useDeletePermissions}
                 filters={[

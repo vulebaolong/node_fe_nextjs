@@ -22,10 +22,10 @@ export default function SocketProvider({ children }: { children: React.ReactNode
     useEffect(() => {
         (async () => {
             const accessToken = await getAccessToken();
-            if (!socketRef.current && info?._id) {
+            if (!socketRef.current && info?.id) {
                 console.log("Initializing socket...");
                 socketRef.current = io(NEXT_PUBLIC_BASE_DOMAIN, {
-                    query: { userId: info._id },
+                    query: { userId: info.id },
                     auth: { token: accessToken },
                     transports: ["websocket", "polling"],
                     secure: false,
@@ -50,7 +50,7 @@ export default function SocketProvider({ children }: { children: React.ReactNode
                 socketRef.current = null;
             }
         };
-    }, [info?._id]);
+    }, [info?.id]);
 
     return <SocketContext.Provider value={{ socket: socketRef.current, isConnected }}>{children}</SocketContext.Provider>;
 }

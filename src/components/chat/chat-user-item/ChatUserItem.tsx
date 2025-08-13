@@ -22,7 +22,7 @@ type TProps = {
 
 function ChatUserItem({ i, stateChat, dataSendMessage }: TProps) {
     const { socket } = useSocket();
-    const userId = useAppSelector((state) => state.user.info?._id);
+    const userId = useAppSelector((state) => state.user.info?.id);
 
     useEffect(() => {
         (async () => {

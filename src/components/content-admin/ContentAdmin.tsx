@@ -129,7 +129,7 @@ export default function ContentAdmin<T>(props: TProps<T>) {
                           waitForDelete()
                              .then(() => {
                                 console.log({ item });
-                                deletee.mutate(item._id, {
+                                deletee.mutate(item.id, {
                                    onSuccess: () => {
                                       handleModalDelete.close();
                                    },

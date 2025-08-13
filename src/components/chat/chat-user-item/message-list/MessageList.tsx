@@ -69,7 +69,7 @@ export default function MessageList({ stateChat, dataSendMessage }: TProps) {
         if (!dataSendMessage?.chatGroupId) return;
 
         // 👉 Nếu bạn gửi => luôn scroll
-        if (dataSendMessage.userIdSender === user?._id) {
+        if (dataSendMessage.userIdSender === user?.id) {
             shouldScrollRef.current = true;
         }
         // 👉 Nếu người khác gửi và bạn đang ở cuối => scroll
@@ -122,7 +122,7 @@ export default function MessageList({ stateChat, dataSendMessage }: TProps) {
                     const userRecipient = stateChat.chatGroupMembers.find((member) => member.userId === messageItem.userIdSender);
                     return (
                         <Fragment key={index}>
-                            {messageItem.userIdSender === user?._id ? (
+                            {messageItem.userIdSender === user?.id ? (
                                 <SenderMessageItem
                                     messageItem={{
                                         avatar: user?.avatar,

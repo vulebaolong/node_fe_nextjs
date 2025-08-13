@@ -18,7 +18,7 @@ type TProps = {
 export default function CommentList({ article, listComment, setListComment }: TProps) {
     const [pagination] = useState({ pageIndex: 0, pageSize: 10 });
     const [filtersValue] = useState({
-        articleId: article._id,
+        articleId: article.id,
     });
 
     const getCommentByArticle = useGetCommentByArticle({

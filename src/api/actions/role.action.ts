@@ -48,7 +48,7 @@ export async function getToggleRoleAction(payload: TToggleRoleReq): Promise<TRes
 export type TUpdateRoleAction = TRole;
 export const updateRolesAction = async (payload: TUpdateRoleAction): Promise<TResAction<TRole | null>> => {
     try {
-        const result = await api.patch<TRes<TRole>>(`${ENDPOINT.ROLE}/${payload._id}`, payload);
+        const result = await api.patch<TRes<TRole>>(`${ENDPOINT.ROLE}/${payload.id}`, payload);
         const { data } = result;
         return { status: "success", message: result.message, data: data };
     } catch (error: any) {

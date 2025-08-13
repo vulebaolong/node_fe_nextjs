@@ -2,7 +2,7 @@ import { TBaseTimestamps } from "./base.type";
 import { TRole } from "./role.type";
 
 export type TUser = {
-   _id: string;
+   id: string;
    email: string;
    fullName: string;
    avatar?: string;

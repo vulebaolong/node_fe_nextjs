@@ -24,7 +24,7 @@ export default function CommentInput({ article, setListComment }: TProps) {
         if (value.trim() === "" || !info) return;
 
         const payload: TCreateCommentReq = {
-            articleId: article._id,
+            articleId: article.id,
             content: value,
             parentId: null,
         };
@@ -32,8 +32,8 @@ export default function CommentInput({ article, setListComment }: TProps) {
         setListComment((prev) => {
             console.log({ prev });
             const data = {
-                articleId: article._id,
-                userId: info._id,
+                articleId: article.id,
+                userId: info.id,
                 content: value,
                 parentId: null,
                 level: 0,

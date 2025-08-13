@@ -19,7 +19,7 @@ type TProps = {
 export default function ModalSearchUser({ opened, close }: TProps) {
     const [search, setSearch] = useState("");
     const searchNameUser = useSearchNameUser();
-    const id = useAppSelector((state) => state.user.info?._id);
+    const id = useAppSelector((state) => state.user.info?.id);
     const router = useRouter();
 
     const handleSearch = useDebouncedCallback(async (query: string) => {
@@ -87,12 +87,12 @@ export default function ModalSearchUser({ opened, close }: TProps) {
                     loadingComponent={<ModalSearchSkeleton />}
                 >
                     {searchNameUser.data?.items?.map((user, i) => {
-                        if (user._id === id) return <Fragment key={i} />;
+                        if (user.id === id) return <Fragment key={i} />;
                         return (
                             <Box
                                 key={i}
                                 onClick={() => {
-                                    router.push(`${ROUTER_CLIENT.USER}/${user._id}`);
+                                    router.push(`${ROUTER_CLIENT.USER}/${user.id}`);
                                     close();
                                 }}
                                 sx={{

@@ -17,7 +17,7 @@ type TProps = {
 };
 
 export default function MessageInput({ stateChat }: TProps) {
-    const userId = useAppSelector((state) => state.user.info?._id);
+    const userId = useAppSelector((state) => state.user.info?.id);
     const email = useAppSelector((state) => state.user.info?.email);
     const { socket, isConnected } = useSocket();
     const [value, setValue] = useState("");

@@ -39,7 +39,7 @@ export async function createPermissionsAction(payload: TCreatePermissionAction):
 export type TUpdatePermissionAction = TPermission;
 export const updatePermissionsAction = async (payload: TUpdatePermissionAction): Promise<TResAction<TPermission | null>> => {
     try {
-        const result = await api.patch<TRes<TPermission>>(`${ENDPOINT.PERMISSION}/${payload._id}`, payload);
+        const result = await api.patch<TRes<TPermission>>(`${ENDPOINT.PERMISSION}/${payload.id}`, payload);
         const { data } = result;
         return { status: "success", message: result.message, data: data };
     } catch (error: any) {

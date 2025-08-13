@@ -11,7 +11,7 @@ type TProps = {
 };
 
 export default function AvatarChatGroup({ stateChat, isTextName = false, width = `40px`, height = `40px` }: TProps) {
-   const userId = useAppSelector((state) => state.user.info?._id);
+   const userId = useAppSelector((state) => state.user.info?.id);
 
    const memberRecipient = () => {
       return stateChat.chatGroupMembers.find((member) => member.userId !== userId);

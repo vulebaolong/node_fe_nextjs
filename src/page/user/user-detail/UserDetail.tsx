@@ -42,7 +42,7 @@ export default function UserDetail() {
                                 <ArticleList
                                     height="calc(100vh - (82px + 20px + 20px + var(--height-header))"
                                     type="other"
-                                    id={detailUser.data?._id}
+                                    id={detailUser.data?.id}
                                 />
                             </Box>
                         </Box> */}

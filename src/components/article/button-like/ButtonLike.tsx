@@ -46,7 +46,7 @@ export default function ButtonLike({ article }: TProps) {
 
         createReactionArticle.mutate(
             {
-                targetId: article._id,
+                targetId: article.id,
                 targetType: "article",
                 type: reactionType || "like",
             },

@@ -10,7 +10,7 @@ export type TCreateReactionArticleReq = {
 };
 
 export type TReaction = {
-    _id: string;
+    id: string;
     targetType: TReactiontargetType;
     targetId: string;
     type: TReactionType;

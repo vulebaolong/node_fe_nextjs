@@ -14,8 +14,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-function getFriendAction(info: { _id?: string }, detailUser: { _id?: string }, findOneFriend: any): TStatusResult {
-    const isSender = findOneFriend?.userId === info?._id;
+function getFriendAction(info: { id?: string }, detailUser: { id?: string }, findOneFriend: any): TStatusResult {
+    const isSender = findOneFriend?.userId === info?.id;
     const status = findOneFriend?.status as TStatusFriend | undefined;
 
     let nextStatus: TStatusFriend = "pending";
@@ -24,7 +24,7 @@ function getFriendAction(info: { _id?: string }, detailUser: { _id?: string }, f
 
     const daysPassed = findOneFriend?.updatedAt ? (Date.now() - new Date(findOneFriend.updatedAt).getTime()) / (1000 * 3600 * 24) : 8; // Nếu không có updatedAt thì mặc định qua hạn
 
-    if (!info?._id || !detailUser?._id) {
+    if (!info?.id || !detailUser?.id) {
         return { nextStatus, text: "Đăng nhập để kết bạn", disabled: true };
     }
 
@@ -102,7 +102,7 @@ export default function ButtonsFriend({ detailUser }: Props) {
 
     const queryClient = useQueryClient();
     const friendStatus = useFriendStatus();
-    const findOneFriend = useFindOneFriend(detailUser._id);
+    const findOneFriend = useFindOneFriend(detailUser.id);
 
     useEffect(() => {
         listenToEvent(socket, SOCKET_CHAT_MES.RELOAD_STATUS_FRIEND_SHIP, () => {
@@ -115,13 +115,13 @@ export default function ButtonsFriend({ detailUser }: Props) {
     }, [socket]);
 
     const handleChat = async () => {
-        if (!info?._id || !detailUser._id || !socket) return;
+        if (!info?.id || !detailUser.id || !socket) return;
         const accessToken = await getAccessToken();
         if (!accessToken) return toast.error("Vui lòng đăng nhập");
 
         setLoading(true);
 
-        const payload: TCreateRoomReq = { targetUserIds: [detailUser._id], accessToken };
+        const payload: TCreateRoomReq = { targetUserIds: [detailUser.id], accessToken };
 
         emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, payload, (data: TSocketRes<TCreateRoomRes>) => {
             try {
@@ -138,13 +138,13 @@ export default function ButtonsFriend({ detailUser }: Props) {
                                 avatar: detailUser.avatar,
                                 fullName: detailUser.fullName,
                                 roleId: detailUser.roleId,
-                                userId: detailUser._id,
+                                userId: detailUser.id,
                             },
                             {
                                 avatar: info?.avatar,
                                 fullName: info?.fullName,
                                 roleId: info?.roleId,
-                                userId: info?._id,
+                                userId: info?.id,
                             },
                         ],
                     },
@@ -172,8 +172,8 @@ export default function ButtonsFriend({ detailUser }: Props) {
             return;
         }
         const payload: TfriendshipAction = {
-            userId: info._id,
-            friendId: detailUser._id,
+            userId: info.id,
+            friendId: detailUser.id,
             status: actionInfo.nextStatus,
         };
         friendStatus.mutate(payload, {
