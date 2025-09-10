@@ -10,7 +10,7 @@ export const NEXT_PUBLIC_BASE_DOMAIN_API = `${NEXT_PUBLIC_BASE_DOMAIN}api/`;
 
 export const NEXT_PUBLIC_GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 export const NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY = process.env.NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY;
-export const FOLDER_IMAGE_BE = `public/images/`;
+export const FOLDER_IMAGE_BE = `images/`;
 
 export const TITLE = `Cyber Community`;
 export const LOGO = `/images/logo/logo-512x512.png`;
