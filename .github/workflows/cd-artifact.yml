@@ -13,20 +13,6 @@ jobs:
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
         steps:
-            - name: Debug Info
-              run: |
-                  echo "GITHUB_WORKFLOW_RUN_ID: ${{ github.event.workflow_run.id }}"
-                  echo "GITHUB_SHA: ${{ github.sha }}"
-                  echo "GITHUB_REF: ${{ github.ref }}"
-                  echo "RUNNER_NAME: $RUNNER_NAME"
-
-            - name: Download docker image artifact
-              uses: actions/download-artifact@v4
-              with:
-                  name: img
-                  run-id: ${{ github.event.workflow_run.id }}
-                  path: .
-
             - name: Create .env
               run: |
                   echo "NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }}" >> .env
