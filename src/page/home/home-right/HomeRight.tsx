@@ -100,7 +100,7 @@ export default function HomeRight({ onClose }: TProps) {
                                         borderRadius: `10px`,
                                     }}
                                 >
-                                    <TagUser fullName={user.Users.fullName} avatar={user.Users.avatar} />
+                                    <TagUser fullName={user.Users?.fullName} avatar={user.Users?.avatar} />
                                 </Box>
                             );
                         })}
