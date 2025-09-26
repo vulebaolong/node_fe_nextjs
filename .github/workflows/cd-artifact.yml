@@ -20,20 +20,17 @@ jobs:
                   echo "NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY }}" >> .env
 
             - name: Stop running containers
-              run: sudo docker stop con-fe_main || true
+              run: sudo docker stop con-node_fe_nextjs || true
 
             - name: Remove containers
-              run: sudo docker rm con-fe_main || true
+              run: sudo docker rm con-node_fe_nextjs || true
 
             - name: Delete old docker image
-              run: sudo docker rmi img-fe_main:latest || true
-
-            - name: Load new docker image from tar
-              run: sudo docker load -i img.tar
+              run: sudo docker rmi vulebaolong/img-node_fe_nextjs:latest || true
 
             - name: Run Docker container
               run: |
-                  sudo docker run -d -p 3001:3000 --name con-fe_main img-fe_main:latest
+                  sudo docker run -d -p 3001:3000 --name con-node_fe_nextjs vulebaolong/img-node_fe_nextjs:latest
 
             - name: Delete .env
               run: sudo rm -f .env || true
