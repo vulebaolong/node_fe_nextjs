@@ -19,3 +19,14 @@ export type TResAction<T> = {
    data: T;
 };
 
+export type TQuery = {
+    pagination: {
+        page?: number;
+        pageSize: number;
+    };
+    filters: Record<string, any>;
+    sort: {
+        sortBy: string;
+        isDesc: boolean;
+    };
+};
