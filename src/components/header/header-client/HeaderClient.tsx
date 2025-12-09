@@ -4,6 +4,7 @@ import { useGetInfoQuery } from "@/api/tantask/auth.tanstack";
 import DrawerListChat from "@/components/drawer/drawer-list-chat/DrawerListChat";
 import DrawerNavbar from "@/components/drawer/drawer-navbar/DrawerNavbar";
 import { Logo } from "@/components/logo/Logo";
+import ModalElasticSearch from "@/components/modal/modal-search-elastic/ModalSearchElastic";
 import ModalSearchUser from "@/components/modal/modal-search-user/ModalSearchUser";
 import UserControl from "@/components/user-control/UserControl";
 import { MOBILE_HIDDEN_DESKTOP_VISIBLE, MOBILE_VISIBLE_DESKTOP_HIDDEN } from "@/constant/app.constant";
@@ -103,7 +104,8 @@ export default function HeaderClient() {
             </Box>
             <DrawerNavbar opened={opened} close={handleDrawerNavbar.close} />
             <DrawerListChat opened={openedListChat} close={handleDrawerListChat.close} />
-            <ModalSearchUser opened={openedSearchUser} close={handleSearchUser.close} />
+            {/* <ModalSearchUser opened={openedSearchUser} close={handleSearchUser.close} /> */}
+            <ModalElasticSearch opened={openedSearchUser} close={handleSearchUser.close} />
         </>
     );
 }

@@ -34,6 +34,7 @@ export const ENDPOINT = {
         LOGOUT_DEVICE: `session-login/logout-device`,
     },
     USER: `user`,
+    ELASTIC_SEARCH: `elastic-search`,
     CHAT_GROUP: `chat-group`,
     CHAT_GROUP_BY_TOKEN: `chat-group-by-token`,
     UPLOAD_AVATAR_LOCAL: `user/avatar-local`,
@@ -46,7 +47,7 @@ export const ENDPOINT = {
     PAYMENT_MOMO: `payment/momo-pay`,
     CAR: "car/cars-list",
     ARTICLE: "article",
-    ARTICLE_ALL: "article/all",
+    ARTICLE_ALL: "article",
     ARTICLE_MY: "article/my",
     ARTICLE_OTHER: "article/other",
     REACTION_ARTICLE: {
