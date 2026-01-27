@@ -104,8 +104,8 @@ export default function HeaderClient() {
             </Box>
             <DrawerNavbar opened={opened} close={handleDrawerNavbar.close} />
             <DrawerListChat opened={openedListChat} close={handleDrawerListChat.close} />
-            {/* <ModalSearchUser opened={openedSearchUser} close={handleSearchUser.close} /> */}
-            <ModalElasticSearch opened={openedSearchUser} close={handleSearchUser.close} />
+            <ModalSearchUser opened={openedSearchUser} close={handleSearchUser.close} />
+            {/* <ModalElasticSearch opened={openedSearchUser} close={handleSearchUser.close} /> */}
         </>
     );
 }
