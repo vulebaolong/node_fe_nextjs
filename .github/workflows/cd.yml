@@ -1,0 +1,27 @@
+name: cd
+
+on:
+    workflow_run:
+        workflows: ["ci"]
+        types:
+            - completed
+
+jobs:
+    start:
+        runs-on: node_fe
+
+        steps:
+            - name: đăng nhập docker hub
+              run: echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u vulebaolong --password-stdin
+
+            # - name: chạy lần đầu
+            #   run: sudo docker compose up -d
+          
+            - name: Kéo image mới về
+              run: sudo docker compose pull fe
+
+            - name: Tạo lại container FE
+              run: sudo docker compose up -d
+
+            - name: Xoá các image không chạy
+              run: sudo docker image prune -a -f

@@ -1,0 +1,25 @@
+name: CI artifact
+
+on:
+    push:
+        branches: ["main"]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: đăng nhập docker hub
+              run: echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u vulebaolong --password-stdin
+
+            - name: Build the Docker image
+              run: |
+                  docker build \
+                  --build-arg NEXT_PUBLIC_BASE_DOMAIN_BE=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN_BE }} \
+                  --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }} \
+                  --build-arg NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY }} \
+                  -t vulebaolong/img-node_fe:latest .
+
+            - name: Push to DockerHub
+              run: docker push vulebaolong/img-node_fe:latest
