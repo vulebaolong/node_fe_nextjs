@@ -1,4 +1,3 @@
-import { useFindOneFriend, useFriendStatus } from "@/api/tantask/friend.tanstack";
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { addChatOpened, emitToEvent, listenToEvent, removeEventListener } from "@/helpers/chat.helper";
 import { getAccessToken } from "@/helpers/cookies.helper";
@@ -7,89 +6,88 @@ import { useSocket } from "@/hooks/socket.hook";
 import { useAppSelector } from "@/redux/hooks";
 import { TSocketRes } from "@/types/base.type";
 import { TCreateRoomReq, TCreateRoomRes } from "@/types/chat.type";
-import { TfriendshipAction, TStatusFriend, TStatusResult } from "@/types/friend.type";
 import { TUser } from "@/types/user.type";
 import { Button, Group } from "@mantine/core";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-function getFriendAction(info: { id?: string }, detailUser: { id?: string }, findOneFriend: any): TStatusResult {
-    const isSender = findOneFriend?.userId === info?.id;
-    const status = findOneFriend?.status as TStatusFriend | undefined;
+// function getFriendAction(info: { id?: string }, detailUser: { id?: string }, findOneFriend: any): TStatusResult {
+//     const isSender = findOneFriend?.userId === info?.id;
+//     const status = findOneFriend?.status as TStatusFriend | undefined;
 
-    let nextStatus: TStatusFriend = "pending";
-    let text = "Kết bạn";
-    let disabled = false;
+//     let nextStatus: TStatusFriend = "pending";
+//     let text = "Kết bạn";
+//     let disabled = false;
 
-    const daysPassed = findOneFriend?.updatedAt ? (Date.now() - new Date(findOneFriend.updatedAt).getTime()) / (1000 * 3600 * 24) : 8; // Nếu không có updatedAt thì mặc định qua hạn
+//     const daysPassed = findOneFriend?.updatedAt ? (Date.now() - new Date(findOneFriend.updatedAt).getTime()) / (1000 * 3600 * 24) : 8; // Nếu không có updatedAt thì mặc định qua hạn
 
-    if (!info?.id || !detailUser?.id) {
-        return { nextStatus, text: "Đăng nhập để kết bạn", disabled: true };
-    }
+//     if (!info?.id || !detailUser?.id) {
+//         return { nextStatus, text: "Đăng nhập để kết bạn", disabled: true };
+//     }
 
-    if (isSender) {
-        // Người gửi
-        switch (status) {
-            case "pending":
-                text = "Đã gửi";
-                disabled = true;
-                break;
-            case "accepted":
-                nextStatus = "removed";
-                text = "Huỷ kết bạn";
-                break;
-            case "declined":
-                if (daysPassed < 7) {
-                    text = "Đã từ chối";
-                    disabled = true;
-                } else {
-                    nextStatus = "pending";
-                    text = "Kết bạn";
-                }
-                break;
-            case "removed":
-                nextStatus = "pending";
-                text = "Kết bạn";
-                break;
-            default:
-                nextStatus = "pending";
-                text = "Kết bạn";
-                break;
-        }
-    } else {
-        // Người nhận hoặc chưa từng gửi
-        switch (status) {
-            case "pending":
-                nextStatus = "accepted";
-                text = "Xác nhận";
-                break;
-            case "accepted":
-                nextStatus = "removed";
-                text = "Huỷ kết bạn";
-                break;
-            case "declined":
-                if (daysPassed < 7) {
-                    text = "Đã từ chối";
-                    disabled = true;
-                } else {
-                    nextStatus = "pending";
-                    text = "Kết bạn";
-                }
-                break;
-            case "removed":
-                nextStatus = "pending";
-                text = "Kết bạn";
-                break;
-            default:
-                nextStatus = "pending";
-                text = "Kết bạn";
-                break;
-        }
-    }
+//     if (isSender) {
+//         // Người gửi
+//         switch (status) {
+//             case "pending":
+//                 text = "Đã gửi";
+//                 disabled = true;
+//                 break;
+//             case "accepted":
+//                 nextStatus = "removed";
+//                 text = "Huỷ kết bạn";
+//                 break;
+//             case "declined":
+//                 if (daysPassed < 7) {
+//                     text = "Đã từ chối";
+//                     disabled = true;
+//                 } else {
+//                     nextStatus = "pending";
+//                     text = "Kết bạn";
+//                 }
+//                 break;
+//             case "removed":
+//                 nextStatus = "pending";
+//                 text = "Kết bạn";
+//                 break;
+//             default:
+//                 nextStatus = "pending";
+//                 text = "Kết bạn";
+//                 break;
+//         }
+//     } else {
+//         // Người nhận hoặc chưa từng gửi
+//         switch (status) {
+//             case "pending":
+//                 nextStatus = "accepted";
+//                 text = "Xác nhận";
+//                 break;
+//             case "accepted":
+//                 nextStatus = "removed";
+//                 text = "Huỷ kết bạn";
+//                 break;
+//             case "declined":
+//                 if (daysPassed < 7) {
+//                     text = "Đã từ chối";
+//                     disabled = true;
+//                 } else {
+//                     nextStatus = "pending";
+//                     text = "Kết bạn";
+//                 }
+//                 break;
+//             case "removed":
+//                 nextStatus = "pending";
+//                 text = "Kết bạn";
+//                 break;
+//             default:
+//                 nextStatus = "pending";
+//                 text = "Kết bạn";
+//                 break;
+//         }
+//     }
 
-    return { nextStatus, text, disabled };
-}
+//     return { nextStatus, text, disabled };
+// }
 
 type Props = {
     detailUser: TUser;
@@ -101,8 +99,8 @@ export default function ButtonsFriend({ detailUser }: Props) {
     const info = useAppSelector((state) => state.user.info);
 
     const queryClient = useQueryClient();
-    const friendStatus = useFriendStatus();
-    const findOneFriend = useFindOneFriend(detailUser.id);
+    // const friendStatus = useFriendStatus();
+    // const findOneFriend = useFindOneFriend(detailUser.id);
 
     useEffect(() => {
         listenToEvent(socket, SOCKET_CHAT_MES.RELOAD_STATUS_FRIEND_SHIP, () => {
@@ -162,45 +160,45 @@ export default function ButtonsFriend({ detailUser }: Props) {
         });
     };
 
-    const actionInfo = getFriendAction(info || {}, detailUser || {}, findOneFriend.data);
+    // const actionInfo = getFriendAction(info || {}, detailUser || {}, findOneFriend.data);
 
-    const handleMakeFriend = () => {
-        if (!info || !detailUser) return;
+    // const handleMakeFriend = () => {
+    //     if (!info || !detailUser) return;
 
-        if (actionInfo.disabled) {
-            toast.error(actionInfo.text);
-            return;
-        }
-        const payload: TfriendshipAction = {
-            userId: info.id,
-            friendId: detailUser.id,
-            status: actionInfo.nextStatus,
-        };
-        friendStatus.mutate(payload, {
-            onSuccess: () => {
-                let mes = `Đã gửi lời mời kết bạn`;
-                if (actionInfo.nextStatus === "accepted") mes = `Đã chấp nhận kết bạn`;
-                if (actionInfo.nextStatus === "removed") mes = `Đã xoá bạn`;
-                toast.success(mes);
-            },
-            onSettled: () => {
-                queryClient.invalidateQueries({ queryKey: [`find-one-friend`] });
-            },
-        });
-    };
+    //     if (actionInfo.disabled) {
+    //         toast.error(actionInfo.text);
+    //         return;
+    //     }
+    //     const payload: TfriendshipAction = {
+    //         userId: info.id,
+    //         friendId: detailUser.id,
+    //         status: actionInfo.nextStatus,
+    //     };
+    //     friendStatus.mutate(payload, {
+    //         onSuccess: () => {
+    //             let mes = `Đã gửi lời mời kết bạn`;
+    //             if (actionInfo.nextStatus === "accepted") mes = `Đã chấp nhận kết bạn`;
+    //             if (actionInfo.nextStatus === "removed") mes = `Đã xoá bạn`;
+    //             toast.success(mes);
+    //         },
+    //         onSettled: () => {
+    //             queryClient.invalidateQueries({ queryKey: [`find-one-friend`] });
+    //         },
+    //     });
+    // };
 
-    const handleDisabledButtonAddFriend = () => actionInfo.disabled;
-    const handleTextButtonAddFriend = () => actionInfo.text;
+    // const handleDisabledButtonAddFriend = () => actionInfo.disabled;
+    // const handleTextButtonAddFriend = () => actionInfo.text;
 
     return (
         <Group>
-            <Button
+            {/* <Button
                 disabled={handleDisabledButtonAddFriend()}
                 loading={friendStatus.isPending || findOneFriend.isLoading || findOneFriend.isPending || findOneFriend.isFetching}
                 onClick={handleMakeFriend}
             >
                 {handleTextButtonAddFriend()}
-            </Button>
+            </Button> */}
             <Button loading={loading} onClick={handleChat} variant="default">
                 Nhắn tin
             </Button>
