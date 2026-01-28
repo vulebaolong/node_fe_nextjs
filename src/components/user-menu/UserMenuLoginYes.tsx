@@ -1,37 +1,14 @@
 import { logout } from "@/api/core.api";
 import { USER_ADMIN } from "@/constant/app.constant";
-import { ROUTER_ADMIN, ROUTER_CLIENT } from "@/constant/router.constant";
+import { ROUTER_CLIENT } from "@/constant/router.constant";
+import { listMenu } from "@/constant/user-menu-login-yes.constant";
 import useRouter from "@/hooks/use-router-custom";
 import { useAppSelector } from "@/redux/hooks";
 import { Divider, Group, Stack, Text } from "@mantine/core";
-import { IconCrown, IconLogout, IconSettings, IconUserSearch } from "@tabler/icons-react";
 import { Dispatch, Fragment, SetStateAction } from "react";
 import { toast } from "react-toastify";
 import Avatar from "../avatar/Avatar";
 import UserMenuItem from "./UserMenuItem";
-
-const listMenu = [
-    {
-        label: "Admin",
-        icon: <IconCrown size={16} />,
-        href: ROUTER_ADMIN.DASHBOARD,
-    },
-    {
-        label: "Game",
-        icon: <IconUserSearch size={16} />,
-        href: null,
-    },
-    {
-        label: "Setting",
-        icon: <IconSettings size={16} />,
-        href: ROUTER_CLIENT.SETTING,
-    },
-    {
-        label: "Logout",
-        icon: <IconLogout size={16} />,
-        href: null,
-    },
-];
 
 type TProps = {
     setOpened?: Dispatch<SetStateAction<boolean>>;

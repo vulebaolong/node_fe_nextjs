@@ -7,6 +7,8 @@ export const ROUTER_CLIENT = {
    PROFILE: `/profile`,
    SETTING: `/setting`,
    USER: `/user`,
+   CHAT: `/chat`,
+   ARTICLE_CREATE: `/article/create`,
 };
 
 export const ROUTER_ADMIN = {

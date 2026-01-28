@@ -14,11 +14,10 @@ type TUserSource = {
 
 type TProps = {
     user: TUserSource;
-    index: number;
     onClick?: () => void;
 };
 
-export default function UserSearchItem({ user, index, onClick }: TProps) {
+export default function UserSearchItem({ user, onClick }: TProps) {
     const router = useRouter();
 
     const handleClick = () => {

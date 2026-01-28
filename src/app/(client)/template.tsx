@@ -1,5 +1,10 @@
 import Template from "@/template/template";
+import React from "react";
 
-export default function template({ children }: { children: React.ReactNode }) {
-  return <Template protect>{children}</Template>;
+type TProps = {
+    children: React.ReactNode;
+};
+
+export default function template({ children }: TProps) {
+    return <Template>{children}</Template>;
 }

@@ -98,7 +98,7 @@ export default function MessageList({ stateChat, dataSendMessage }: TProps) {
     };
 
     const scrollToBottom = () => {
-        console.log("scroll to bottom");
+        // console.log("scroll to bottom");
         virtuosoRef.current?.scrollToIndex({
             index: allMessages.length - 1,
             align: "end",

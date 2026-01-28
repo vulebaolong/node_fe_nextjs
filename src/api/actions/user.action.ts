@@ -46,6 +46,16 @@ export async function findAllChatGroupOneAction(): Promise<TResAction<TResPagina
     }
 }
 
+export async function findAllChatGroupAction(query: string): Promise<TResAction<TResPagination<TChatGroup> | null>> {
+    try {
+        const result = await api.get<TRes<TResPagination<TChatGroup>>>(`${ENDPOINT.CHAT_GROUP}?${query}`);
+        const { data } = result;
+        return { status: "success", message: result.message, data: data };
+    } catch (error: any) {
+        return { status: "error", message: error?.message, data: null };
+    }
+}
+
 export async function findAllChatGroupManyAction(): Promise<TResAction<TResPagination<TChatGroup> | null>> {
     try {
         const result = await api.get<TRes<TResPagination<TChatGroup>>>(`${ENDPOINT.CHAT_GROUP}?pageSize=100&isOne=false`);

@@ -1,4 +1,4 @@
-import { useGetAllArticle, useGetMyArticle, useGetOtherArticle } from "@/api/tantask/article.tanstack";
+import { useGetAllArticle } from "@/api/tantask/article.tanstack";
 import { TArticle } from "@/types/article.type";
 import { Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -12,11 +12,10 @@ import Article from "./Article";
 type TProps = {
     height: string;
     filters?: Record<string, any>;
-    id?: string;
     type: "all" | "my" | "other";
 };
 
-export default function ArticleList({ height, filters, type, id }: TProps) {
+export default function ArticleList({ height, filters, type }: TProps) {
     const totalPageRef = useRef(0);
     const [openedModalAticleDetail, handleModalArticleDetail] = useDisclosure(false);
     const [page, setPage] = useState(1); // CHỈNH: Thay vì const [page]
@@ -25,14 +24,9 @@ export default function ArticleList({ height, filters, type, id }: TProps) {
     const virtuosoRef = useRef<VirtuosoHandle>(null);
     const pageSize = 10; // số bài mỗi lần load
 
-    const getAllArticle = (() => {
-        if (type === "all") return useGetAllArticle;
-        if (type === "my") return useGetMyArticle;
-        return useGetOtherArticle;
-    })()({
-        pagination: { pageIndex: page, pageSize },
-        filters,
-        id: id,
+    const getAllArticle = useGetAllArticle({
+        pagination: { page: page, pageSize },
+        filters: { ...filters },
         sort: { sortBy: `createdAt`, isDesc: true },
     });
 
@@ -71,7 +65,7 @@ export default function ArticleList({ height, filters, type, id }: TProps) {
                             data={articles}
                             style={{ height: "100%" }}
                             itemContent={(i, article: TArticle) => (
-                                <Article key={i} article={article} handleModalArticleDetail={handleModalArticleDetail} type={type} />
+                                <Article key={i} article={article} handleModalArticleDetail={handleModalArticleDetail} />
                             )}
                             endReached={handleEndReached}
                         />

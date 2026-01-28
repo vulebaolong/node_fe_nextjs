@@ -7,7 +7,6 @@ import api from "../core.api";
 
 export async function getAllArticleAction(query: string): Promise<TResAction<TResPagination<TArticle> | null>> {
    try {
-      console.log(`${ENDPOINT.ARTICLE_MY}?${query}`);
       const result = await api.get<TRes<TResPagination<TArticle>>>(`${ENDPOINT.ARTICLE_ALL}?${query}`);
       const { data } = result;
       return { status: "success", message: result.message, data: data };
@@ -18,7 +17,6 @@ export async function getAllArticleAction(query: string): Promise<TResAction<TRe
 
 export async function getMyArticleAction(query: string): Promise<TResAction<TResPagination<TArticle> | null>> {
    try {
-      console.log(`${ENDPOINT.ARTICLE_MY}?${query}`);
       const result = await api.get<TRes<TResPagination<TArticle>>>(`${ENDPOINT.ARTICLE_MY}?${query}`);
       const { data } = result;
       return { status: "success", message: result.message, data: data };

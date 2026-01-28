@@ -1,5 +1,6 @@
 import {
     editProfileAction,
+    findAllChatGroupAction,
     findAllChatGroupManyAction,
     findAllChatGroupOneAction,
     findAllUserAction,
@@ -8,6 +9,8 @@ import {
     uploadAvatarCloudAction,
     uploadAvatarLocalAction,
 } from "@/api/actions/user.action";
+import { buildQueryString } from "@/helpers/build-query";
+import { TQuery } from "@/types/app.type";
 import { TEditProfileReq } from "@/types/user.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
@@ -52,6 +55,19 @@ export const useFindAllChatGroupOne = () => {
             const { data, status, message } = await findAllChatGroupOneAction();
             if (status === "error" || data === null) throw new Error(message);
             console.log({ useFindAllChatGroupOne: data });
+            return data;
+        },
+    });
+};
+
+export const useFindAllChatGroup = (payload: TQuery) => {
+    return useQuery({
+        queryKey: ["chat-group-list", payload],
+        queryFn: async () => {
+            const query = buildQueryString(payload);
+            const { data, status, message } = await findAllChatGroupAction(query);
+            if (status === "error" || data === null) throw new Error(message);
+            console.log({ useFindAllChatGroup: data });
             return data;
         },
     });

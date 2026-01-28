@@ -22,7 +22,7 @@ jobs:
             - name: Build the Docker image
               run: |
                   docker build \
-                  --build-arg NEXT_PUBLIC_BASE_DOMAIN=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN }} \
+                  --build-arg NEXT_PUBLIC_BASE_DOMAIN_BE=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN_BE }} \
                   --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=${{ secrets.NEXT_PUBLIC_GOOGLE_CLIENT_ID }} \
                   --build-arg NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY=${{ secrets.NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY }} \
                   -t vulebaolong/img-node_fe_nextjs:latest .

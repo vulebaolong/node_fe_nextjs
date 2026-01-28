@@ -116,12 +116,12 @@ export default function ButtonsFriend({ detailUser }: Props) {
 
     const handleChat = async () => {
         if (!info?.id || !detailUser.id || !socket) return;
-        const accessToken = await getAccessToken();
-        if (!accessToken) return toast.error("Vui lòng đăng nhập");
 
         setLoading(true);
 
-        const payload: TCreateRoomReq = { targetUserIds: [detailUser.id], accessToken };
+        const accessToken = await getAccessToken();
+
+        const payload: TCreateRoomReq = { targetUserIds: [detailUser.id], accessToken: accessToken || "" };
 
         emitToEvent(socket, SOCKET_CHAT_MES.CREATE_ROOM, payload, (data: TSocketRes<TCreateRoomRes>) => {
             try {
@@ -151,7 +151,7 @@ export default function ButtonsFriend({ detailUser }: Props) {
                     () => {
                         queryClient.invalidateQueries({ queryKey: [`chat-list-user-item`] });
                         queryClient.invalidateQueries({ queryKey: [`chat-list-user-bubble`] });
-                    }
+                    },
                 );
             } catch (error) {
                 console.log(error);

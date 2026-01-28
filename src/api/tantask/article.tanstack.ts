@@ -1,15 +1,14 @@
 import { createArticleAction, getAllArticleAction, getMyArticleAction, getOtherArticleAction } from "@/api/actions/article.action";
 import { TPayloadTable } from "@/components/custom/table/TableCustom";
+import { buildQueryString } from "@/helpers/build-query";
+import { TQuery } from "@/types/app.type";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-export const useGetAllArticle = (payload: TPayloadTable) => {
+export const useGetAllArticle = (payload: TQuery) => {
     return useQuery({
         queryKey: ["get-all-article", payload],
         queryFn: async () => {
-            const { pagination, filters, sort } = payload;
-            const { pageIndex, pageSize } = pagination;
-            const query = `page=${pageIndex}&pageSize=${pageSize}&filters=${JSON.stringify(filters)}&sortBy=${sort?.sortBy}&isDesc=${sort?.isDesc}`;
-
+            const query = buildQueryString(payload);
             const { data, status, message } = await getAllArticleAction(query);
             if (status === "error" || data === null) throw new Error(message);
 
@@ -19,14 +18,11 @@ export const useGetAllArticle = (payload: TPayloadTable) => {
     });
 };
 
-export const useGetMyArticle = (payload: TPayloadTable) => {
+export const useGetMyArticle = (payload: TQuery) => {
     return useQuery({
         queryKey: ["get-my-article", payload],
         queryFn: async () => {
-            const { pagination, filters, sort } = payload;
-            const { pageIndex, pageSize } = pagination;
-            const query = `page=${pageIndex}&pageSize=${pageSize}&filters=${JSON.stringify(filters)}&sortBy=${sort?.sortBy}&isDesc=${sort?.isDesc}`;
-
+            const query = buildQueryString(payload);
             const { data, status, message } = await getMyArticleAction(query);
             if (status === "error" || data === null) throw new Error(message);
 

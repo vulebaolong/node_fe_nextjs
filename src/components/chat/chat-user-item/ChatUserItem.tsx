@@ -1,17 +1,17 @@
 import { SOCKET_CHAT_MES } from "@/constant/chat.constant";
 import { emitToEvent } from "@/helpers/chat.helper";
+import { resError } from "@/helpers/function.helper";
 import { useSocket } from "@/hooks/socket.hook";
+import { useAppSelector } from "@/redux/hooks";
+import { TSocketRes } from "@/types/base.type";
 import { TAllmessage, TJoinRoomReq, TJoinRoomRes, TLeaveRoomReq, TStateChat } from "@/types/chat.type";
 import { Divider, Stack } from "@mantine/core";
+import _ from "lodash";
 import React, { useEffect } from "react";
+import { toast } from "react-toastify";
 import MessageHeader from "./message-header/MessageHeader";
 import MessageInput from "./message-input/MessageInput";
 import MessageList from "./message-list/MessageList";
-import _ from "lodash";
-import { useAppSelector } from "@/redux/hooks";
-import { TSocketRes } from "@/types/base.type";
-import { toast } from "react-toastify";
-import { resError } from "@/helpers/function.helper";
 import { getAccessToken } from "@/helpers/cookies.helper";
 
 type TProps = {
@@ -27,10 +27,10 @@ function ChatUserItem({ i, stateChat, dataSendMessage }: TProps) {
     useEffect(() => {
         (async () => {
             if (!socket || !userId) return;
-            const accessToken = await getAccessToken();
-            if (!accessToken) return toast.error("Vui lòng đăng nhập");
 
-            const payload: TJoinRoomReq = { chatGroupId: stateChat.chatGroupId, accessToken };
+            const accessToken = await getAccessToken();
+
+            const payload: TJoinRoomReq = { chatGroupId: stateChat.chatGroupId, accessToken: accessToken || "" };
             emitToEvent(socket, SOCKET_CHAT_MES.JOIN_ROOM, payload, (data: TSocketRes<TJoinRoomRes>) => {
                 try {
                     console.log({ JOIN_ROOM: { data } });
@@ -44,6 +44,7 @@ function ChatUserItem({ i, stateChat, dataSendMessage }: TProps) {
         })();
         return () => {
             if (!socket || !userId) return;
+
             const payload: TLeaveRoomReq = { chatGroupId: stateChat.chatGroupId };
             emitToEvent(socket, SOCKET_CHAT_MES.LEAVE_ROOM, payload, (data: TSocketRes<null>) => {
                 try {

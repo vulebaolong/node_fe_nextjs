@@ -1,0 +1,179 @@
+"use client";
+
+import { useCreateArticle } from "@/api/tantask/article.tanstack";
+import { resError } from "@/helpers/function.helper";
+import { useAppSelector } from "@/redux/hooks";
+import { ActionIcon, Box, Button, Container, Group, rem, Stack, Text, Textarea, Title } from "@mantine/core";
+import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
+import { IconArrowBackUp, IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
+import { useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
+export default function ArticleCreate() {
+    const queryClient = useQueryClient();
+    const info = useAppSelector((state) => state.user.info);
+    const [value, setValue] = useState("");
+    const [file, setFile] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
+    const createArticle = useCreateArticle();
+    const router = useRouter();
+
+    const handleCreateArticle = () => {
+        const fromData = new FormData();
+        if (file !== null) fromData.append("imageArticle", file);
+        if (value.trim() === "") return toast.warning("Nội dung bài viết không được để trống");
+
+        fromData.append("content", value);
+
+        console.log(fromData.getAll(`imageArticle`));
+        createArticle.mutate(fromData, {
+            onSuccess: () => {
+                queryClient.invalidateQueries({ queryKey: [`get-all-article`] });
+                toast.success(`Create Article successfully`);
+                setPreview(null);
+                setFile(null);
+                setValue(``);
+                close();
+            },
+            onError: (error) => {
+                console.log(error);
+                toast.error(resError(error, `Create Article Failed`));
+            },
+        });
+    };
+
+    return (
+        <Container>
+            <Stack mt={"xl"}>
+                <Group>
+                    <ActionIcon
+                        variant="subtle"
+                        onClick={() => {
+                            router.back();
+                        }}
+                    >
+                        <IconArrowBackUp style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                    </ActionIcon>
+
+                    <Title order={3}>Tạo Bài Viết Mới</Title>
+                </Group>
+
+                {/* content */}
+                <Textarea
+                    value={value}
+                    onChange={(event) => setValue(event.currentTarget.value)}
+                    autosize
+                    minRows={5}
+                    variant="unstyled"
+                    size="xl"
+                    placeholder={`${info?.fullName} ơi, Bạn Đăng Nghĩ Gì Thế?`}
+                />
+
+                {/* image view */}
+                {preview && (
+                    <Box
+                        sx={(_, u) => {
+                            return {
+                                borderRadius: `10px`,
+                                padding: `10px`,
+                                [u.light]: {
+                                    border: `1px solid var(--mantine-color-gray-2)`,
+                                },
+                                [u.dark]: {
+                                    border: `1px solid var(--mantine-color-dark-4)`,
+                                },
+                            };
+                        }}
+                        pos={`relative`}
+                    >
+                        <Image
+                            alt=""
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            style={{ width: "100%", height: "100%", objectFit: "cover", maxHeight: `700px` }}
+                            src={preview}
+                        />
+                        <ActionIcon
+                            style={{
+                                position: `absolute`,
+                                top: `15px`,
+                                right: `15px`,
+                            }}
+                            variant="filled"
+                            color="gray"
+                            size="lg"
+                            radius="xl"
+                            onClick={() => {
+                                setFile(null);
+                                setPreview(null);
+                            }}
+                        >
+                            <IconX style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                        </ActionIcon>
+                    </Box>
+                )}
+
+                {/* image up */}
+                <Box
+                    sx={(_, u) => {
+                        return {
+                            borderRadius: `10px`,
+                            padding: `10px`,
+                            [u.light]: {
+                                border: `1px solid var(--mantine-color-gray-2)`,
+                            },
+                            [u.dark]: {
+                                border: `1px solid var(--mantine-color-dark-4)`,
+                            },
+                        };
+                    }}
+                >
+                    <Dropzone
+                        onDrop={(files) => {
+                            console.log("accepted files", files);
+                            if (!files) return;
+                            setFile(files[0]);
+                            setPreview(URL.createObjectURL(files[0]));
+                        }}
+                        onReject={(files) => console.log("rejected files", files)}
+                        maxSize={5 * 1024 ** 2}
+                        accept={IMAGE_MIME_TYPE}
+                    >
+                        <Group justify="center" gap="md" style={{ pointerEvents: "none" }}>
+                            <Dropzone.Accept>
+                                <IconUpload style={{ width: rem(52), height: rem(52), color: "var(--mantine-color-blue-6)" }} stroke={1.5} />
+                            </Dropzone.Accept>
+                            <Dropzone.Reject>
+                                <IconX style={{ width: rem(52), height: rem(52), color: "var(--mantine-color-red-6)" }} stroke={1.5} />
+                            </Dropzone.Reject>
+
+                            <Box>
+                                <Group wrap="nowrap">
+                                    <Dropzone.Idle>
+                                        <IconPhoto style={{ width: rem(52), height: rem(52), color: "var(--mantine-color-dimmed)" }} stroke={1.5} />
+                                    </Dropzone.Idle>
+
+                                    <Text ta={`center`} size="md" inline>
+                                        Drag images here or click to select files
+                                    </Text>
+                                </Group>
+                                <Text ta={`center`} size="12" c="dimmed" inline mt={7}>
+                                    Attach as many files as you like, each file should not exceed 5mb
+                                </Text>
+                            </Box>
+                        </Group>
+                    </Dropzone>
+                </Box>
+
+                {/* button */}
+                <Button loading={createArticle.isPending} onClick={handleCreateArticle} variant="filled">
+                    Đăng
+                </Button>
+            </Stack>
+        </Container>
+    );
+}

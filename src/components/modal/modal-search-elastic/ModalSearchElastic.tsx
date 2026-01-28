@@ -1,7 +1,6 @@
 import { useElasticSearch } from "@/api/tantask/elastic-search.tanstack";
 import NodataOverlay from "@/components/no-data/NodataOverlay";
 import { multiRAF } from "@/helpers/function.helper";
-import useRouter from "@/hooks/use-router-custom";
 import { Box, Divider, Input, LoadingOverlay, Modal } from "@mantine/core";
 import { useDebouncedCallback } from "@mantine/hooks";
 import { IconSearch } from "@tabler/icons-react";
@@ -28,14 +27,13 @@ export default function ModalElasticSearch({ opened, close }: TProps) {
     const [page, setPage] = useState(1);
     const [allItems, setAllItems] = useState<TElasticItem[]>([]);
     const [currentSearch, setCurrentSearch] = useState("");
-    
+
     const totalPageRef = useRef(0);
     const totalItemRef = useRef(0);
     const hasInitialLoadRef = useRef(false);
     const virtuosoRef = useRef<VirtuosoHandle>(null);
 
     const elasticSearch = useElasticSearch();
-    const router = useRouter();
 
     // Cập nhật total khi có data mới
     useEffect(() => {
@@ -46,7 +44,7 @@ export default function ModalElasticSearch({ opened, close }: TProps) {
     // Append data vào allItems
     useEffect(() => {
         if (!elasticSearch.data?.items) return;
-        
+
         setAllItems((prev) => {
             // Nếu là search mới (page = 1) thì reset
             if (page === 1) return elasticSearch.data.items;
@@ -81,13 +79,13 @@ export default function ModalElasticSearch({ opened, close }: TProps) {
         elasticSearch.mutate(
             { search: query, page: 1, pageSize: 10 },
             {
-                onSuccess: (data) => {
+                onSuccess: () => {
                     // console.log(data);
                 },
                 onError: (error) => {
                     console.log(error);
                 },
-            }
+            },
         );
     }, 500);
 
@@ -99,10 +97,10 @@ export default function ModalElasticSearch({ opened, close }: TProps) {
     // Load more khi scroll đến cuối
     const handleEndReached = () => {
         if (elasticSearch.isPending || page >= totalPageRef.current || !currentSearch) return;
-        
+
         const nextPage = page + 1;
         setPage(nextPage);
-        
+
         elasticSearch.mutate({
             search: currentSearch,
             page: nextPage,
@@ -164,12 +162,8 @@ export default function ModalElasticSearch({ opened, close }: TProps) {
                         itemContent={(index, item: TElasticItem) => {
                             return (
                                 <Fragment key={`${item._index}-${item._id}`}>
-                                    {item._index === "users" && (
-                                        <UserSearchItem user={item._source} index={index} onClick={close} />
-                                    )}
-                                    {item._index === "articles" && (
-                                        <ArticleSearchItem article={item._source} index={index} onClick={close} />
-                                    )}
+                                    {item._index === "users" && <UserSearchItem user={item._source} onClick={close} />}
+                                    {item._index === "articles" && <ArticleSearchItem article={item._source} onClick={close} />}
                                 </Fragment>
                             );
                         }}

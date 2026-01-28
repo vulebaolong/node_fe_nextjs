@@ -1,5 +1,3 @@
-import { ROUTER_CLIENT } from "@/constant/router.constant";
-import useRouter from "@/hooks/use-router-custom";
 import { Badge, Box, Center, Group, Image, Stack, Text } from "@mantine/core";
 import { IconEye } from "@tabler/icons-react";
 
@@ -15,13 +13,10 @@ type TArticleSource = {
 
 type TProps = {
     article: TArticleSource;
-    index: number;
     onClick?: () => void;
 };
 
-export default function ArticleSearchItem({ article, index, onClick }: TProps) {
-    const router = useRouter();
-
+export default function ArticleSearchItem({ article, onClick }: TProps) {
     const handleClick = () => {
         // router.push(`${ROUTER_CLIENT.ARTICLE}/${article.id}`);
         onClick?.();
@@ -48,26 +43,14 @@ export default function ArticleSearchItem({ article, index, onClick }: TProps) {
                         border: `1px solid var(--mantine-color-default-border)`,
                         width: 100,
                         height: 70,
-                        backgroundColor: article.imageUrl ? 'transparent' : `var(--mantine-color-default)`,
+                        backgroundColor: article.imageUrl ? "transparent" : `var(--mantine-color-default)`,
                     }}
                 >
                     {article.imageUrl ? (
-                        <Image
-                            src={article.imageUrl}
-                            alt={article.title || "Article"}
-                            width={100}
-                            height={70}
-                            fit="cover"
-                        />
+                        <Image src={article.imageUrl} alt={article.title || "Article"} width={100} height={70} fit="cover" />
                     ) : (
                         <Center h={70} w={100}>
-                            <Image
-                                src="/images/logo/logo-192x192.png"
-                                alt="Logo"
-                                width={50}
-                                height={50}
-                                fit="contain"
-                            />
+                            <Image src="/images/logo/logo-192x192.png" alt="Logo" width={50} height={50} fit="contain" />
                         </Center>
                     )}
                 </Box>

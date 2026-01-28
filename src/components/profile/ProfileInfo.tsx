@@ -4,10 +4,9 @@ import { TUser } from "@/types/user.type";
 import { Box, Button, Group, Paper, Stack, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Avatar from "../avatar/Avatar";
-import Badge from "../badge/Badge";
+import ButtonsFriend from "../buttons/ButtonsFriend";
 import ModalEditAvatar from "../modal/modal-edit-avatar/ModalEditAvatar";
 import ModalEditProfile from "../modal/modal-edit-profile/ModalEditProfile";
-import ButtonsFriend from "../buttons/ButtonsFriend";
 
 type TProps = {
     info: TUser | null;
@@ -52,7 +51,6 @@ export default function ProfileInfo({ info, type }: TProps) {
                             <Text truncate maw={300} fz="h3" fw={"bold"}>
                                 {info?.fullName}
                             </Text>
-                            <Badge user={info} />
                         </Group>
 
                         <Text c="dimmed" fz="md">

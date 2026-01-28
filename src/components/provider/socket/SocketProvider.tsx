@@ -1,7 +1,6 @@
 "use client";
 
-import { NEXT_PUBLIC_BASE_DOMAIN } from "@/constant/app.constant";
-import { getAccessToken } from "@/helpers/cookies.helper";
+import { NEXT_PUBLIC_BASE_DOMAIN_BE } from "@/constant/app.constant";
 import { useAppSelector } from "@/redux/hooks";
 import { createContext, useEffect, useRef, useState } from "react";
 // import { io } from "socket.io-client";
@@ -21,12 +20,11 @@ export default function SocketProvider({ children }: { children: React.ReactNode
 
     useEffect(() => {
         (async () => {
-            const accessToken = await getAccessToken();
             if (!socketRef.current && info?.id) {
                 console.log("Initializing socket...");
-                socketRef.current = io(NEXT_PUBLIC_BASE_DOMAIN, {
+                socketRef.current = io(NEXT_PUBLIC_BASE_DOMAIN_BE, {
                     query: { userId: info.id },
-                    auth: { token: accessToken },
+                    auth: { token: "" },
                     transports: ["websocket", "polling"],
                     secure: false,
                 });

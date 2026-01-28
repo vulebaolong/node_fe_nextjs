@@ -36,12 +36,12 @@ export default function MessageInput({ stateChat }: TProps) {
         if (value.trim() === ``) return;
         if (!isConnected) return toast.warning(`Disconnected. Refresh to reconnect.`);
         if (!stateChat.chatGroupId) return toast.warning(`ChatGroupId: ${stateChat.chatGroupId}`);
+
         const accessToken = await getAccessToken();
-        if (!accessToken) return toast.error("Vui lòng đăng nhập");
 
         const payload: TSendMessageReq = {
             message: value,
-            accessToken,
+            accessToken: accessToken || "",
             chatGroupId: stateChat.chatGroupId,
         };
         emitToEvent(socket, SOCKET_CHAT_MES.SEND_MESSAGE, payload, () => {});

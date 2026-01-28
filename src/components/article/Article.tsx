@@ -18,10 +18,9 @@ type TProps = {
         readonly close: () => void;
         readonly toggle: () => void;
     };
-    type: "all" | "my" | "other";
 };
 
-export default function Article({ article, handleModalArticleDetail, type }: TProps) {
+export default function Article({ article, handleModalArticleDetail }: TProps) {
     const info = useAppSelector((state) => state.user.info);
     const dispatch = useAppDispatch();
     const handleClickComment = () => {
@@ -43,12 +42,12 @@ export default function Article({ article, handleModalArticleDetail, type }: TPr
             <Group justify="space-between" wrap="nowrap" px={10} py={15}>
                 <Box style={{ flexShrink: 0 }}>
                     <Avatar
-                        fullName={type === "my" ? info?.fullName : article.Users?.fullName}
-                        avatar={type === "my" ? info?.avatar : article.Users?.avatar}
+                        fullName={info?.fullName}
+                        avatar={info?.avatar}
                     />
                 </Box>
                 <Stack gap={0} flex={1}>
-                    <Text fw={`bold`}>{type === "my" ? info?.fullName : article.Users?.fullName}</Text>
+                    <Text fw={`bold`}>{info?.fullName}</Text>
                     <Text c={`dimmed`}>{formatLocalTime(article.createdAt, `ago`)}</Text>
                 </Stack>
 

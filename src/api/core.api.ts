@@ -1,75 +1,20 @@
-import { clearTokensAction } from "@/api/actions/auth.action";
-import { NEXT_PUBLIC_BASE_DOMAIN_API } from "@/constant/app.constant";
-import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from "@/helpers/cookies.helper";
-import { CHAT_BUBBLE, CHAT_OPENED } from "@/constant/chat.constant";
-import { googleLogout } from '@react-oauth/google';
-
-let isRefreshing = false;
-let failedQueue: { resolve: (token: string) => void; reject: (err: any) => void }[] = [];
-
-const processQueue = (error: any, token: string | null = null) => {
-    failedQueue.forEach((prom) => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve(token!);
-        }
-    });
-    failedQueue = [];
-};
-
-export const refreshToken = async () => {
-    if (isRefreshing) {
-        return new Promise<string>((resolve, reject) => {
-            failedQueue.push({ resolve, reject });
-        });
-    }
-
-    isRefreshing = true;
-
-    try {
-        const accessToken = await getAccessToken();
-        const refreshToken = await getRefreshToken();
-
-        const res = await fetch(`${NEXT_PUBLIC_BASE_DOMAIN_API}auth/refresh-token`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ accessToken, refreshToken }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.message || "Refresh Token Failed");
-
-        await setAccessToken(data.data.accessToken);
-        await setRefreshToken(data.data.refreshToken);
-
-        processQueue(null, data.data.accessToken);
-        return data.data.accessToken;
-    } catch (err) {
-        processQueue(err, null);
-        throw err;
-    } finally {
-        isRefreshing = false;
-    }
-};
+import { NEXT_PUBLIC_BASE_DOMAIN_BE_API } from "@/constant/app.constant";
+import { ENDPOINT } from "@/constant/endpoint.constant";
+import { getCookieHeader, setCookieHeader } from "@/helpers/cookies.helper";
+import { clearTokensAction } from "./actions/auth.action";
 
 export async function logout() {
     await clearTokensAction();
-    googleLogout()
+    // googleLogout();
 
     if (typeof window !== "undefined") {
-       // Client
-       localStorage.setItem(CHAT_OPENED, JSON.stringify([]));
-       localStorage.setItem(CHAT_BUBBLE, JSON.stringify([]));
-       window.location.reload();
-       window.location.href = "/login";
+        // Client
+        window.location.reload();
+        window.location.href = "/login";
     } else {
-       // Server
-       const { redirect } = await import("next/navigation");
-       redirect("/login");
+        // Server
+        const { redirect } = await import("next/navigation");
+        redirect("/login");
     }
 }
 
@@ -77,6 +22,8 @@ type FetchOptions = RequestInit & { body?: any; isFormData?: boolean };
 
 class APIClient {
     private baseURL: string;
+    private isRefreshing = false;
+    private refreshQueue: Array<() => void> = [];
 
     constructor(baseURL: string) {
         this.baseURL = baseURL;
@@ -95,43 +42,73 @@ class APIClient {
             return JSON.stringify(body);
         };
 
-        let accessToken = await getAccessToken();
+        const cookieHeader = await getCookieHeader();
 
         const optionFetch: any = {
             ...restOptions,
             headers: {
-                Authorization: `Bearer ${accessToken}`,
                 ...contentType,
                 ...headers,
+                cookie: cookieHeader,
             },
             body: handleBody(),
         };
 
-        let response = await fetch(`${this.baseURL}${url}`, optionFetch);
+        const response = await fetch(`${this.baseURL}/${url}`, optionFetch);
 
-        // ✅ Xử lý lỗi 403: Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token
-        if (response.status === 403) {
-            console.log(`(${response.status}) Access Token không hợp lệ hoặc đã hết hạn → Cần refresh token`);
-            try {
-                accessToken = await refreshToken();
-                response = await fetch(`${NEXT_PUBLIC_BASE_DOMAIN_API}${url}`, {
-                    ...options,
-                    headers: {
-                        ...(options.headers || {}),
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                });
-            } catch (err) {
-                console.error("❌ Refresh Token Error", err);
-                throw err;
+        const setCookies = response.headers.getSetCookie();
+        if (setCookies) {
+            for (const cookie of setCookies) {
+                await setCookieHeader(cookie);
             }
+        }
+
+        // ✅ Xử lý lỗi 403: Access Token đã hết hạn → Cần refresh token
+        if (response.status === 403) {
+            console.log({
+                status: response.status,
+                url: response.url,
+                message: `Access Token đã hết hạn → Cần refresh token`,
+            });
+
+            if (!this.isRefreshing) {
+                this.isRefreshing = true;
+
+                // Gọi refresh ngay lập tức
+                const refreshResult = await this.refreshAccessToken();
+
+                this.isRefreshing = false;
+
+                if (refreshResult) {
+                    // replay các request đã chờ
+                    this.refreshQueue.forEach((cb) => cb());
+                    this.refreshQueue = [];
+
+                    // gọi lại request hiện tại
+                    return this.request<T>(url, options);
+                } else {
+                    await logout();
+                    throw new Error("Refresh token failed, logout.");
+                }
+            }
+
+            // nếu đang refresh: request hiện tại phải chờ
+            return new Promise<T>((resolve, reject) => {
+                this.refreshQueue.push(() => {
+                    this.request<T>(url, options).then(resolve).catch(reject);
+                });
+            });
         }
 
         // ✅ Xử lý lỗi 401: không có quyền truy cập tài nguyên ngay cả khi đã đăng nhập -> Logout
         if (response.status === 401) {
-            console.log(`(${response.status}) không có quyền truy cập tài nguyên ngay cả khi đã đăng nhập -> Logout`);
+            console.log({
+                status: response.status,
+                url: response.url,
+                message: `Không có quyền truy cập tài nguyên ngay cả khi đã đăng nhập → Logout`,
+            });
             await logout();
-            // throw new Error("Unauthorized, logging out...");
+            throw new Error("Unauthorized");
         }
 
         if (!response.ok) {
@@ -162,9 +139,18 @@ class APIClient {
     delete<T>(url: string, options?: FetchOptions) {
         return this.request<T>(url, { ...options, method: "DELETE" });
     }
+
+    private async refreshAccessToken() {
+        try {
+            const res = await this.post(ENDPOINT.AUTH.REFRESH_TOKEN);
+            return res;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
 }
 
-// ✅ Khởi tạo API client với BASE_URL từ môi trường
-const api = new APIClient(NEXT_PUBLIC_BASE_DOMAIN_API);
+const api = new APIClient(NEXT_PUBLIC_BASE_DOMAIN_BE_API);
 
 export default api;
