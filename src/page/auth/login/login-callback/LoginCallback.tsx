@@ -1,33 +1,33 @@
 "use client";
 
+import { ROUTER_CLIENT } from "@/constant/router.constant";
 import { getAccessToken, getRefreshToken } from "@/helpers/cookies.helper";
-import { useRouter } from "next/navigation";
+import { useAppDispatch } from "@/redux/hooks";
+import { SET_EMAIL } from "@/redux/slices/ga.slice";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function LoginCallback() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const dispatch = useAppDispatch();
+
     useEffect(() => {
         (async () => {
-            const refreshToken = await getRefreshToken();
-            const accessToken = await getAccessToken();
-            if (refreshToken && accessToken) {
-                router.replace("/");
+            const isTotp = searchParams.get("isTotp");
+            if (isTotp === "true") {
+                const email = searchParams.get("email");
+                dispatch(SET_EMAIL(email));
+                router.replace(ROUTER_CLIENT.LOGIN);
             } else {
-                router.replace("/login");
+                const refreshToken = await getRefreshToken();
+                const accessToken = await getAccessToken();
+                if (refreshToken && accessToken) {
+                    router.replace("/");
+                } else {
+                    router.replace(ROUTER_CLIENT.LOGIN);
+                }
             }
-            // const isTotp = searchParams.get("isTotp");
-            // if (isTotp === "true") {
-            //     const email = searchParams.get("email");
-            //     dispatch(SET_EMAIL(email));
-            //     router.replace("/login");
-            // } else {
-            //     const accessToken = searchParams.get("accessToken");
-            //     const refreshToken = searchParams.get("refreshToken");
-
-            //     if (accessToken) await setAccessToken(accessToken);
-            //     if (refreshToken) await setRefreshToken(refreshToken);
-            //     router.replace("/");
-            // }
         })();
     }, []);
     return <></>;
