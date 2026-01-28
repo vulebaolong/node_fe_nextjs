@@ -11,7 +11,7 @@ jobs:
             - uses: actions/checkout@v4
 
             - name: đăng nhập docker hub
-              run: echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login -u vulebaolong --password-stdin
+              run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u vulebaolong --password-stdin
 
             - name: Build the Docker image
               run: |
