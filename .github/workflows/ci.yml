@@ -1,4 +1,4 @@
-name: CI artifact
+name: ci
 
 on:
     push:
