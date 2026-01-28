@@ -115,7 +115,7 @@ export default function HomeRight({ onClose }: TProps) {
                         // console.log(user);
                         if (!user) return <Fragment key={i}></Fragment>;
 
-                        if (chatGroup?.ChatGroupMembers.length! > 2) {
+                        if ((chatGroup?.ChatGroupMembers?.length ?? 0) > 2) {
                             return (
                                 <Box
                                     key={i}

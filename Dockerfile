@@ -27,5 +27,3 @@ COPY --from=builder /node_fe/public ./public
 COPY --from=builder /node_fe/.next/static ./.next/static
 
 CMD ["node", "server.js"]
-
-# docker image build --build-arg NEXT_PUBLIC_GOOGLE_CLIENT_ID=$NEXT_PUBLIC_GOOGLE_CLIENT_ID --build-arg NEXT_PUBLIC_BASE_DOMAIN=$NEXT_PUBLIC_BASE_DOMAIN --build-arg NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY=$NEXT_PUBLIC_BASE_DOMAIN_CLOUDINARY -t vulebaolong/img-fe_main:latest .
